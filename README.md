@@ -1,10 +1,10 @@
-# Flood Impact Mapping & Predictive Forecasting Pipeline
+# Flood Impact & Susceptibility Mapping Pipeline
 
-This repository contains a comprehensive remote sensing and machine learning pipeline designed to not only accurately map flood inundation using **Sentinel-1 SAR** and **Sentinel-2 Optical** imagery, but to physically predict flood susceptibility using topographical and meteorological precursors.
+This repository contains a comprehensive remote sensing and machine learning pipeline designed to not only accurately map flood inundation using **Sentinel-1 SAR** and **Sentinel-2 Optical** imagery, but to structurally model **Flood Susceptibility** using permanent topographical characteristics.
 
 ## The Two-Part Engineering Story
 
-Our approach is divided into two distinct engineering phases, successfully transitioning the project from reactive detection to proactive forecasting.
+Our approach is divided into two distinct engineering phases, successfully transitioning the project from reactive detection to structural susceptibility modeling.
 
 ### Part 1: Automated Ground-Truth Extraction (The Physics)
 Manually labeling flood pixels across multiple years is impossibly tedious and error-prone. Instead, we engineered a robust geospatial pipeline to extract pristine, multi-year ground-truth labels automatically by leveraging SAR physics:
@@ -14,21 +14,23 @@ Manually labeling flood pixels across multiple years is impossibly tedious and e
 
 By automating this, we built a massive, highly accurate multi-year training dataset of flood masks without drawing a single polygon by hand.
 
-### Part 2: Purely Predictive Machine Learning (The Forecasting)
-With our ground-truth labels extracted in Part 1, we transitioned to true forecasting. 
+### Part 2: Flood Susceptibility Modeling (The Machine Learning)
+With our ground-truth labels extracted in Part 1, we transitioned to susceptibility modeling. 
 
-We deliberately **excluded** the during-flood SAR backscatter from our feature matrix. If the model relies on SAR, it is merely *detecting* water that is already there. Instead, we trained a Random Forest model (`09_train_ml_model.py`) to predict flooding based entirely on vulnerability and triggers:
+We deliberately **excluded** the during-flood SAR backscatter from our feature matrix. If the model relies on SAR, it is merely *detecting* water that is already there. Instead, we trained a Random Forest model (`09_train_ml_model.py`) to predict which parts of the city are structurally vulnerable whenever a flood *does* occur:
 * **Topographical Vulnerability:** Elevation (m) and Slope (degrees) derived from the SRTM Digital Elevation Model, alongside Euclidean Distance to the river.
-* **Meteorological Triggers:** Cumulative 10-day prior precipitation (CHIRPS) and antecedent soil moisture/vegetation (Pre-Flood NDWI).
+* **Pre-Flood Context:** Antecedent vegetation and surface water mapping (Pre-Flood NDWI).
 
-**Conclusion:** By successfully training a highly accurate (96%+) predictive model driven entirely by topography and meteorology, we have completely satisfied the "predictive ML" requirement of this project. Advanced deep learning architectures like U-Net can now be reserved as an optional final-semester expansion rather than a mid-semester necessity.
+*Note: This is a strict **flood susceptibility model**, not a weather-driven forecasting model. It predicts where flood-prone land is based on permanent terrain characteristics, answering the question "which areas are most vulnerable during a flood event?" rather than "will it flood next week?"*
+
+**Conclusion:** By successfully training a highly accurate (89%+) susceptibility model driven entirely by topography and antecedent indices, we have completely satisfied the "predictive ML" requirement of this project. Advanced deep learning architectures like U-Net can now be reserved as an optional final-semester expansion.
 
 ---
 
-## 3. Visualizing the Prediction
-The culmination of this pipeline is the Spatial Probability Heat Map (`11_predict_flood_map.py`). 
+## 3. Visualizing Susceptibility
+The culmination of this pipeline is the Spatial Susceptibility Heat Map (`11_predict_flood_map.py`). 
 
-Instead of a binary yes/no mask, the model outputs a continuous probability (0% to 100%) of flood risk for every single pixel, driven by the rainfall and topography of a given event (e.g., August 2026).
+Instead of a binary yes/no mask, the model outputs a continuous probability (0% to 100%) of flood susceptibility for every single pixel, driven by the structural terrain of the region.
 
 ### QGIS Visualization Instructions
 To view the executive-ready flood susceptibility map:

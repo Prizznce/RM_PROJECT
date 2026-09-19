@@ -1,0 +1,4 @@
+data/*.tif
+data/*.xml
+__pycache__/
+*.joblib

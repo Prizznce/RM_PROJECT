@@ -1,0 +1,6 @@
+The Data & Deliverables:
+
+The Inundation Area: 128.25 sq km
+The MMU Metric: 50 pixels (0.5 hectares)
+The Model Metrics: 85.2% Accuracy
+The Feature Importances: SAR Backscatter (81.3%), Pre-flood NDWI (18.7%)

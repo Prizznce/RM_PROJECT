@@ -130,27 +130,43 @@ events.forEach(function(event) {
     });
   }
 
-  // D. METEOROLOGICAL CONTEXT: PRECIPITATION (10 days prior to floodStart)
-  // We calculate the date 10 days before floodStart
+  // D. METEOROLOGICAL CONTEXT: PRECIPITATION (7, 10, and 30 days prior to floodStart)
   var floodStartDate = ee.Date(event.floodStart);
-  var precipStartDate = floodStartDate.advance(-10, 'day');
   
-  // Using CHIRPS daily precipitation data
-  var precip = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
+  // 10-Day Rainfall (Legacy, keeping just in case)
+  var precip10 = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
     .filterBounds(aoi)
-    .filterDate(precipStartDate, floodStartDate)
-    .sum() // Cumulative rainfall over the 10 days
-    .clip(aoi)
-    .rename('precipitation');
+    .filterDate(floodStartDate.advance(-10, 'day'), floodStartDate)
+    .sum().clip(aoi).rename('precipitation');
     
   Export.image.toDrive({
-    image: precip,
-    description: 'prayagraj_precip_10d_' + event.year,
-    folder: 'flood_project',
-    fileNamePrefix: 'prayagraj_precip_10d_' + event.year,
-    region: aoi,
-    scale: 5566, // CHIRPS native resolution (~5km)
-    maxPixels: 1e9
+    image: precip10, description: 'prayagraj_precip_10d_' + event.year,
+    folder: 'flood_project', fileNamePrefix: 'prayagraj_precip_10d_' + event.year,
+    region: aoi, scale: 5566, maxPixels: 1e9
+  });
+
+  // 7-Day Rainfall
+  var precip7 = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
+    .filterBounds(aoi)
+    .filterDate(floodStartDate.advance(-7, 'day'), floodStartDate)
+    .sum().clip(aoi).rename('precipitation');
+    
+  Export.image.toDrive({
+    image: precip7, description: 'prayagraj_precip_7d_' + event.year,
+    folder: 'flood_project', fileNamePrefix: 'prayagraj_precip_7d_' + event.year,
+    region: aoi, scale: 5566, maxPixels: 1e9
+  });
+
+  // 30-Day Rainfall
+  var precip30 = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
+    .filterBounds(aoi)
+    .filterDate(floodStartDate.advance(-30, 'day'), floodStartDate)
+    .sum().clip(aoi).rename('precipitation');
+    
+  Export.image.toDrive({
+    image: precip30, description: 'prayagraj_precip_30d_' + event.year,
+    folder: 'flood_project', fileNamePrefix: 'prayagraj_precip_30d_' + event.year,
+    region: aoi, scale: 5566, maxPixels: 1e9
   });
 
 });

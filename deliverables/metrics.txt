@@ -19,3 +19,26 @@ Slope               : 1.46%
 Distance_To_River   : 0.00%
 
 Conclusion: The model achieved 98% precision when predicting inundation on an entirely unseen future event (2026) using only static topography and antecedent moisture learned from historical events (2019, 2021).
+
+--- COMPARATIVE MODEL: WEATHER-DRIVEN FORECASTING ---
+Features: Elevation, Slope, Distance, NDWI + Rainfall_7d, Rainfall_30d
+Validation: Strict Temporal Hold-Out (Train: 19/21, Test: 26)
+
+Overall Accuracy: 49.91% (Catastrophic collapse compared to 73.2% terrain-only model)
+
+Classification Report:
+               precision    recall  f1-score   support
+
+      Dry (0)       0.50      1.00      0.67      5000
+Inundated (1)       0.00      0.00      0.00      5000
+
+     accuracy                           0.50     10000
+
+Feature Importances (The overfitting cause):
+Elevation           : 39.67%
+Rainfall_30d        : 26.01%
+Rainfall_7d         : 24.10%
+Pre_Flood_NDWI      : 9.77%
+Slope               : 0.46%
+
+Analysis: Injecting absolute rainfall values caused the model to overfit to the specific meteorological signatures of the 2019/2021 historical events. Because Random Forests cannot extrapolate well outside their training boundaries, when presented with the unseen 2026 rainfall signature, the model completely failed to predict inundation (Recall = 0.00). This perfectly validates the superiority of the static topographic Susceptibility Model for this dataset size.

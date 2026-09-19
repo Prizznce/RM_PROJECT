@@ -110,11 +110,23 @@ print(f"Total training pixels: {len(combined_df)}")
 
 # IMPORTANT: SAR is excluded. These are pure predictive precursors.
 feature_cols = ['Elevation', 'Slope', 'Distance_To_River', 'Pre_Flood_NDWI']
-X = combined_df[feature_cols]
-y = combined_df['Target']
+# ----------------------------------------------------
+# STRICT TEMPORAL HOLD-OUT VALIDATION
+# ----------------------------------------------------
+print("\nSplitting data using Temporal Hold-Out...")
+# Train on historical events (2019, 2021)
+train_df = combined_df[combined_df['Year'].isin(['2019', '2021'])]
+# Test exclusively on the unseen future event (2026)
+test_df = combined_df[combined_df['Year'] == '2026']
 
-# Train-Test Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train = train_df[feature_cols]
+y_train = train_df['Target']
+X_test = test_df[feature_cols]
+y_test = test_df['Target']
+
+print(f"Training set size: {len(X_train)} (2019, 2021)")
+print(f"Testing set size:  {len(X_test)} (2026 only)")
+# ----------------------------------------------------
 
 # Train the Predictive Model
 print("\nTraining Predictive Random Forest Classifier...")

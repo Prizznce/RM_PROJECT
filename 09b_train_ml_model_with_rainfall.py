@@ -137,6 +137,22 @@ print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred, target_names=['Dry (0)', 'Inundated (1)']))
 
+from sklearn.metrics import confusion_matrix
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+unique, counts = np.unique(y_test, return_counts=True)
+print("\n2026 test set class balance:")
+print(dict(zip(unique, counts)))
+
+print("\nRainfall_7d feature stats (2026 test set):")
+print("Min:", X_test['Rainfall_7d'].min(), "Max:", X_test['Rainfall_7d'].max())
+print("Unique values:", X_test['Rainfall_7d'].nunique())
+
+print("\nRainfall_30d feature stats (2026 test set):")
+print("Min:", X_test['Rainfall_30d'].min(), "Max:", X_test['Rainfall_30d'].max())
+print("Unique values:", X_test['Rainfall_30d'].nunique())
+
 importances = rf_model.feature_importances_
 print("\nFeature Importances:")
 for name, imp in zip(feature_cols, importances):

@@ -1,0 +1,23 @@
+# ============================================================
+# Flood Impact & Susceptibility Mapping Pipeline
+# Python dependencies
+# Install with: pip install -r requirements.txt
+# ============================================================
+
+# --- Geospatial / Raster Processing ---
+rasterio>=1.3.0
+
+# --- Scientific Computing ---
+numpy>=1.24.0
+scipy>=1.10.0
+
+# --- Machine Learning ---
+scikit-learn>=1.3.0
+scikit-image>=0.21.0
+joblib>=1.3.0
+
+# --- Data Manipulation ---
+pandas>=2.0.0
+
+# --- Visualization ---
+matplotlib>=3.7.0

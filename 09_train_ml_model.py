@@ -34,18 +34,21 @@ def load_and_resample(filepath, match_dataset, band=1):
 
 print("Building Predictive Feature Matrix across multiple events...")
 
-years_to_check = ['2019', '2021', '2026']
+years_to_check = ['2019', '2021', '2022', '2024', '2025', '2026']
 all_dfs = []
 
 static_topo = "data/prayagraj_topo_features.tif"
 static_dist = "data/prayagraj_distance_to_river.tif"
+static_twi  = "data/prayagraj_twi.tif"
+static_lulc = "data/prayagraj_LULC_ESA_WorldCover.tif"
+static_soil = "data/prayagraj_soil_clay_pct.tif"
 
 for year in years_to_check:
-    label_path = f"data/flood_mask_{year}.tif"
-    precip_path = f"data/prayagraj_precip_10d_{year}.tif"
-    optical_path = f"data/prayagraj_preflood_S2_{year}.tif"
+    label_path = f"data/{year}/flood_mask_{year}.tif"
+    precip_path = f"data/{year}/prayagraj_precip_10d_{year}.tif"
+    optical_path = f"data/{year}/prayagraj_preflood_S2_{year}.tif"
 
-    if all(map(os.path.exists, [label_path, precip_path, optical_path, static_topo, static_dist])):
+    if all(map(os.path.exists, [label_path, optical_path, static_topo, static_dist])):
         print(f"\nProcessing event year: {year}")
         try:
             # Load Target Label (this acts as the spatial reference 'match_dataset' for everything else)
@@ -56,21 +59,23 @@ for year in years_to_check:
                 elevation = load_and_resample(static_topo, src_label, band=1)
                 slope = load_and_resample(static_topo, src_label, band=2)
                 distance = load_and_resample(static_dist, src_label, band=1)
+                twi = load_and_resample(static_twi, src_label, band=1)
+                lulc = load_and_resample(static_lulc, src_label, band=1)
+                soil_clay = load_and_resample(static_soil, src_label, band=1)
                 
-                # 2. Load Dynamic Feature: Precipitation
-                rainfall = load_and_resample(precip_path, src_label, band=1)
-                
-                # 3. Load Dynamic Feature: NDWI
+                # 2. Load Dynamic Feature: NDWI
                 green = load_and_resample(optical_path, src_label, band=2)
                 nir = load_and_resample(optical_path, src_label, band=4)
-                ndwi = (green - nir) / (green + nir + 1e-8) # add small epsilon to avoid div by zero
+                ndwi = (green - nir) / (green + nir + 1e-8)
 
             # Build DataFrame
             df = pd.DataFrame({
                 'Elevation': elevation,
                 'Slope': slope,
                 'Distance_To_River': distance,
-                'Rainfall_10d': rainfall,
+                'TWI': twi,
+                'LULC': lulc,
+                'Soil_Clay_Pct': soil_clay,
                 'Pre_Flood_NDWI': ndwi,
                 'Target': labels,
                 'Year': year
@@ -109,13 +114,13 @@ combined_df = pd.concat(all_dfs).sample(frac=1, random_state=42)
 print(f"Total training pixels: {len(combined_df)}")
 
 # IMPORTANT: SAR is excluded. These are pure predictive precursors.
-feature_cols = ['Elevation', 'Slope', 'Distance_To_River', 'Pre_Flood_NDWI']
+feature_cols = ['Elevation', 'Slope', 'Distance_To_River', 'TWI', 'LULC', 'Soil_Clay_Pct', 'Pre_Flood_NDWI']
 # ----------------------------------------------------
 # STRICT TEMPORAL HOLD-OUT VALIDATION
 # ----------------------------------------------------
 print("\nSplitting data using Temporal Hold-Out...")
-# Train on historical events (2019, 2021)
-train_df = combined_df[combined_df['Year'].isin(['2019', '2021'])]
+# Train on historical events
+train_df = combined_df[combined_df['Year'].isin(['2019', '2021', '2022', '2024', '2025'])]
 # Test exclusively on the unseen future event (2026)
 test_df = combined_df[combined_df['Year'] == '2026']
 
@@ -124,13 +129,13 @@ y_train = train_df['Target']
 X_test = test_df[feature_cols]
 y_test = test_df['Target']
 
-print(f"Training set size: {len(X_train)} (2019, 2021)")
+print(f"Training set size: {len(X_train)} (2019-2025)")
 print(f"Testing set size:  {len(X_test)} (2026 only)")
 # ----------------------------------------------------
 
 # Train the Predictive Model
 print("\nTraining Predictive Random Forest Classifier...")
-rf_model = RandomForestClassifier(n_estimators=100, max_depth=12, random_state=42, n_jobs=-1)
+rf_model = RandomForestClassifier(n_estimators=200, max_depth=15, random_state=42, n_jobs=-1)
 rf_model.fit(X_train, y_train)
 
 # Evaluate Model

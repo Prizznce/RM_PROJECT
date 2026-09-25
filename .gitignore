@@ -1,4 +1,5 @@
-data/*.tif
-data/*.xml
+**/*.tif
+**/*.xml
 __pycache__/
 *.joblib
+data/

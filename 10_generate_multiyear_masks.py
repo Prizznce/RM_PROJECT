@@ -5,8 +5,8 @@ from skimage import morphology
 import os
 
 def process_sar_to_mask(year):
-    input_path = f"data/prayagraj_flooddate_S1_SAR_{year}.tif"
-    output_path = f"data/flood_mask_{year}.tif"
+    input_path = f"data/{year}/prayagraj_flooddate_S1_SAR_{year}.tif"
+    output_path = f"data/{year}/flood_mask_{year}.tif"
     
     if not os.path.exists(input_path):
         print(f"File {input_path} not found. Skipping year {year}.")
@@ -45,7 +45,7 @@ def process_sar_to_mask(year):
     print(f"Successfully saved mask to {output_path}")
 
 if __name__ == "__main__":
-    years = ['2019', '2021', '2026']
+    years = ['2019', '2021', '2022', '2024', '2025', '2026']
     for year in years:
         process_sar_to_mask(year)
     

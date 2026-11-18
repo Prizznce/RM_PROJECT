@@ -228,10 +228,12 @@ def inject_control_room_css(dark_mode=None):
             background: {header_bg} !important;
             border: 1px solid {border_col} !important;
             border-left: 5px solid {COLOR_DORMANT} !important;
-            border-radius: 10px;
-            padding: 18px 24px;
+            border-radius: 12px;
+            padding: 20px 26px;
             margin-bottom: 18px;
-            box-shadow: {card_shadow};
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.7), 0 0 20px rgba(45, 212, 191, 0.12) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
         }}
         .header-title {{
             font-size: 25px;
@@ -242,6 +244,7 @@ def inject_control_room_css(dark_mode=None):
             display: flex;
             align-items: center;
             gap: 12px;
+            text-shadow: 0 0 16px rgba(45, 212, 191, 0.25);
         }}
         .header-subtitle {{
             font-size: 13px;
@@ -249,6 +252,38 @@ def inject_control_room_css(dark_mode=None):
             margin-top: 5px;
             font-weight: 400;
             letter-spacing: 0.2px;
+        }}
+
+        /* Glowing Neon Glassmorphic Panels */
+        .glass-panel {{
+            background: {'rgba(17, 17, 17, 0.82)' if dark_mode else 'rgba(248, 249, 250, 0.9)'} !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid {border_col} !important;
+            border-radius: 12px;
+            padding: 18px 22px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }}
+
+        .glow-teal {{
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.22), inset 0 0 12px rgba(45, 212, 191, 0.04) !important;
+            border-color: rgba(45, 212, 191, 0.5) !important;
+        }}
+        .glow-amber {{
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.22), inset 0 0 12px rgba(245, 158, 11, 0.04) !important;
+            border-color: rgba(245, 158, 11, 0.5) !important;
+        }}
+        .glow-alarm {{
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.25), inset 0 0 12px rgba(239, 68, 68, 0.05) !important;
+            border-color: rgba(239, 68, 68, 0.5) !important;
+        }}
+        .glow-oracle {{
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.22), inset 0 0 12px rgba(167, 139, 250, 0.04) !important;
+            border-color: rgba(167, 139, 250, 0.5) !important;
+        }}
+        .glow-cyan {{
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.22), inset 0 0 12px rgba(56, 189, 248, 0.04) !important;
+            border-color: rgba(56, 189, 248, 0.5) !important;
         }}
 
         /* Status Pills */
@@ -268,24 +303,27 @@ def inject_control_room_css(dark_mode=None):
             background: {'rgba(45, 212, 191, 0.12)' if dark_mode else 'rgba(13, 148, 136, 0.12)'};
             color: {COLOR_DORMANT};
             border: 1px solid {COLOR_DORMANT};
+            box-shadow: 0 0 10px rgba(45, 212, 191, 0.2);
         }}
         .pill-locked {{
             background: {'rgba(167, 139, 250, 0.12)' if dark_mode else 'rgba(124, 58, 237, 0.12)'};
             color: {COLOR_ORACLE};
             border: 1px solid {COLOR_ORACLE};
+            box-shadow: 0 0 10px rgba(167, 139, 250, 0.2);
         }}
         .pill-gold {{
             background: {'rgba(245, 158, 11, 0.12)' if dark_mode else 'rgba(217, 119, 6, 0.12)'};
             color: {COLOR_AWAKE};
             border: 1px solid {COLOR_AWAKE};
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
         }}
 
         /* Executive Hero Ticker Bar */
         .hero-ticker-container {{
             background: {panel_bg} !important;
             border: 1px solid {border_col} !important;
-            border-radius: 8px;
-            padding: 10px 18px;
+            border-radius: 10px;
+            padding: 12px 20px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
@@ -293,7 +331,8 @@ def inject_control_room_css(dark_mode=None):
             flex-wrap: wrap;
             gap: 12px;
             font-size: 12px;
-            box-shadow: {card_shadow};
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(45, 212, 191, 0.08);
+            backdrop-filter: blur(12px);
         }}
         .ticker-item {{
             display: flex;
@@ -314,20 +353,23 @@ def inject_control_room_css(dark_mode=None):
             font-size: 13px;
         }}
 
-        /* KPI Card */
+        /* KPI Card with Luminous Elevation */
         .kpi-container {{
-            background: {panel_bg} !important;
+            background: {'rgba(17, 17, 17, 0.90)' if dark_mode else '#F8F9FA'} !important;
             border: 1px solid {border_col} !important;
-            border-radius: 10px;
-            padding: 18px 20px;
+            border-radius: 12px;
+            padding: 18px 22px;
             margin-bottom: 14px;
-            box-shadow: {card_shadow};
-            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }}
         .kpi-container:hover {{
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(45, 212, 191, 0.25) !important;
             border-color: {COLOR_DORMANT} !important;
         }}
         .kpi-label {{
@@ -335,7 +377,7 @@ def inject_control_room_css(dark_mode=None):
             font-weight: 700;
             color: {muted_col} !important;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.1px;
             margin-bottom: 6px;
         }}
         .kpi-value {{
@@ -347,6 +389,7 @@ def inject_control_room_css(dark_mode=None):
             margin-bottom: 5px;
             letter-spacing: -0.8px;
             color: {text_col} !important;
+            text-shadow: 0 0 14px rgba(255, 255, 255, 0.12);
         }}
         .kpi-delta {{
             font-size: 12px;
@@ -579,19 +622,56 @@ def apply_control_room_theme(fig, dark_mode=None):
     return fig
 
 def render_kpi_card(label, value, delta=None, delta_color="positive", subtext=None, border_color=None):
-    """Renders a projector-readable glassmorphic KPI card with tabular numerals."""
+    """Renders a projector-readable luminous glassmorphic KPI card with tabular numerals and subtle glowing borders."""
     delta_class = f"delta-{delta_color}"
     border_style = f"border-left: 4px solid {border_color};" if border_color else ""
+    glow_style = f"box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 16px {border_color}33;" if border_color else ""
+    val_color = border_color if border_color else COLOR_TEXT
+    val_glow = f"text-shadow: 0 0 12px {border_color}44;" if border_color else ""
     
     delta_html = f'<div class="kpi-delta {delta_class}">{delta}</div>' if delta else ''
     sub_html = f'<div style="font-size: 11px; color: {COLOR_MUTED}; margin-top: 4px;">{subtext}</div>' if subtext else ''
     
     html = f"""
-    <div class="kpi-container" style="{border_style}">
+    <div class="kpi-container" style="{border_style} {glow_style}">
         <div class="kpi-label">{label}</div>
-        <div class="kpi-value">{value}</div>
+        <div class="kpi-value" style="color: {val_color}; {val_glow}">{value}</div>
         {delta_html}
         {sub_html}
+    </div>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+
+def render_research_master_ribbon():
+    """Renders an executive glowing research highlight ribbon showcasing key empirical findings across both continents."""
+    html = f"""
+    <div style="background: rgba(17, 17, 17, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(45, 212, 191, 0.35); border-radius: 12px; padding: 12px 20px; margin-bottom: 20px; box-shadow: 0 0 25px rgba(45, 212, 191, 0.12), 0 4px 20px rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="background: rgba(45, 212, 191, 0.16); border: 1px solid {COLOR_DORMANT}; color: {COLOR_DORMANT}; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; box-shadow: 0 0 12px rgba(45, 212, 191, 0.35);">
+                👑 CHAMPION: CGT-v3 (8.8 / 10)
+            </span>
+            <span style="font-size: 13px; color: {COLOR_TEXT}; font-weight: 600;">
+                Near-Ensemble Accuracy: <strong>85.85% (Europe)</strong> / <strong>87.30% (India)</strong>
+            </span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="color: {COLOR_MUTED}; font-size: 11px;">EDGE LATENCY:</span>
+                <span style="color: {COLOR_EMERALD}; font-weight: 700; text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);">876.9 μs (&lt; 1 ms ✅)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="color: {COLOR_MUTED}; font-size: 11px;">BATTERY LIFE:</span>
+                <span style="color: {COLOR_AWAKE}; font-weight: 700; text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);">142.0 h (7.02% Duty)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="color: {COLOR_MUTED}; font-size: 11px;">MICRO-RAM:</span>
+                <span style="color: {COLOR_CYAN}; font-weight: 700; text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">0.22 MB (174x Leaner)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="color: {COLOR_MUTED}; font-size: 11px;">SIGNIFICANCE:</span>
+                <span style="color: {COLOR_ORACLE}; font-weight: 700; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5);">p = 1.19e-9***</span>
+            </div>
+        </div>
     </div>
     """
     st.markdown(html, unsafe_allow_html=True)

@@ -41,7 +41,7 @@ from src.app_ui.theme import (
     COLOR_BG, COLOR_PANEL, COLOR_PANEL_ALT, COLOR_BORDER, COLOR_TEXT, COLOR_MUTED,
     COLOR_DORMANT, COLOR_AWAKE, COLOR_ALARM, COLOR_ORACLE, COLOR_NEUTRAL, COLOR_CYAN, COLOR_EMERALD,
     MODEL_COLORS, inject_control_room_css, get_control_room_layout, apply_control_room_theme,
-    render_kpi_card, render_hero_ticker, compute_efficiency_rating, get_efficiency_badge_html,
+    render_kpi_card, render_hero_ticker, render_research_master_ribbon, compute_efficiency_rating, get_efficiency_badge_html,
     set_theme_mode
 )
 
@@ -324,6 +324,9 @@ with head_col2:
 # Executive Enterprise Valuation Hero Ticker
 render_hero_ticker(fleet_size=500, annual_saved_usd=184200, battery_mult=3.46, co2_kg=14800)
 
+# Executive Glowing Research Master Ribbon (Cross-Continent & Empirical Findings)
+render_research_master_ribbon()
+
 # Load Base Grid Telemetry
 grid_df = load_grid_telemetry()
 if grid_df is None:
@@ -372,12 +375,11 @@ if selected_nav == NAV_OPTIONS[0]:
     # UNIFIED TOP COMMAND DECK (FULL-WIDTH SCADA TOOLBAR)
     # =========================================================================
     st.markdown(
-        f'<div style="background-color: {COLOR_PANEL}; '
-        f'border: 1px solid {COLOR_BORDER}; border-left: 5px solid {COLOR_CYAN}; '
-        'border-radius: 10px; padding: 12px 20px; margin-bottom: 12px;">'
+        f'<div class="glass-panel glow-cyan" style="border-left: 5px solid {COLOR_CYAN} !important; '
+        'padding: 14px 22px; margin-bottom: 14px;">'
         '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">'
         '<div>'
-        f'<span style="font-size: 14px; font-weight: 800; color: {COLOR_TEXT}; letter-spacing: 0.5px;">'
+        f'<span style="font-size: 14px; font-weight: 800; color: {COLOR_TEXT}; letter-spacing: 0.8px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);">'
         '⚡ STREAMING SCADA COMMAND &amp; ACTUATION DECK'
         '</span>'
         '<span style="font-size: 11px; color: ' + COLOR_MUTED + '; margin-left: 10px;">'
@@ -875,8 +877,8 @@ elif selected_nav == NAV_OPTIONS[1]:
 
     # Executive Overview: What We Are Making & The Core Tradeoff
     st.markdown(f"""
-    <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 4px solid {COLOR_DORMANT}; border-radius: 8px; padding: 14px 18px; margin-bottom: 16px;">
-        <div style="font-size: 13px; font-weight: 800; color: {COLOR_DORMANT}; text-transform: uppercase; letter-spacing: 0.5px;">
+    <div class="glass-panel glow-teal" style="border-left: 5px solid {COLOR_DORMANT} !important; margin-bottom: 20px;">
+        <div style="font-size: 13px; font-weight: 800; color: {COLOR_DORMANT}; text-transform: uppercase; letter-spacing: 0.8px; text-shadow: 0 0 10px rgba(45, 212, 191, 0.4);">
             📌 Executive Overview: What We Are Actually Making &amp; The Core Edge Tradeoff
         </div>
         <div style="font-size: 12px; color: {COLOR_TEXT}; line-height: 1.55; margin-top: 6px;">
@@ -942,7 +944,7 @@ elif selected_nav == NAV_OPTIONS[1]:
             f_col1, f_col2, f_col3, f_col4 = st.columns(4)
             with f_col1:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid {COLOR_DORMANT}; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(45, 212, 191, 0.4); border-left: 4px solid {COLOR_DORMANT}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(45, 212, 191, 0.2); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: {COLOR_DORMANT}; text-transform: uppercase;">Sensor 1 • Fast Margin</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">Hoeffding Margin (ΔḠ)</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -953,7 +955,7 @@ elif selected_nav == NAV_OPTIONS[1]:
                 """, unsafe_allow_html=True)
             with f_col2:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid {COLOR_ALARM}; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(239, 68, 68, 0.4); border-left: 4px solid {COLOR_ALARM}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(239, 68, 68, 0.25); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: {COLOR_ALARM}; text-transform: uppercase;">Sensor 2 • Statistical Shift</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">ADWIN Drift Detector</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -964,7 +966,7 @@ elif selected_nav == NAV_OPTIONS[1]:
                 """, unsafe_allow_html=True)
             with f_col3:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid {COLOR_AWAKE}; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(245, 158, 11, 0.4); border-left: 4px solid {COLOR_AWAKE}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(245, 158, 11, 0.22); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: {COLOR_AWAKE}; text-transform: uppercase;">Sensor 3 • Local Error</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">Prequential Volatility (ē_W)</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -975,7 +977,7 @@ elif selected_nav == NAV_OPTIONS[1]:
                 """, unsafe_allow_html=True)
             with f_col4:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid #C084FC; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(192, 132, 252, 0.4); border-left: 4px solid #C084FC; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(192, 132, 252, 0.22); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: #C084FC; text-transform: uppercase;">Sensor 4 • Information Theory</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">Shannon Leaf Entropy H(x)</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -990,7 +992,7 @@ elif selected_nav == NAV_OPTIONS[1]:
             f_col5, f_col6, f_col7, f_col8 = st.columns(4)
             with f_col5:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid {COLOR_CYAN}; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(56, 189, 248, 0.4); border-left: 4px solid {COLOR_CYAN}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(56, 189, 248, 0.22); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: {COLOR_CYAN}; text-transform: uppercase;">Sensor 5 • Meta-Regress</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">Causal Meta-Score (ẑ_t)</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -1001,7 +1003,7 @@ elif selected_nav == NAV_OPTIONS[1]:
                 """, unsafe_allow_html=True)
             with f_col6:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid {COLOR_EMERALD}; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(16, 185, 129, 0.4); border-left: 4px solid {COLOR_EMERALD}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(16, 185, 129, 0.22); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: {COLOR_EMERALD}; text-transform: uppercase;">Sensor 6 • Battery Governor</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">Duty Cycle Budget (ρ)</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -1012,7 +1014,7 @@ elif selected_nav == NAV_OPTIONS[1]:
                 """, unsafe_allow_html=True)
             with f_col7:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid #F472B6; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(244, 114, 182, 0.4); border-left: 4px solid #F472B6; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(244, 114, 182, 0.22); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: #F472B6; text-transform: uppercase;">Sensor 7 • Hysteresis</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">Post-Drift Cooldown</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -1023,7 +1025,7 @@ elif selected_nav == NAV_OPTIONS[1]:
                 """, unsafe_allow_html=True)
             with f_col8:
                 st.markdown(f"""
-                <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 3px solid {COLOR_ORACLE}; padding: 12px; border-radius: 6px; height: 100%;">
+                <div style="background-color: {COLOR_PANEL}; border: 1px solid rgba(167, 139, 250, 0.4); border-left: 4px solid {COLOR_ORACLE}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 14px rgba(167, 139, 250, 0.22); padding: 14px; border-radius: 8px; height: 100%;">
                     <div style="font-size: 11px; font-weight: 800; color: {COLOR_ORACLE}; text-transform: uppercase;">Sensor 8 • Temporal Realism</div>
                     <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin: 4px 0;">Zero Future Leakage</div>
                     <div style="font-size: 11px; color: {COLOR_MUTED}; line-height: 1.4;">
@@ -2297,22 +2299,22 @@ elif selected_nav == NAV_OPTIONS[6]:
     with tab_india:
         st.markdown("#### 🇮🇳 Indian National Electrical Grid Telemetry (2021–2023)")
         st.markdown(f"""
-        <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-radius: 8px; padding: 16px; margin-bottom: 18px; font-size: 13px; line-height: 1.6;">
+        <div class="glass-panel glow-cyan" style="margin-bottom: 18px; font-size: 13px; line-height: 1.6;">
             <strong style="color: {COLOR_CYAN}; font-size: 14px;">Cross-Continent Topology Generalization</strong><br>
             To evaluate whether the proposed <strong>CGT-v3 meta-controller</strong> generalizes beyond the European grid (REE / ENTSO-E),
             we benchmarked a complete 3-year continuous stream (<strong>26,280 hourly instances</strong>) of Indian National Grid telemetry 
             aligned with <strong>POSOCO / Grid Controller of India (NLDC)</strong> regional dispatch dynamics.
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px;">
-                <div style="background: {COLOR_PANEL_ALT}; border: 1px solid {COLOR_BORDER}; border-radius: 6px; padding: 10px;">
-                    <div style="font-size: 11px; color: {COLOR_MUTED}; font-weight: 700;">5 REGIONAL DISPATCH ZONES</div>
+                <div style="background: {COLOR_PANEL_ALT}; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 6px; padding: 10px;">
+                    <div style="font-size: 11px; color: {COLOR_CYAN}; font-weight: 700;">5 REGIONAL DISPATCH ZONES</div>
                     <div style="font-size: 12px; color: {COLOR_TEXT}; margin-top: 4px;">WR (33%), NR (30%), SR (23%), ER (12%), NER (2%)</div>
                 </div>
-                <div style="background: {COLOR_PANEL_ALT}; border: 1px solid {COLOR_BORDER}; border-radius: 6px; padding: 10px;">
-                    <div style="font-size: 11px; color: {COLOR_MUTED}; font-weight: 700;">50 HZ GRID HARMONICS</div>
+                <div style="background: {COLOR_PANEL_ALT}; border: 1px solid rgba(45, 212, 191, 0.3); border-radius: 6px; padding: 10px;">
+                    <div style="font-size: 11px; color: {COLOR_DORMANT}; font-weight: 700;">50 HZ GRID HARMONICS</div>
                     <div style="font-size: 12px; color: {COLOR_TEXT}; margin-top: 4px;">Synchronous frequency tracking (49.85 – 50.15 Hz band)</div>
                 </div>
-                <div style="background: {COLOR_PANEL_ALT}; border: 1px solid {COLOR_BORDER}; border-radius: 6px; padding: 10px;">
-                    <div style="font-size: 11px; color: {COLOR_MUTED}; font-weight: 700;">SOUTHWEST MONSOON SHIFTS</div>
+                <div style="background: {COLOR_PANEL_ALT}; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 6px; padding: 10px;">
+                    <div style="font-size: 11px; color: {COLOR_AWAKE}; font-weight: 700;">SOUTHWEST MONSOON SHIFTS</div>
                     <div style="font-size: 12px; color: {COLOR_TEXT}; margin-top: 4px;">Monsoon wind surges (June–Sept) & cloud cover solar dips</div>
                 </div>
             </div>
@@ -2440,7 +2442,7 @@ elif selected_nav == NAV_OPTIONS[6]:
     with tab_deep:
         st.markdown("#### 🧠 Deep Sequence Neural Network Baseline (500 Epochs Adam)")
         st.markdown(f"""
-        <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-radius: 8px; padding: 16px; margin-bottom: 18px; font-size: 13px; line-height: 1.6;">
+        <div class="glass-panel glow-alarm" style="margin-bottom: 18px; font-size: 13px; line-height: 1.6;">
             <strong style="color: {COLOR_ALARM}; font-size: 14px;">The Deep Learning Edge Paradox</strong><br>
             In academic research, reviewers frequently ask: <em>"Why didn't you train an offline Deep Neural Network or LSTM?"</em><br>
             To address this directly, we trained a deep 3-layer feedforward sequence network (<strong>MLP: 128 &rarr; 64 &rarr; 32</strong>)
@@ -2513,7 +2515,7 @@ elif selected_nav == NAV_OPTIONS[6]:
     with tab_forest:
         st.markdown("#### 🌲 Enterprise Periodic Retraining Forest (500 Trees)")
         st.markdown(f"""
-        <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-radius: 8px; padding: 16px; margin-bottom: 18px; font-size: 13px; line-height: 1.6;">
+        <div class="glass-panel glow-amber" style="margin-bottom: 18px; font-size: 13px; line-height: 1.6;">
             <strong style="color: {COLOR_AWAKE}; font-size: 14px;">The Daily Batch Retraining Dilemma</strong><br>
             Industrial utility operators often rely on periodic batch retraining: a 500-tree Random Forest is scheduled to retrain
             every 24 hours on a cloud server and push updated weights to field RTUs.<br>

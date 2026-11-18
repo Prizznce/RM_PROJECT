@@ -621,87 +621,95 @@ def apply_control_room_theme(fig, dark_mode=None):
     fig.update_yaxes(gridcolor=grid_color, linecolor=border_color)
     return fig
 
-def render_kpi_card(label, value, delta=None, delta_color="positive", subtext=None, border_color=None):
+def render_kpi_card(
+    label: str,
+    value: str,
+    delta: str = None,
+    delta_color: str = "positive",
+    subtext: str = None,
+    border_color: str = None,
+):
     """Renders a projector-readable luminous glassmorphic KPI card with tabular numerals and subtle glowing borders."""
-    delta_class = f"delta-{delta_color}"
+    # Resilient fallback: support positional calls where 3rd arg is subtext and 4th is a border color hex
+    if delta is not None and border_color is None:
+        if isinstance(delta_color, str) and (delta_color.startswith("#") or delta_color.startswith("rgb")):
+            border_color = delta_color
+            if subtext is None:
+                subtext = delta
+                delta = None
+                delta_color = "positive"
+
     border_style = f"border-left: 4px solid {border_color};" if border_color else ""
     glow_style = f"box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 16px {border_color}33;" if border_color else ""
     val_color = border_color if border_color else COLOR_TEXT
     val_glow = f"text-shadow: 0 0 12px {border_color}44;" if border_color else ""
-    
-    delta_html = f'<div class="kpi-delta {delta_class}">{delta}</div>' if delta else ''
-    sub_html = f'<div style="font-size: 11px; color: {COLOR_MUTED}; margin-top: 4px;">{subtext}</div>' if subtext else ''
-    
-    html = f"""
-    <div class="kpi-container" style="{border_style} {glow_style}">
-        <div class="kpi-label">{label}</div>
-        <div class="kpi-value" style="color: {val_color}; {val_glow}">{value}</div>
-        {delta_html}
-        {sub_html}
-    </div>
-    """
+
+    parts = [
+        f'<div class="kpi-container" style="{border_style} {glow_style}">',
+        f'<div class="kpi-label">{label}</div>',
+        f'<div class="kpi-value" style="color: {val_color}; {val_glow}">{value}</div>',
+    ]
+    if delta:
+        delta_class = f"delta-{delta_color}"
+        parts.append(f'<div class="kpi-delta {delta_class}">{delta}</div>')
+    if subtext:
+        parts.append(f'<div class="kpi-subtext" style="font-size: 11px; color: {COLOR_MUTED}; margin-top: 4px;">{subtext}</div>')
+    parts.append('</div>')
+
+    html = "".join(parts)
     st.markdown(html, unsafe_allow_html=True)
 
 def render_research_master_ribbon():
     """Renders an executive glowing research highlight ribbon showcasing key empirical findings across both continents."""
-    html = f"""
-    <div style="background: rgba(17, 17, 17, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(45, 212, 191, 0.35); border-radius: 12px; padding: 12px 20px; margin-bottom: 20px; box-shadow: 0 0 25px rgba(45, 212, 191, 0.12), 0 4px 20px rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="background: rgba(45, 212, 191, 0.16); border: 1px solid {COLOR_DORMANT}; color: {COLOR_DORMANT}; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; box-shadow: 0 0 12px rgba(45, 212, 191, 0.35);">
-                👑 CHAMPION: CGT-v3 (8.8 / 10)
-            </span>
-            <span style="font-size: 13px; color: {COLOR_TEXT}; font-weight: 600;">
-                Near-Ensemble Accuracy: <strong>85.85% (Europe)</strong> / <strong>87.30% (India)</strong>
-            </span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="color: {COLOR_MUTED}; font-size: 11px;">EDGE LATENCY:</span>
-                <span style="color: {COLOR_EMERALD}; font-weight: 700; text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);">876.9 μs (&lt; 1 ms ✅)</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="color: {COLOR_MUTED}; font-size: 11px;">BATTERY LIFE:</span>
-                <span style="color: {COLOR_AWAKE}; font-weight: 700; text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);">142.0 h (7.02% Duty)</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="color: {COLOR_MUTED}; font-size: 11px;">MICRO-RAM:</span>
-                <span style="color: {COLOR_CYAN}; font-weight: 700; text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">0.22 MB (174x Leaner)</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="color: {COLOR_MUTED}; font-size: 11px;">SIGNIFICANCE:</span>
-                <span style="color: {COLOR_ORACLE}; font-weight: 700; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5);">p = 1.19e-9***</span>
-            </div>
-        </div>
-    </div>
-    """
+    html = (
+        f'<div style="background: rgba(17, 17, 17, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); '
+        f'border: 1px solid rgba(45, 212, 191, 0.35); border-radius: 12px; padding: 12px 20px; margin-bottom: 20px; '
+        f'box-shadow: 0 0 25px rgba(45, 212, 191, 0.12), 0 4px 20px rgba(0,0,0,0.7); display: flex; align-items: center; '
+        f'justify-content: space-between; flex-wrap: wrap; gap: 12px;">'
+        f'<div style="display: flex; align-items: center; gap: 10px;">'
+        f'<span style="background: rgba(45, 212, 191, 0.16); border: 1px solid {COLOR_DORMANT}; color: {COLOR_DORMANT}; '
+        f'padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.6px; '
+        f'text-transform: uppercase; box-shadow: 0 0 12px rgba(45, 212, 191, 0.35);">'
+        f'👑 CHAMPION: CGT-v3 (8.8 / 10)'
+        f'</span>'
+        f'<span style="font-size: 13px; color: {COLOR_TEXT}; font-weight: 600;">'
+        f'Near-Ensemble Accuracy: <strong>85.85% (Europe)</strong> / <strong>87.30% (India)</strong>'
+        f'</span>'
+        f'</div>'
+        f'<div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 12px; font-family: \'JetBrains Mono\', monospace;">'
+        f'<div style="display: flex; align-items: center; gap: 6px;">'
+        f'<span style="color: {COLOR_MUTED}; font-size: 11px;">EDGE LATENCY:</span>'
+        f'<span style="color: {COLOR_EMERALD}; font-weight: 700; text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);">876.9 μs (&lt; 1 ms ✅)</span>'
+        f'</div>'
+        f'<div style="display: flex; align-items: center; gap: 6px;">'
+        f'<span style="color: {COLOR_MUTED}; font-size: 11px;">BATTERY LIFE:</span>'
+        f'<span style="color: {COLOR_AWAKE}; font-weight: 700; text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);">142.0 h (7.02% Duty)</span>'
+        f'</div>'
+        f'<div style="display: flex; align-items: center; gap: 6px;">'
+        f'<span style="color: {COLOR_MUTED}; font-size: 11px;">MICRO-RAM:</span>'
+        f'<span style="color: {COLOR_CYAN}; font-weight: 700; text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">0.22 MB (174x Leaner)</span>'
+        f'</div>'
+        f'<div style="display: flex; align-items: center; gap: 6px;">'
+        f'<span style="color: {COLOR_MUTED}; font-size: 11px;">SIGNIFICANCE:</span>'
+        f'<span style="color: {COLOR_ORACLE}; font-weight: 700; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5);">p = 1.19e-9***</span>'
+        f'</div>'
+        f'</div>'
+        f'</div>'
+    )
     st.markdown(html, unsafe_allow_html=True)
 
 def render_hero_ticker(fleet_size=500, annual_saved_usd=184200, battery_mult=3.46, co2_kg=14800):
     """Renders the executive monetary and industrial valuation hero bar."""
-    st.markdown(f"""
-    <div class="hero-ticker-container">
-        <div class="ticker-item">
-            <span class="pulse-dot-green"></span>
-            <span class="ticker-label">Fleet Scale:</span>
-            <span class="ticker-val">{fleet_size:,} Substations</span>
-        </div>
-        <div class="ticker-item">
-            <span class="ticker-label">Annual Operational Value:</span>
-            <span class="ticker-val" style="color: {COLOR_EMERALD};">${annual_saved_usd:,.0f} / yr</span>
-        </div>
-        <div class="ticker-item">
-            <span class="ticker-label">Emergency Battery Survival:</span>
-            <span class="ticker-val" style="color: {COLOR_AWAKE};">{battery_mult:.2f}x Runtime</span>
-        </div>
-        <div class="ticker-item">
-            <span class="ticker-label">GHG Avoidance:</span>
-            <span class="ticker-val" style="color: {COLOR_DORMANT};">{(co2_kg/1000):.1f} t CO₂ / yr</span>
-        </div>
-        <div class="ticker-item">
-            <span class="status-pill pill-gold">ENTERPRISE GRADE</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    html = (
+        f'<div class="hero-ticker-container">'
+        f'<div class="ticker-item"><span class="pulse-dot-green"></span><span class="ticker-label">Fleet Scale:</span><span class="ticker-val">{fleet_size:,} Substations</span></div>'
+        f'<div class="ticker-item"><span class="ticker-label">Annual Operational Value:</span><span class="ticker-val" style="color: {COLOR_EMERALD};">${annual_saved_usd:,.0f} / yr</span></div>'
+        f'<div class="ticker-item"><span class="ticker-label">Emergency Battery Survival:</span><span class="ticker-val" style="color: {COLOR_AWAKE};">{battery_mult:.2f}x Runtime</span></div>'
+        f'<div class="ticker-item"><span class="ticker-label">GHG Avoidance:</span><span class="ticker-val" style="color: {COLOR_DORMANT};">{(co2_kg/1000):.1f} t CO₂ / yr</span></div>'
+        f'<div class="ticker-item"><span class="status-pill pill-gold">ENTERPRISE GRADE</span></div>'
+        f'</div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
 
 def compute_efficiency_rating(acc, lat_us, rho=None, model_name=""):
     """Computes the Edge Deployment Viability & Multi-Objective Rating (1.0 to 10.0).

@@ -1466,15 +1466,40 @@ elif selected_nav == NAV_OPTIONS[2]:
     # Top Executive KPI Cards: OMS-MAB Baseline vs CGT-v3 Champion
     k1, k2, k3, k4, k5 = st.columns(5)
     with k1:
-        render_kpi_card("OMS-MAB Duty (ρ)", "61.9%", "Wilson et al. (2024)", COLOR_AWAKE)
+        render_kpi_card(
+            label="OMS-MAB Duty (ρ)",
+            value="61.9%",
+            subtext="Wilson et al. (2024)",
+            border_color=COLOR_AWAKE,
+        )
     with k2:
-        render_kpi_card("CGT-v3 Duty (ρ)", "7.02%", "8.8x Less Heavy Compute", COLOR_DORMANT)
+        render_kpi_card(
+            label="CGT-v3 Duty (ρ)",
+            value="7.02%",
+            subtext="8.8x Less Heavy Compute",
+            border_color=COLOR_DORMANT,
+        )
     with k3:
-        render_kpi_card("Mean CPU Latency", "876.9 μs", "Under 1 ms RTU Deadline", COLOR_CYAN)
+        render_kpi_card(
+            label="Mean CPU Latency",
+            value="876.9 μs",
+            subtext="Under 1 ms RTU Deadline",
+            border_color=COLOR_CYAN,
+        )
     with k4:
-        render_kpi_card("Battery Autonomy", "142 Hours", "5.1x vs OMS-MAB (28h)", COLOR_EMERALD)
+        render_kpi_card(
+            label="Battery Autonomy",
+            value="142 Hours",
+            subtext="5.1x vs OMS-MAB (28h)",
+            border_color=COLOR_EMERALD,
+        )
     with k5:
-        render_kpi_card("Deployable Champion", "8.8 / 10", "Oracle Upper Bound = 9.0", COLOR_ORACLE)
+        render_kpi_card(
+            label="Deployable Champion",
+            value="8.8 / 10",
+            subtext="Oracle Upper Bound = 9.0",
+            border_color=COLOR_ORACLE,
+        )
 
     # ----------------- SECTION 1: THE EVOLUTIONARY TIMELINE -----------------
     st.markdown("---")
@@ -1498,7 +1523,6 @@ elif selected_nav == NAV_OPTIONS[2]:
                 <strong>61.9% of the time (ρ = 0.6187)</strong>. Mean latency explodes to <strong>1,934 μs</strong> (nearly double the 1 ms RTU deadline), draining substation battery in <strong>28 hours</strong>.
             </div>
         </div>
-
         <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 4px solid {COLOR_MUTED}; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px;">
             <div style="font-size: 11px; font-weight: 800; color: {COLOR_MUTED}; text-transform: uppercase;">Heuristic Baselines • A1 &amp; A2</div>
             <div style="font-size: 15px; font-weight: 800; color: #FFFFFF; margin: 3px 0;">2. Heuristic Threshold &amp; Cost-Aware UCB</div>
@@ -1521,7 +1545,6 @@ elif selected_nav == NAV_OPTIONS[2]:
                 Accuracy reaches <strong>85.49% at 416.1 μs</strong>, but static margin heuristic causes false wakeups.
             </div>
         </div>
-
         <div style="background-color: {COLOR_PANEL}; border: 1px solid {COLOR_BORDER}; border-left: 4px solid {COLOR_DORMANT}; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px;">
             <div style="font-size: 11px; font-weight: 800; color: {COLOR_DORMANT}; text-transform: uppercase;">Generation 3 • Proposed Deployable Champion</div>
             <div style="font-size: 15px; font-weight: 800; color: #FFFFFF; margin: 3px 0;">4. CGT-v3: Learned Meta-Gate &amp; Dynamic Governor</div>
@@ -2913,7 +2936,6 @@ elif selected_nav == NAV_OPTIONS[7]:
                 <li><strong>$P_{{\\text{{BESS}}}}(t)$:</strong> Active power injected by fast-acting Battery Energy Storage Systems.</li>
             </ul>
         </div>
-
         <div class="glass-panel glow-teal" style="margin-bottom: 16px; font-size: 13px; line-height: 1.65;">
             <strong style="color: {COLOR_DORMANT}; font-size: 14px;">2. The Physics of the 1,000 μs Real-Time Interrupt Deadline</strong><br>
             When a 3,500 MW sudden generator trip occurs on a 50,000 MW grid, the initial Rate of Change of Frequency (RoCoF) is:

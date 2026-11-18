@@ -1,0 +1,7 @@
+model_name,model_family,inference_latency_us,mean_frequency_nadir_hz,worst_case_nadir_hz,max_rocof_hz_s,ufls_trip_count,blackout_prevention_rate_pct,avg_load_shed_per_shock_mw,expected_blackout_loss_usd,edge_compliant
+Uncontrolled Grid (No ML / No BESS),Uncontrolled Baseline,0.0,49.395,49.144,0.509,100,0.0,2500.0,25000000.0,True
+Always-HT (Single Fast Tree),Single Streaming Tree,301.6,49.624,49.189,0.451,30,70.0,750.0,7500000.0,True
+"Always-ARF (Heavy Ensemble, 10 Trees)",Heavy Ensemble Reference,3036.6,49.557,49.144,0.509,47,53.0,1175.0,11750000.0,False
+Periodic Retraining Forest (500 Trees),Periodic Batch Ensemble,4250.0,49.503,49.187,0.509,56,44.0,1400.0,14000000.0,False
+Deep Sequence Net (500-Epoch MLP),Deep Sequence Neural Net,12450.0,49.447,49.203,0.538,100,0.0,2500.0,25000000.0,False
+CGT-v3 (Learned Meta-Gate),Proposed Compute-Gated Champion,827.3,49.63,49.265,0.448,28,72.0,700.0,7000000.0,True

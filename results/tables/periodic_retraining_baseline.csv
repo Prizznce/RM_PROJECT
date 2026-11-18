@@ -1,0 +1,2 @@
+model_name,model_family,accuracy_pct,balanced_acc_pct,mean_cpu_us_per_instance,total_training_cpu_hours,peak_heap_ram_mb,duty_cycle_rho,edge_deadline_compliant,deadline_ratio_vs_1ms,battery_autonomy_hours,log_path
+Periodic Batch Retraining (Daily 500-Tree Forest),Periodic Batch Ensemble,90.66780821917808,90.33198697970832,4250.0,14.58,52.8,1.0,False,4.25,12.2,results/logs\periodic_retraining_500trees.log

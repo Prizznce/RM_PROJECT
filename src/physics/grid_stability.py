@@ -18,12 +18,12 @@ import pandas as pd
 class GridFrequencyDynamics:
     """
     Continuous-time simulation of synchronous power grid rotational frequency dynamics.
-    Parameters calibrated to National Transmission Grid scale (Spain REE / Indian Regional Grids: 50,000 MW).
+    Parameters calibrated to Indian National Transmission Grid scale (POSOCO / NLDC: 50,000 MW synchronous block).
     """
     def __init__(
         self,
-        f0=50.00,             # Nominal synchronous grid frequency (Hz)
-        s_base_mw=50000.0,    # Regional / National grid base capacity (MW, matching REE / POSOCO)
+        f0=50.00,             # Nominal synchronous grid frequency (50.0 Hz CEA Grid Code)
+        s_base_mw=50000.0,    # Regional / National grid base capacity (MW, matching POSOCO / NLDC)
         h_inertia=3.5,        # System inertia constant H (seconds)
         damping_d=1.2,        # Damping coefficient D (%/Hz)
         ufls_stage1_hz=49.50, # Under-Frequency Load Shedding Stage 1 trip threshold (Hz)

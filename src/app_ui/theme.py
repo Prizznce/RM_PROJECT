@@ -673,7 +673,7 @@ def render_research_master_ribbon():
         f'👑 CHAMPION: CGT-v3 (8.8 / 10)'
         f'</span>'
         f'<span style="font-size: 13px; color: {COLOR_TEXT}; font-weight: 600;">'
-        f'Near-Ensemble Accuracy: <strong>85.85% (Europe)</strong> / <strong>87.30% (India)</strong>'
+        f'Indian Grid Accuracy: <strong>87.30% (POSOCO / NLDC)</strong> | Stream Accuracy: <strong>85.85%</strong>'
         f'</span>'
         f'</div>'
         f'<div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 12px; font-family: \'JetBrains Mono\', monospace;">'

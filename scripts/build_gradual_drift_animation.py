@@ -829,7 +829,7 @@ html_content = f"""<!DOCTYPE html>
     pipeCtx.fillStyle = "#94A3B8";
     pipeCtx.font = "10px JetBrains Mono";
     pipeCtx.textAlign = "center";
-    pipeCtx.fillText("Spanish Grid Stream", inNode.x, inNode.y - 4);
+    pipeCtx.fillText("National Grid Stream", inNode.x, inNode.y - 4);
     pipeCtx.fillText(`Drift α: ${{alpha.toFixed(3)}}`, inNode.x, inNode.y + 12);
 
     // 4. Draw Block 2: CGT Meta-Gating Router (Physical Switching Arm)

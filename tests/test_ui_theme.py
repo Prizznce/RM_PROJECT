@@ -19,7 +19,7 @@ def test_render_kpi_card_no_delta():
         render_kpi_card(
             label="Grid Base Capacity",
             value="50,000 MW",
-            subtext="Synchronous Scale (REE / POSOCO)",
+            subtext="Synchronous Scale (POSOCO / NLDC)",
             border_color=COLOR_CYAN,
         )
         assert mock_st_markdown.called
@@ -30,7 +30,7 @@ def test_render_kpi_card_no_delta():
         # Check content
         assert "Grid Base Capacity" in html
         assert "50,000 MW" in html
-        assert "Synchronous Scale (REE / POSOCO)" in html
+        assert "Synchronous Scale (POSOCO / NLDC)" in html
         assert 'class="kpi-subtext"' in html
 
         # Crucial: Must NOT contain multi-line indented code block patterns
@@ -83,8 +83,8 @@ def test_render_research_master_ribbon():
         html = args[0]
         assert kwargs.get("unsafe_allow_html") is True
         assert "👑 CHAMPION: CGT-v3 (8.8 / 10)" in html
-        assert "85.85% (Europe)" in html
-        assert "87.30% (India)" in html
+        assert "87.30% (POSOCO / NLDC)" in html
+        assert "85.85%" in html
 
 
 def test_efficiency_rating_integrity():
@@ -101,3 +101,4 @@ def test_efficiency_rating_integrity():
     badge = get_efficiency_badge_html(cgt3_score)
     assert "8.8 / 10" in badge
     assert "DEPLOYABLE" in badge
+

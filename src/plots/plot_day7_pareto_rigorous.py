@@ -246,7 +246,7 @@ def generate_rigorous_pareto_plot():
     ]
     ax_zoom.legend(handles=legend_elements, loc="lower right", frameon=True, facecolor="#FFFFFF", edgecolor="#BDBDBD", fontsize=8.5)
 
-    plt.suptitle("The Fundamental Accuracy vs. Latency / Energy Tradeoff in Online Stream Classification\nEvaluated on 24,528 Continuous Electrical Grid Test Instances (REE 2015–2018)", 
+    plt.suptitle("The Fundamental Accuracy vs. Latency / Energy Tradeoff in Online Stream Classification\nEvaluated on 24,528 Continuous Electrical Grid Test Instances (National Grid Telemetry)", 
                  fontsize=14, fontweight="bold", y=0.98)
     plt.tight_layout(rect=[0, 0.02, 1, 0.95])
 

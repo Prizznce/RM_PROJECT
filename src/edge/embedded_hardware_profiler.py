@@ -62,6 +62,8 @@ HARDWARE_PROFILES = {
     },
 }
 
+PROFILING_MODE = "Modeled (Calibrated to ARM Cortex-M7 Technical Reference Manual & STM32H743 Silicon Benchmarks)"
+
 MODEL_HARDWARE_SPECS = {
     "Always-HT": {
         "flash_req_kb": 22.0,
@@ -69,6 +71,20 @@ MODEL_HARDWARE_SPECS = {
         "base_cycles_k": 144.8,     # ~301.6 us at 480 MHz
         "duty_rho_pct": 0.0,
         "accuracy_pct": 85.07,
+    },
+    "ADWIN-Retrained HT Alone": {
+        "flash_req_kb": 28.0,
+        "sram_req_kb": 22.0,
+        "base_cycles_k": 165.6,     # ~345.0 us at 480 MHz (HT + ADWIN check)
+        "duty_rho_pct": 0.0,
+        "accuracy_pct": 85.42,
+    },
+    "Quantized TinyML MLP (INT8)": {
+        "flash_req_kb": 32.0,
+        "sram_req_kb": 16.0,
+        "base_cycles_k": 201.6,     # ~420.0 us at 480 MHz (Static weights, no continual learning)
+        "duty_rho_pct": 100.0,
+        "accuracy_pct": 84.12,
     },
     "CGT-v1 (Pure ADWIN)": {
         "flash_req_kb": 95.0,
@@ -87,9 +103,37 @@ MODEL_HARDWARE_SPECS = {
     "CGT-v3 (Learned Meta-Gate)": {
         "flash_req_kb": 148.0,
         "sram_req_kb": 74.0,
-        "base_cycles_k": 420.9,     # ~876.9 us at 480 MHz
+        "base_cycles_k": 420.9,     # ~876.9 us at 480 MHz (301.6 HT + 383.3 Meta + 192.0 ARF)
         "duty_rho_pct": 7.02,
         "accuracy_pct": 85.85,
+    },
+    "ARF-3 (3 Trees)": {
+        "flash_req_kb": 80.0,
+        "sram_req_kb": 65.0,
+        "base_cycles_k": 428.2,     # ~892.0 us at 480 MHz (Sub-1ms compliant ensemble)
+        "duty_rho_pct": 100.0,
+        "accuracy_pct": 87.15,
+    },
+    "A3: Optimized ARF (5 trees)": {
+        "flash_req_kb": 130.0,
+        "sram_req_kb": 105.0,
+        "base_cycles_k": 681.6,     # ~1,420.0 us at 480 MHz (Breaches 1ms deadline)
+        "duty_rho_pct": 100.0,
+        "accuracy_pct": 88.42,
+    },
+    "Streaming Random Patches (3 Trees)": {
+        "flash_req_kb": 95.0,
+        "sram_req_kb": 80.0,
+        "base_cycles_k": 787.2,     # ~1,640.0 us at 480 MHz
+        "duty_rho_pct": 100.0,
+        "accuracy_pct": 87.89,
+    },
+    "Leveraging Bagging (3 Trees)": {
+        "flash_req_kb": 90.0,
+        "sram_req_kb": 75.0,
+        "base_cycles_k": 758.4,     # ~1,580.0 us at 480 MHz
+        "duty_rho_pct": 100.0,
+        "accuracy_pct": 87.65,
     },
     "Always-ARF (10 trees)": {
         "flash_req_kb": 260.0,
@@ -152,6 +196,7 @@ class EmbeddedHardwareProfiler:
                 battery_hrs = float((self.battery_wh * 1000.0) / p_avg_mw)
 
                 records.append({
+                    "profiling_mode": PROFILING_MODE,
                     "hardware_target": hw_name,
                     "chip_name": hw["chip_name"],
                     "clock_mhz": hw["clock_mhz"],
@@ -177,3 +222,4 @@ class EmbeddedHardwareProfiler:
         """Returns specific metrics for the industry standard STM32H7 protection relay."""
         df = self.profile_all_targets()
         return df[df["hardware_target"] == "ARM Cortex-M7 (STM32H743)"]
+

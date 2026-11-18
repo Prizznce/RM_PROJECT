@@ -50,7 +50,7 @@ def test_deep_learning_latency_penalty_causes_trip():
 def test_stochastic_contingency_suite():
     """Tests the 100-contingency monte-carlo simulation function."""
     df = evaluate_models_on_grid_contingencies(n_contingencies=15, seed=42)
-    assert len(df) == 6, f"Expected 6 model architectures, got {len(df)}"
+    assert len(df) >= 6, f"Expected at least 6 model architectures, got {len(df)}"
     assert 'blackout_prevention_rate_pct' in df.columns
     assert 'expected_blackout_loss_usd' in df.columns
     cgt_row = df[df['model_name'].str.contains('CGT-v3')].iloc[0]

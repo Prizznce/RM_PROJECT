@@ -1,0 +1,13 @@
+Aggregation_Window,Block_Count_N,Model_vs_Always_HT,Mean_Accuracy_Gain_pct,Paired_Cohen_d,Wilcoxon_W,Wilcoxon_p_value,Paired_t_stat,Paired_t_p_value,Significant_at_0.001
+Daily (24h),1022,CGT-v3 (Learned Meta-Gate),0.709,0.208,32479.5,7.7910e-12,6.66,4.5337e-11,True
+Daily (24h),1022,CGT-v2 (Adaptive Dual-Gate),0.42,0.142,25699.5,5.7089e-06,4.55,6.0927e-06,True
+Daily (24h),1022,CGT-v1 (Pure ADWIN),0.065,0.051,199.0,8.8003e-02,1.62,1.0607e-01,False
+Daily (24h),1022,Always-ARF (10 trees),4.53,0.698,42556.0,7.5342e-77,22.33,2.9935e-90,True
+Daily (24h),1022,A3: Optimized ARF (5 trees),4.236,0.606,56016.5,4.0066e-62,19.37,1.9978e-71,True
+Daily (24h),1022,"OMS-MAB (Wilson et al., 2024)",1.843,0.295,84232.0,1.9586e-19,9.43,2.7080e-20,True
+Weekly (168h),146,CGT-v3 (Learned Meta-Gate),0.709,0.512,1192.0,4.3906e-08,6.19,5.8339e-09,True
+Weekly (168h),146,CGT-v2 (Adaptive Dual-Gate),0.42,0.337,1538.5,1.7256e-04,4.07,7.7215e-05,True
+Weekly (168h),146,CGT-v1 (Pure ADWIN),0.065,0.137,6.0,1.0938e-01,1.66,9.9041e-02,False
+Weekly (168h),146,Always-ARF (10 trees),4.53,1.436,207.0,1.5180e-23,17.35,3.2880e-37,True
+Weekly (168h),146,A3: Optimized ARF (5 trees),4.236,1.324,185.5,3.3215e-23,15.99,7.9814e-34,True
+Weekly (168h),146,"OMS-MAB (Wilson et al., 2024)",1.843,0.668,1579.5,2.8770e-12,8.08,2.3566e-13,True

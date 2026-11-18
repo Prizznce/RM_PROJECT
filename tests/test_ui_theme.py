@@ -82,8 +82,8 @@ def test_render_research_master_ribbon():
         args, kwargs = mock_st_markdown.call_args
         html = args[0]
         assert kwargs.get("unsafe_allow_html") is True
-        assert "👑 CHAMPION: CGT-v3 (8.8 / 10)" in html
-        assert "87.30% (POSOCO / NLDC)" in html
+        assert "👑 PARETO CHAMPION: CGT-v3 (Sub-1ms Deployable Frontier)" in html
+        assert "Calibrated POSOCO Grid" in html
         assert "85.85%" in html
 
 
@@ -99,6 +99,6 @@ def test_efficiency_rating_integrity():
     assert cgt2_score == 8.5
 
     badge = get_efficiency_badge_html(cgt3_score)
-    assert "8.8 / 10" in badge
-    assert "DEPLOYABLE" in badge
+    assert "PARETO OPTIMAL" in badge
+    assert "SUB-1MS LEADER" in badge
 

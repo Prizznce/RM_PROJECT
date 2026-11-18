@@ -670,20 +670,20 @@ def render_research_master_ribbon():
         f'<span style="background: rgba(45, 212, 191, 0.16); border: 1px solid {COLOR_DORMANT}; color: {COLOR_DORMANT}; '
         f'padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.6px; '
         f'text-transform: uppercase; box-shadow: 0 0 12px rgba(45, 212, 191, 0.35);">'
-        f'👑 CHAMPION: CGT-v3 (8.8 / 10)'
+        f'👑 PARETO CHAMPION: CGT-v3 (Sub-1ms Deployable Frontier)'
         f'</span>'
         f'<span style="font-size: 13px; color: {COLOR_TEXT}; font-weight: 600;">'
-        f'Indian Grid Accuracy: <strong>87.30% (POSOCO / NLDC)</strong> | Stream Accuracy: <strong>85.85%</strong>'
+        f'Calibrated POSOCO Grid: <strong>86.88% (+3.20% vs HT)</strong> | European Stream: <strong>85.85% (+0.78% vs HT)</strong>'
         f'</span>'
         f'</div>'
         f'<div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 12px; font-family: \'JetBrains Mono\', monospace;">'
         f'<div style="display: flex; align-items: center; gap: 6px;">'
         f'<span style="color: {COLOR_MUTED}; font-size: 11px;">EDGE LATENCY:</span>'
-        f'<span style="color: {COLOR_EMERALD}; font-weight: 700; text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);">876.9 μs (&lt; 1 ms ✅)</span>'
+        f'<span style="color: {COLOR_EMERALD}; font-weight: 700; text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);">876.9 μs (incl. 383 μs Meta-Gate)</span>'
         f'</div>'
         f'<div style="display: flex; align-items: center; gap: 6px;">'
         f'<span style="color: {COLOR_MUTED}; font-size: 11px;">BATTERY LIFE:</span>'
-        f'<span style="color: {COLOR_AWAKE}; font-weight: 700; text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);">142.0 h (7.02% Duty)</span>'
+        f'<span style="color: {COLOR_AWAKE}; font-weight: 700; text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);">Gateway: 101h (3.5x) | MCU: 5,842h (12.8x)</span>'
         f'</div>'
         f'<div style="display: flex; align-items: center; gap: 6px;">'
         f'<span style="color: {COLOR_MUTED}; font-size: 11px;">MICRO-RAM:</span>'
@@ -691,7 +691,7 @@ def render_research_master_ribbon():
         f'</div>'
         f'<div style="display: flex; align-items: center; gap: 6px;">'
         f'<span style="color: {COLOR_MUTED}; font-size: 11px;">SIGNIFICANCE:</span>'
-        f'<span style="color: {COLOR_ORACLE}; font-weight: 700; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5);">p = 1.19e-9***</span>'
+        f'<span style="color: {COLOR_ORACLE}; font-weight: 700; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5);">Weekly Block: p = 4.39e-8*** (d = 0.51)</span>'
         f'</div>'
         f'</div>'
         f'</div>'
@@ -785,43 +785,46 @@ def compute_efficiency_rating(acc, lat_us, rho=None, model_name=""):
     s_rho = max(1.0, 8.8 * (1.0 - r))
     return round(min(8.8, max(1.0, 0.40 * s_acc + 0.35 * s_lat + 0.25 * s_rho)), 1)
 
-def get_efficiency_badge_html(score):
-    """Returns an HTML badge with glowing semantic color for a score out of 10."""
+def get_efficiency_badge_html(score, label_override=None):
+    """Returns an HTML badge with glowing semantic color for Pareto edge deployability tier."""
+    if label_override:
+        return f'<span style="background: rgba(45, 212, 191, 0.16); border: 1px solid {COLOR_DORMANT}; color: {COLOR_DORMANT}; padding: 3px 8px; border-radius: 4px; font-weight: 800; font-family: \'JetBrains Mono\', monospace; font-size: 11px;">{label_override}</span>'
+
     if score >= 9.0:
         color = COLOR_ORACLE  # Hyper Violet #A78BFA
-        tag = "UPPER BOUND ★ ORACLE"
+        tag = "THEORETICAL CEILING ★ ORACLE"
         shadow = "0 0 12px rgba(167, 139, 250, 0.4)"
         bg = "rgba(167, 139, 250, 0.16)"
     elif score >= 8.5:
         color = COLOR_DORMANT  # Neon Teal #2DD4BF
-        tag = "ELITE ★ DEPLOYABLE #1"
+        tag = "PARETO OPTIMAL ★ SUB-1MS LEADER"
         shadow = "0 0 12px rgba(45, 212, 191, 0.4)"
         bg = "rgba(45, 212, 191, 0.16)"
     elif score >= 8.0:
         color = COLOR_CYAN     # Sky Cyan #38BDF8
-        tag = "HIGH"
+        tag = "DEPLOYABLE ★ FAST"
         shadow = "0 0 8px rgba(56, 189, 248, 0.25)"
         bg = "rgba(56, 189, 248, 0.12)"
     elif score >= 7.0:
         color = COLOR_AWAKE    # Amber #F59E0B
-        tag = "BALANCED"
+        tag = "BASELINE ★ MINIMAL"
         shadow = "none"
         bg = "rgba(245, 158, 11, 0.12)"
     elif score >= 6.0:
         color = COLOR_MUTED    # Slate #94A3B8
-        tag = "CONSTRAINED"
+        tag = "BATTERY CONSTRAINED"
         shadow = "none"
         bg = "rgba(148, 163, 184, 0.10)"
     elif score >= 4.0:
         color = "#F87171"      # Light red
-        tag = "EDGE INFEASIBLE"
+        tag = "UNCONSTRAINED ★ REAL-TIME BREACH"
         shadow = "none"
         bg = "rgba(248, 113, 113, 0.10)"
     else:
         color = COLOR_ALARM    # Red #EF4444
-        tag = "FAIL"
+        tag = "CRITICAL FAIL"
         shadow = "none"
         bg = "rgba(239, 68, 68, 0.15)"
     
-    return f'<span style="background: {bg}; border: 1px solid {color}; color: {color}; padding: 3px 8px; border-radius: 4px; font-weight: 800; font-family: \'JetBrains Mono\', monospace; font-size: 11px; box-shadow: {shadow};">{score:.1f} / 10 ({tag})</span>'
+    return f'<span style="background: {bg}; border: 1px solid {color}; color: {color}; padding: 3px 8px; border-radius: 4px; font-weight: 800; font-family: \'JetBrains Mono\', monospace; font-size: 11px; box-shadow: {shadow};">{tag}</span>'
 

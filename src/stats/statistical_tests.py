@@ -3,6 +3,83 @@ import os
 import pandas as pd
 from scipy import stats
 
+import glob
+import os
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+def run_block_aggregated_tests():
+    """
+    Computes rigorous non-overlapping block-aggregated statistical significance tests
+    (Daily N=1,022 blocks and Weekly N=146 blocks) to control for hourly serial autocorrelation.
+    """
+    pred_dir = "results/raw"
+    cgt_v3_path = os.path.join(pred_dir, "step_predictions_cgt-v3_learned_meta-gate.csv")
+    ht_path = os.path.join(pred_dir, "step_predictions_always-ht.csv")
+    
+    if not (os.path.exists(cgt_v3_path) and os.path.exists(ht_path)):
+        return None
+
+    ht_df = pd.read_csv(ht_path)
+    y_true = ht_df["y_true"].values
+    ht_corr = (ht_df["y_pred"].values == y_true).astype(float)
+    n_total = len(y_true)
+
+    target_models = {
+        "CGT-v3 (Learned Meta-Gate)": "step_predictions_cgt-v3_learned_meta-gate.csv",
+        "CGT-v2 (Adaptive Dual-Gate)": "step_predictions_cgt-v2_adaptive_dual-gate.csv",
+        "CGT-v1 (Pure ADWIN)": "step_predictions_cgt_proposed_s1.csv",
+        "Always-ARF (10 trees)": "step_predictions_always-arf.csv",
+        "A3: Optimized ARF (5 trees)": "step_predictions_a3_optimized_arf.csv",
+        "OMS-MAB (Wilson et al., 2024)": "step_predictions_oms-mab_wilson_et_al._2024.csv",
+    }
+
+    block_results = []
+
+    for block_name, block_size in [("Daily (24h)", 24), ("Weekly (168h)", 168)]:
+        n_blocks = n_total // block_size
+        ht_blocks = ht_corr[:n_blocks * block_size].reshape(n_blocks, block_size).mean(axis=1) * 100.0
+
+        for m_name, f_name in target_models.items():
+            f_path = os.path.join(pred_dir, f_name)
+            if not os.path.exists(f_path):
+                continue
+            m_df = pd.read_csv(f_path)
+            m_corr = (m_df["y_pred"].values == y_true).astype(float)
+            m_blocks = m_corr[:n_blocks * block_size].reshape(n_blocks, block_size).mean(axis=1) * 100.0
+            
+            diff = m_blocks - ht_blocks
+            mean_gain = float(np.mean(diff))
+            std_diff = float(np.std(diff, ddof=1))
+            cohen_d = float(mean_gain / std_diff) if std_diff > 0 else 0.0
+
+            non_zero = diff[diff != 0]
+            if len(non_zero) > 0:
+                w_stat, w_pval = stats.wilcoxon(non_zero)
+                t_stat, t_pval = stats.ttest_rel(m_blocks, ht_blocks)
+            else:
+                w_stat, w_pval, t_stat, t_pval = 0.0, 1.0, 0.0, 1.0
+
+            block_results.append({
+                "Aggregation_Window": block_name,
+                "Block_Count_N": n_blocks,
+                "Model_vs_Always_HT": m_name,
+                "Mean_Accuracy_Gain_pct": round(mean_gain, 3),
+                "Paired_Cohen_d": round(cohen_d, 3),
+                "Wilcoxon_W": round(float(w_stat), 2),
+                "Wilcoxon_p_value": f"{w_pval:.4e}",
+                "Paired_t_stat": round(float(t_stat), 2),
+                "Paired_t_p_value": f"{t_pval:.4e}",
+                "Significant_at_0.001": bool(w_pval < 0.001)
+            })
+
+    out_df = pd.DataFrame(block_results)
+    out_path = "results/tables/statistical_tests_block_aggregated.csv"
+    out_df.to_csv(out_path, index=False)
+    print(f"Block-aggregated statistical tests saved to {out_path}")
+    return out_df
+
 def run_statistical_tests():
     print("=== Running Statistical Significance Tests on Prequential Steps ===")
     
@@ -56,6 +133,9 @@ def run_statistical_tests():
     out_path = "results/tables/statistical_tests.csv"
     res_df.to_csv(out_path, index=False)
     print(f"\nStatistical test results saved to {out_path}")
+
+    # Also run block-aggregated tests
+    run_block_aggregated_tests()
     return res_df
 
 if __name__ == '__main__':

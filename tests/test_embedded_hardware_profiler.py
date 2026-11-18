@@ -7,7 +7,7 @@ def test_hardware_targets_and_specs():
     profiler = EmbeddedHardwareProfiler()
     df = profiler.profile_all_targets()
     assert isinstance(df, pd.DataFrame)
-    assert len(df) == 4 * 7  # 4 architectures x 7 models = 28 rows
+    assert len(df) == len(HARDWARE_PROFILES) * len(MODEL_HARDWARE_SPECS)
     assert "ARM Cortex-M7 (STM32H743)" in df["hardware_target"].values
     assert "Raspberry Pi CM4" in df["hardware_target"].values[0] or any("Raspberry" in x for x in df["hardware_target"].values)
 

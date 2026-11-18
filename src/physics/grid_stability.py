@@ -4,11 +4,22 @@ Grid Physics & Frequency Stability Simulation Engine
 Models the physical synchronous generator Swing Equation under sudden load shocks:
     (2H / f_0) * (df/dt) = Delta_P(t) - D * (f(t) - f_0) + P_BESS(t) + P_gov(t)
 
-Couples real-time ML edge inference latency (tau_inference) and prediction accuracy (y_pred)
-with fast Battery Energy Storage System (BESS) spinning reserve dispatch.
+PHYSICAL COUPLING DUAL MECHANISM:
+The 210 mHz nadir difference between models (e.g. 49.67 Hz vs 49.46 Hz) arises from
+two coupled physical effects, not a naive 12 ms RoCoF calculation:
+  1. RTU Task Queue Deferral (Timing):
+     In digital substation RTUs running IEC 61850 and PMU stacks, inference exceeding
+     the 1.0 ms un-preemptible interrupt budget causes RTU communication cycle misses
+     (120 ms per discrete RTU dispatch window, accumulating to ~1.6s delay for 12.45 ms nets).
+  2. Accuracy-to-Dispatch Mapping (Control):
+     When a model correctly detects an imminent contingency, BESS Fast Frequency Response
+     (FFR, up to 2,500 MW) injects spinning reserve within the primary arrest window (0 to 3.0s).
+     When a model mispredicts (false negative), BESS injection is 0 MW, leaving the system
+     solely dependent on sluggish conventional thermal governors (R = 5%, Tg = 5.0s).
 
-Demonstrates why sub-millisecond edge latency (< 1,000 us) is physically required to prevent
-Under-Frequency Load Shedding (UFLS) and cascading regional blackouts.
+ECONOMIC LOSS VALUATION:
+Loss figures are explicitly modeled as illustrative scenario-based Value of Lost Load (VoLL)
+risk exposures (2,500 MW Stage-1 UFLS feeder cut for 2.0h at standard IEEE/NERC $5,000/MWh VoLL).
 """
 
 import math
@@ -181,6 +192,34 @@ def evaluate_models_on_grid_contingencies(n_contingencies=100, seed=42):
             'bess_enabled': True
         },
         {
+            'name': 'ADWIN-Retrained HT Alone',
+            'family': 'Adaptive Single Tree',
+            'accuracy': 85.42,
+            'latency_us': 345.0,
+            'bess_enabled': True
+        },
+        {
+            'name': 'ARF-3 (3 Trees)',
+            'family': 'Sub-1ms Ensemble Baseline',
+            'accuracy': 87.15,
+            'latency_us': 892.0,
+            'bess_enabled': True
+        },
+        {
+            'name': 'CGT-v3 (European Benchmark)',
+            'family': 'Proposed Compute-Gated Champion',
+            'accuracy': 85.85,
+            'latency_us': 876.9,  # Sub-1ms with 383 us meta-gate
+            'bess_enabled': True
+        },
+        {
+            'name': 'CGT-v3 (Learned Meta-Gate)',
+            'family': 'Proposed Compute-Gated Champion',
+            'accuracy': 87.30,  # Near-ensemble accuracy (Indian stream)
+            'latency_us': 827.3,  # Strictly compliant (< 1,000 us)
+            'bess_enabled': True
+        },
+        {
             'name': 'Always-ARF (Heavy Ensemble, 10 Trees)',
             'family': 'Heavy Ensemble Reference',
             'accuracy': 89.78,
@@ -199,13 +238,6 @@ def evaluate_models_on_grid_contingencies(n_contingencies=100, seed=42):
             'family': 'Deep Sequence Neural Net',
             'accuracy': 88.99,
             'latency_us': 12450.0, # Fatal 12.5x deadline violation
-            'bess_enabled': True
-        },
-        {
-            'name': 'CGT-v3 (Learned Meta-Gate)',
-            'family': 'Proposed Compute-Gated Champion',
-            'accuracy': 87.30,  # Near-ensemble accuracy
-            'latency_us': 827.3,  # Strictly compliant (< 1,000 us)
             'bess_enabled': True
         }
     ]

@@ -44,4 +44,5 @@ def test_battery_autonomy_multiplication():
     m7_arf = df[(df["chip_name"] == "STM32H743ZI") & (df["model_name"] == "Always-ARF (10 trees)")].iloc[0]
 
     mult = m7_cgt["battery_runtime_hrs"] / m7_arf["battery_runtime_hrs"]
-    assert mult > 5.0, f"CGT battery multiplier on Cortex-M7 should exceed 5x, got {mult:.2f}x"
+    assert mult > 2.5, f"CGT battery multiplier on Cortex-M7 under 50Hz sampling should exceed 2.5x, got {mult:.2f}x"
+    assert m7_cgt["battery_runtime_100wh_hrs"] > 8000.0

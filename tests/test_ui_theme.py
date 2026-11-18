@@ -82,7 +82,7 @@ def test_render_research_master_ribbon():
         args, kwargs = mock_st_markdown.call_args
         html = args[0]
         assert kwargs.get("unsafe_allow_html") is True
-        assert "👑 PARETO CHAMPION: CGT-v3 (Sub-1ms Deployable Frontier)" in html
+        assert "👑 ENERGY-ADJUSTED PARETO CHAMPION: CGT-v3 (Sub-1ms Deployable Frontier)" in html
         assert "Calibrated POSOCO Grid" in html
         assert "85.85%" in html
 

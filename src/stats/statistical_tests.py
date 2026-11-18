@@ -30,13 +30,16 @@ def run_block_aggregated_tests():
         "CGT-v3 (Learned Meta-Gate)": "step_predictions_cgt-v3_learned_meta-gate.csv",
         "CGT-v2 (Adaptive Dual-Gate)": "step_predictions_cgt-v2_adaptive_dual-gate.csv",
         "CGT-v1 (Pure ADWIN)": "step_predictions_cgt_proposed_s1.csv",
-        "Always-ARF (10 trees)": "step_predictions_always-arf.csv",
+        "ADWIN-HT (Adaptive Tree)": "step_predictions_adaptive_hoeffding_tree_hat.csv",
+        "ARF-3 (3 Trees)": "step_predictions_arf-3_3_trees.csv",
         "A3: Optimized ARF (5 trees)": "step_predictions_a3_optimized_arf.csv",
+        "Always-ARF (10 trees)": "step_predictions_always-arf.csv",
         "OMS-MAB (Wilson et al., 2024)": "step_predictions_oms-mab_wilson_et_al._2024.csv",
     }
 
     block_results = []
 
+    # 1. Models vs Always-HT Baseline
     for block_name, block_size in [("Daily (24h)", 24), ("Weekly (168h)", 168)]:
         n_blocks = n_total // block_size
         ht_blocks = ht_corr[:n_blocks * block_size].reshape(n_blocks, block_size).mean(axis=1) * 100.0
@@ -62,17 +65,66 @@ def run_block_aggregated_tests():
                 w_stat, w_pval, t_stat, t_pval = 0.0, 1.0, 0.0, 1.0
 
             block_results.append({
+                "Test_Type": "Model vs Always-HT",
                 "Aggregation_Window": block_name,
                 "Block_Count_N": n_blocks,
-                "Model_vs_Always_HT": m_name,
+                "Comparison": f"{m_name} vs Always-HT",
                 "Mean_Accuracy_Gain_pct": round(mean_gain, 3),
                 "Paired_Cohen_d": round(cohen_d, 3),
                 "Wilcoxon_W": round(float(w_stat), 2),
                 "Wilcoxon_p_value": f"{w_pval:.4e}",
                 "Paired_t_stat": round(float(t_stat), 2),
                 "Paired_t_p_value": f"{t_pval:.4e}",
-                "Significant_at_0.001": bool(w_pval < 0.001)
+                "Significant_at_0.05": bool(w_pval < 0.05)
             })
+
+    # 2. CGT-v3 Head-to-Head vs Key Baselines (Weekly Blocks N=146)
+    cgt_df = pd.read_csv(cgt_v3_path)
+    cgt_corr = (cgt_df["y_pred"].values == y_true).astype(float)
+    n_w = n_total // 168
+    cgt_w_blocks = cgt_corr[:n_w * 168].reshape(n_w, 168).mean(axis=1) * 100.0
+
+    direct_comparisons = [
+        ("CGT-v3 vs ADWIN-HT Alone", "step_predictions_adaptive_hoeffding_tree_hat.csv"),
+        ("CGT-v3 vs ARF-3 (3 Trees)", "step_predictions_arf-3_3_trees.csv"),
+        ("CGT-v3 vs Always-HT", "step_predictions_always-ht.csv"),
+        ("CGT-v3 vs Always-ARF (10 trees)", "step_predictions_always-arf.csv"),
+        ("CGT-v3 vs OMS-MAB (Wilson et al.)", "step_predictions_oms-mab_wilson_et_al._2024.csv")
+    ]
+
+    for comp_name, comp_file in direct_comparisons:
+        comp_path = os.path.join(pred_dir, comp_file)
+        if not os.path.exists(comp_path):
+            continue
+        comp_df = pd.read_csv(comp_path)
+        comp_corr = (comp_df["y_pred"].values == y_true).astype(float)
+        comp_w_blocks = comp_corr[:n_w * 168].reshape(n_w, 168).mean(axis=1) * 100.0
+
+        diff = cgt_w_blocks - comp_w_blocks
+        mean_gain = float(np.mean(diff))
+        std_diff = float(np.std(diff, ddof=1))
+        cohen_d = float(mean_gain / std_diff) if std_diff > 0 else 0.0
+
+        non_zero = diff[diff != 0]
+        if len(non_zero) > 0:
+            w_stat, w_pval = stats.wilcoxon(non_zero)
+            t_stat, t_pval = stats.ttest_rel(cgt_w_blocks, comp_w_blocks)
+        else:
+            w_stat, w_pval, t_stat, t_pval = 0.0, 1.0, 0.0, 1.0
+
+        block_results.append({
+            "Test_Type": "CGT-v3 Direct Head-to-Head",
+            "Aggregation_Window": "Weekly (168h)",
+            "Block_Count_N": n_w,
+            "Comparison": comp_name,
+            "Mean_Accuracy_Gain_pct": round(mean_gain, 3),
+            "Paired_Cohen_d": round(cohen_d, 3),
+            "Wilcoxon_W": round(float(w_stat), 2),
+            "Wilcoxon_p_value": f"{w_pval:.4e}",
+            "Paired_t_stat": round(float(t_stat), 2),
+            "Paired_t_p_value": f"{t_pval:.4e}",
+            "Significant_at_0.05": bool(w_pval < 0.05)
+        })
 
     out_df = pd.DataFrame(block_results)
     out_path = "results/tables/statistical_tests_block_aggregated.csv"

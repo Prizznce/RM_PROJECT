@@ -1,0 +1,4 @@
+Candidate,Validation Acc (%),Active Fraction (rho),CPU Latency (us/inst),CPU Saving vs ARF (%),Gate Nature
+CGT-v2 (Adaptive Dual-Gate),83.58,0.0592,525.44,85.82,Analytical (HT Probability Margin + ADWIN)
+CGT-v3 (Learned Meta-Gate),83.81,0.0759,972.72,73.74,Online Logistic Meta-Classifier on 7 features
+A4-Fixed (Calibrated Router),83.8,0.2675,2155.21,41.82,Cost-aware Contextual Bandit with Exploration

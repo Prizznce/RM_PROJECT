@@ -1,0 +1,16 @@
+shock_scenario,policy,pre_shock_acc_pct,shock_window_acc_pct,acc_drop_pct,detection_delay_steps,arf_duty_cycle_during_shock,recovery_time_steps
+Shock 1: Heatwave (14d),Always-HT,88.0,61.31,26.69,n/a,0.0,468
+Shock 1: Heatwave (14d),Always-ARF,94.5,76.79,17.71,n/a,1.0,1385
+Shock 1: Heatwave (14d),CGT-v1,88.0,75.0,13.0,79,0.7649,681
+Shock 1: Heatwave (14d),CGT-v2,88.5,61.01,27.49,1,0.3631,468
+Shock 1: Heatwave (14d),CGT-v3,89.0,61.61,27.39,1,0.3095,869
+Shock 2: Dunkelflaute (7d),Always-HT,82.5,66.67,15.83,n/a,0.0,323
+Shock 2: Dunkelflaute (7d),Always-ARF,89.5,66.07,23.43,n/a,1.0,751
+Shock 2: Dunkelflaute (7d),CGT-v1,82.5,64.88,17.62,63,0.625,281
+Shock 2: Dunkelflaute (7d),CGT-v2,86.0,65.48,20.52,3,0.631,366
+Shock 2: Dunkelflaute (7d),CGT-v3,84.5,67.86,16.64,3,0.3571,343
+Shock 3: Permanent Level Shift,Always-HT,85.5,89.5,-4.0,n/a,0.0,229
+Shock 3: Permanent Level Shift,Always-ARF,87.0,90.6,-3.6,n/a,1.0,209
+Shock 3: Permanent Level Shift,CGT-v1,85.5,89.5,-4.0,1263,0.0,229
+Shock 3: Permanent Level Shift,CGT-v2,84.0,89.8,-5.8,26,0.017,150
+Shock 3: Permanent Level Shift,CGT-v3,85.5,89.7,-4.2,3,0.042,220

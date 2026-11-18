@@ -1,0 +1,6 @@
+Model / Controller,Validation Acc (%),Gate Fraction (rho),Mean CPU (us/inst),Role
+Always-HT,82.88,0.0,265.67,Lightweight Single-Tree Baseline
+"CGT-v1 (Proposed, S1)",82.82,0.0476,448.53,Pure ADWIN Drift-Gated Switch
+"OMS-MAB (Wilson et al., 2024)",84.88,0.6187,2634.19,Multi-Armed Bandit Online Model Selection
+CGT-v2 (Adaptive Dual-Gate),83.58,0.0592,442.34,Dual Macro ADWIN + Micro Margin Gating
+Always-ARF (10 trees),88.38,1.0,3704.66,Heavy Continuous Ensemble Reference

@@ -1,0 +1,31 @@
+project:
+  title: Meta-Controller for Resource-Efficient Data Stream Mining (Config v3)
+  version: 3.0.0
+  seed: 42
+  selected_final_controller: CGT-v3
+hypothesis:
+  delta: 1.0
+  kappa: 30.0
+data:
+  csv_path: data/energy_dataset_clean.csv
+  val_instances: 10512
+  test_instances: 24528
+cgt_v3_frozen:
+  tau_gate: 0.2
+  max_rho: 0.1
+  h_cooldown: 50
+  buffer_b: 200
+  recent_w: 50
+  use_pruned_arf: true
+cgt_v2_reference:
+  theta_margin: 0.25
+  max_rho: 0.15
+  h_cooldown: 100
+  buffer_b: 200
+  use_pruned_arf: true
+validation_selection_summary:
+  v2_accuracy_pct: 83.58
+  v2_gate_rho: 0.0592
+  v3_accuracy_pct: 83.81
+  v3_gate_rho: 0.0759
+  selection_rationale: Empirical validation comparison with budget cap <= 0.15

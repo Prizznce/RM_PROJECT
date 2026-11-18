@@ -1,0 +1,44 @@
+project:
+  title: Meta-Controller for Resource-Efficient Data Stream Mining
+  seed: 42
+hypothesis:
+  delta: 1.0
+  kappa: 30.0
+data:
+  csv_path: data/energy_dataset_clean.csv
+  val_instances: 10512
+  test_instances: 24528
+cgt_frozen:
+  stability_k: 500
+  buffer_b: 200
+  warm_start_strategy: S1
+  adwin_delta: 0.002
+  adwin_clock: 32
+a1_frozen:
+  theta_hi: 0.25
+  theta_lo: 0.15
+  window_size: 50
+a2_frozen:
+  c: 0.5
+  lambda_acc: 0.3
+  lambda_v: 0.2
+  lambda_d: 0.3
+  lambda_c: 0.2
+  discount: 0.98
+a4_frozen:
+  batch_size: 50
+  lambda_c: 0.3
+models_frozen:
+  hoeffding_tree:
+    grace_period: 200
+    delta: 1.0e-07
+  arf_full:
+    n_models: 10
+    lambda_value: 6
+    grace_period: 50
+    delta: 0.01
+  arf_optimized:
+    n_models: 5
+    lambda_value: 6
+    grace_period: 50
+    delta: 0.01

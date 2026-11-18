@@ -1,0 +1,19 @@
+model_family,model_name,accuracy_pct,active_gate_rho,mean_cpu_us_per_instance,cpu_saving_pct,total_cpu_sec,peak_memory_mb,raw_log_file
+Naive Baseline,Zero-Skill Majority (Always 0),55.48,0.0,2.95,99.93,0.072,196.04,results/raw\step_predictions_zero-skill_majority_always_0.csv
+Naive Baseline,Persistence (1-Hr Momentum),80.95,0.0,2.9,99.93,0.071,198.37,results/raw\step_predictions_persistence_1-hr_momentum.csv
+Online Linear,Online SGD (Logistic Regression),84.91,0.0,74.71,98.12,1.832,199.38,results/raw\step_predictions_online_sgd_logistic_regression.csv
+Instance-Based,"Streaming kNN (k=5, W=100)",78.04,0.0,174.25,95.62,4.274,199.42,results/raw\step_predictions_streaming_knn_k=5_w=100.csv
+Single Tree,Always-HT,85.07,0.0,238.83,94.0,5.858,200.16,results/raw\step_predictions_always-ht.csv
+Single Tree,Adaptive Hoeffding Tree (HAT),85.14,0.0,488.33,87.74,11.978,201.16,results/raw\step_predictions_adaptive_hoeffding_tree_hat.csv
+Ensemble,Leveraging Bagging (3 trees),89.32,0.0,4320.98,-8.52,105.985,221.64,results/raw\step_predictions_leveraging_bagging_3_trees.csv
+Ensemble,"Streaming Random Patches (SRP, 3 trees)",88.56,0.0,3577.62,10.15,87.752,236.88,results/raw\step_predictions_streaming_random_patches_srp_3_trees.csv
+Switching Policy,A1: Threshold Switch,85.55,0.0,568.37,85.73,13.941,252.35,results/raw\step_predictions_a1_threshold_switch.csv
+Switching Policy,A2: Cost-aware UCB,86.43,0.0,1754.1,55.95,43.025,288.19,results/raw\step_predictions_a2_cost-aware_ucb.csv
+Ensemble,A3: Optimized ARF,89.3,0.0,1938.77,51.31,47.554,320.14,results/raw\step_predictions_a3_optimized_arf.csv
+Ensemble Reference,Always-ARF,89.6,0.0,3981.89,0.0,97.668,354.28,results/raw\step_predictions_always-arf.csv
+Learned Router,A4: Learned Router (Calibrated),88.73,0.8614,3993.21,-0.28,97.945,399.89,results/raw\step_predictions_a4_learned_router_calibrated.csv
+Bandit Baseline (OMS-MAB),"OMS-MAB (Wilson et al., 2024)",86.91,0.0,2355.24,40.85,57.769,433.1,results/raw\step_predictions_oms-mab_wilson_et_al._2024.csv
+CGT Baseline (v1),"CGT (Proposed), S1",85.13,0.0408,416.22,89.55,10.209,435.94,results/raw\step_predictions_cgt_proposed_s1.csv
+CGT Dual-Gate (v2),CGT-v2 (Adaptive Dual-Gate),85.49,0.0509,446.85,88.78,10.96,438.19,results/raw\step_predictions_cgt-v2_adaptive_dual-gate.csv
+CGT Learned-Gate (v3),CGT-v3 (Learned Meta-Gate),85.78,0.0702,887.92,77.7,21.779,446.35,results/raw\step_predictions_cgt-v3_learned_meta-gate.csv
+Omniscient Ceiling,Oracle Switch (Upper Bound),93.09,0.0802,4115.7,-3.36,100.95,488.94,results/raw\step_predictions_oracle_switch_upper_bound.csv

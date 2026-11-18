@@ -1,0 +1,19 @@
+model_family,model_name,test_accuracy_pct,arf_active_duty_cycle_rho,mean_latency_us,std_latency_us,model_peak_tracemalloc_mb,isolated_rss_delta_mb,methodology_note
+Naive Baseline,Zero-Skill Majority (Always 0),55.48,0.0000,2.31,0.73,0.0,0.0,Baseline: always predicts class 0
+Naive Baseline,Persistence (1-Hr Momentum),80.95,0.0000,2.56,0.36,0.0,0.0,Baseline: autoregressive momentum y_t = y_{t-1}
+Online Linear,Online SGD (Logistic Regression),84.91,0.0000,84.04,4.99,0.0,0.0,Streaming linear classifier with z-score standardization
+Instance-Based,"Streaming kNN (k=5, W=100)",78.04,0.0000,194.26,13.78,0.05,0.0,Sliding window nearest neighbors
+Single Tree,Always-HT,85.07,0.0000,301.58,30.5,0.02,0.02,Hoeffding Tree base learner
+Single Tree,Adaptive Hoeffding Tree (HAT),85.14,0.0000,503.96,40.36,0.02,0.01,Single tree with local ADWIN monitors at split nodes
+Switching Policy,A1: Threshold Switch,85.55,0.0740,1550.56,57.85,1.37,0.52,"Hysteresis error switch; active ARF duty cycle: 7.40% (1,815 / 24,528 steps)"
+Switching Policy,A2: Cost-aware UCB,86.43,0.4265,1432.74,35.8,3.1,2.62,"Two-armed cost-regularized bandit; ARF pulled on 42.65% (10,461 / 24,528 steps)"
+Ensemble,A3: Optimized ARF,89.3,n/a (1.0)*,1348.58,43.35,3.87,4.49,"Continuous static ensemble (3 trees, subspace sampling); standalone, not a switcher"
+CGT Baseline (v1),"CGT (Proposed, S1)",85.13,0.0408,315.69,57.27,0.02,0.02,ADWIN macro-drift gated switch; active ARF duty cycle: 4.08%
+CGT Dual-Gate (v2),CGT-v2 (Adaptive Dual-Gate),85.49,0.0509,416.09,20.94,0.02,0.04,ADWIN drift + margin uncertainty gating; active ARF duty cycle: 5.09%
+CGT Learned-Gate (v3),CGT-v3 (Learned Meta-Gate),85.78,0.0702,876.91,85.78,0.22,0.07,Online meta-classifier predicting Oracle ARF-win regime; active ARF duty cycle: 7.02%
+Bandit Baseline,"OMS-MAB (Wilson et al., 2024)",86.91,0.6187,1934.22,72.37,4.18,4.9,Discounted-UCB with per-arm HDDM_A drift monitors; ARF selected on 61.87% of steps
+Learned Router,A4: Learned Router (Calibrated),88.73,0.8614,947.23,44.06,0.66,0.41,Online logistic regression router with calibrated cost penalty; ARF routed on 86.14% of steps
+Ensemble,"Streaming Random Patches (SRP, 3 trees)",88.56,n/a (1.0)*,2971.24,140.54,0.98,0.41,"Continuous random patch ensemble; standalone, not a switcher"
+Ensemble,Leveraging Bagging (3 trees),89.32,n/a (1.0)*,17467.88,21626.67,3.23,0.4,"Continuous leveraging bagging ensemble; standalone, not a switcher"
+Ensemble Reference,Always-ARF (10 trees),89.6,n/a (1.0)*,3036.59,83.8,5.26,5.22,Continuous full random forest reference; continuous evaluation
+Omniscient Ceiling,Oracle Switch (Upper Bound)**,93.09,0.0802,3004.04,84.92,5.26,5.14,Theoretical ceiling; non-deployable omniscient oracle requiring ground truth

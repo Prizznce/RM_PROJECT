@@ -1,0 +1,25 @@
+name,accuracy_pct,mean_cpu_us,gate_rho,alarms,theta_margin,max_rho,h_cooldown
+CGT-v2 (Adaptive Dual-Gate),82.98,415.27,0.025,2,0.1,0.15,50
+CGT-v2 (Adaptive Dual-Gate),82.97,427.47,0.0336,2,0.1,0.15,100
+CGT-v2 (Adaptive Dual-Gate),83.09,388.99,0.0251,2,0.1,0.2,50
+CGT-v2 (Adaptive Dual-Gate),83.01,416.29,0.0346,2,0.1,0.2,100
+CGT-v2 (Adaptive Dual-Gate),83.01,395.03,0.0251,2,0.1,0.25,50
+CGT-v2 (Adaptive Dual-Gate),83.01,425.89,0.0346,2,0.1,0.25,100
+CGT-v2 (Adaptive Dual-Gate),83.22,431.5,0.0367,2,0.15,0.15,50
+CGT-v2 (Adaptive Dual-Gate),83.41,447.69,0.0452,2,0.15,0.15,100
+CGT-v2 (Adaptive Dual-Gate),83.12,401.97,0.0367,2,0.15,0.2,50
+CGT-v2 (Adaptive Dual-Gate),83.11,396.88,0.0462,2,0.15,0.2,100
+CGT-v2 (Adaptive Dual-Gate),83.24,399.57,0.0368,2,0.15,0.25,50
+CGT-v2 (Adaptive Dual-Gate),83.13,423.77,0.0463,2,0.15,0.25,100
+CGT-v2 (Adaptive Dual-Gate),83.34,380.97,0.0442,2,0.2,0.15,50
+CGT-v2 (Adaptive Dual-Gate),83.33,397.53,0.0521,2,0.2,0.15,100
+CGT-v2 (Adaptive Dual-Gate),83.27,382.99,0.0435,2,0.2,0.2,50
+CGT-v2 (Adaptive Dual-Gate),83.34,401.86,0.0536,2,0.2,0.2,100
+CGT-v2 (Adaptive Dual-Gate),83.41,408.16,0.0442,2,0.2,0.25,50
+CGT-v2 (Adaptive Dual-Gate),83.39,432.25,0.0537,2,0.2,0.25,100
+CGT-v2 (Adaptive Dual-Gate),83.45,451.0,0.0523,2,0.25,0.15,50
+CGT-v2 (Adaptive Dual-Gate),83.58,442.34,0.0592,2,0.25,0.15,100
+CGT-v2 (Adaptive Dual-Gate),83.34,459.66,0.053,2,0.25,0.2,50
+CGT-v2 (Adaptive Dual-Gate),83.21,488.7,0.062,2,0.25,0.2,100
+CGT-v2 (Adaptive Dual-Gate),83.35,441.54,0.0521,2,0.25,0.25,50
+CGT-v2 (Adaptive Dual-Gate),83.38,447.88,0.062,2,0.25,0.25,100

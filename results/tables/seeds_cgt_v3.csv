@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+cgt_v3,CGT-v3 (Learned Meta-Gate),42,85.77544031311155,924.167200750163,0.07024624918460536,results/raw/seeds\cgt_v3_seed_42.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),101,85.87736464448793,1176.498479288976,0.0698385518590998,results/raw/seeds\cgt_v3_seed_101.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),7,86.06490541422048,1106.1913160469667,0.07383398564905415,results/raw/seeds\cgt_v3_seed_7.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),2024,85.4329745596869,1184.2060339204174,0.0715508806262231,results/raw/seeds\cgt_v3_seed_2024.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),999,85.95482713633399,1179.3982305936072,0.07069471624266145,results/raw/seeds\cgt_v3_seed_999.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),123,85.78359425962165,1161.658264024788,0.0706539465101109,results/raw/seeds\cgt_v3_seed_123.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),777,85.99967384213959,1162.3061847684278,0.07073548597521201,results/raw/seeds\cgt_v3_seed_777.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),314,85.86105675146771,1155.266462818004,0.06963470319634703,results/raw/seeds\cgt_v3_seed_314.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),555,86.02413568166993,1232.5031841161124,0.07623939986953686,results/raw/seeds\cgt_v3_seed_555.csv
+cgt_v3,CGT-v3 (Learned Meta-Gate),888,85.71836268754078,1155.7198467058056,0.06943085453359427,results/raw/seeds\cgt_v3_seed_888.csv

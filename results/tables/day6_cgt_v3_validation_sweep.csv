@@ -1,0 +1,17 @@
+model_name,accuracy_pct,mean_cpu_us,gate_rho,alarms,tau_gate,max_rho,h_cooldown
+CGT-v3 (Learned Meta-Gate),83.64,1357.07,0.0906,2,0.15,0.1,50
+CGT-v3 (Learned Meta-Gate),83.64,1314.9,0.0935,2,0.15,0.1,100
+CGT-v3 (Learned Meta-Gate),83.54,1263.94,0.0989,2,0.15,0.15,50
+CGT-v3 (Learned Meta-Gate),83.6,1147.21,0.1071,2,0.15,0.15,100
+CGT-v3 (Learned Meta-Gate),83.81,972.72,0.0759,2,0.2,0.1,50
+CGT-v3 (Learned Meta-Gate),83.51,1027.36,0.0744,2,0.2,0.1,100
+CGT-v3 (Learned Meta-Gate),83.4,1113.33,0.0766,2,0.2,0.15,50
+CGT-v3 (Learned Meta-Gate),83.4,1192.8,0.0863,2,0.2,0.15,100
+CGT-v3 (Learned Meta-Gate),83.21,883.21,0.0437,2,0.25,0.1,50
+CGT-v3 (Learned Meta-Gate),83.24,918.15,0.0526,2,0.25,0.1,100
+CGT-v3 (Learned Meta-Gate),83.22,844.0,0.0569,2,0.25,0.15,50
+CGT-v3 (Learned Meta-Gate),83.33,826.35,0.0716,2,0.25,0.15,100
+CGT-v3 (Learned Meta-Gate),83.23,787.9,0.0372,1,0.3,0.1,50
+CGT-v3 (Learned Meta-Gate),82.98,810.6,0.0375,1,0.3,0.1,100
+CGT-v3 (Learned Meta-Gate),83.11,843.31,0.0387,2,0.3,0.15,50
+CGT-v3 (Learned Meta-Gate),83.18,845.05,0.0461,2,0.3,0.15,100

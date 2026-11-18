@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+oms_mab,"OMS-MAB (Wilson et al., 2024)",42,86.90883887801697,2698.8679468362684,0.0,results/raw/seeds\oms_mab_seed_42.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",101,86.9333007175473,2841.6222888127854,0.0,results/raw/seeds\oms_mab_seed_101.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",7,86.40737116764514,3265.399408838878,0.0,results/raw/seeds\oms_mab_seed_7.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",2024,86.08936725375081,3233.7023401826486,0.0,results/raw/seeds\oms_mab_seed_2024.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",999,85.95890410958904,1527.9686358447489,0.0,results/raw/seeds\oms_mab_seed_999.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",123,86.44406392694064,1813.3451973255055,0.0,results/raw/seeds\oms_mab_seed_123.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",777,86.86399217221134,1968.8283023483366,0.0,results/raw/seeds\oms_mab_seed_777.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",314,87.08414872798434,2133.110008969341,0.0,results/raw/seeds\oms_mab_seed_314.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",555,86.78245270711024,2019.3550921395956,0.0,results/raw/seeds\oms_mab_seed_555.csv
+oms_mab,"OMS-MAB (Wilson et al., 2024)",888,85.79582517938682,2017.8252038486628,0.0,results/raw/seeds\oms_mab_seed_888.csv

@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+a4_fixed,A4: Learned Router (Calibrated),42,88.72716894977168,4593.996428571429,0.8614236790606654,results/raw/seeds\a4_fixed_seed_42.csv
+a4_fixed,A4: Learned Router (Calibrated),101,88.05039138943248,4697.698157208089,0.790076647097195,results/raw/seeds\a4_fixed_seed_101.csv
+a4_fixed,A4: Learned Router (Calibrated),7,88.69047619047619,4070.6871412263536,0.8328848662752772,results/raw/seeds\a4_fixed_seed_7.csv
+a4_fixed,A4: Learned Router (Calibrated),2024,88.91470971950423,2970.5577910958905,0.9021934116112198,results/raw/seeds\a4_fixed_seed_2024.csv
+a4_fixed,A4: Learned Router (Calibrated),999,87.56115459882582,2962.4370963796478,0.7411529680365296,results/raw/seeds\a4_fixed_seed_999.csv
+a4_fixed,A4: Learned Router (Calibrated),123,88.01369863013699,2988.851011089367,0.798230593607306,results/raw/seeds\a4_fixed_seed_123.csv
+a4_fixed,A4: Learned Router (Calibrated),777,88.66601435094586,3118.092408675799,0.8736545988258317,results/raw/seeds\a4_fixed_seed_777.csv
+a4_fixed,A4: Learned Router (Calibrated),314,88.11969993476842,2746.0736015981734,0.7839611872146118,results/raw/seeds\a4_fixed_seed_314.csv
+a4_fixed,A4: Learned Router (Calibrated),555,88.11969993476842,2747.6265125570776,0.834923352902805,results/raw/seeds\a4_fixed_seed_555.csv
+a4_fixed,A4: Learned Router (Calibrated),888,86.70091324200914,1722.7756115459883,0.4720727332028702,results/raw/seeds\a4_fixed_seed_888.csv

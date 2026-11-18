@@ -1,0 +1,9 @@
+policy_key,policy_name,seeds_tested,mean_acc_pct,std_acc_pct,ci_95_low,ci_95_high,ci_95_str,min_acc_pct,max_acc_pct,mean_rho,mean_cpu_us
+always_arf,"Always-ARF (Full, 10 trees)",10,89.78,0.3,89.57,89.99,"[89.57, 89.99]",89.17,90.15,1.0,2570.3
+a3_optimized_arf,A3: Optimized ARF (5 trees),10,88.3,0.53,87.92,88.68,"[87.92, 88.68]",87.57,89.3,1.0,1812.08
+srp,"Streaming Random Patches (SRP, 3 trees)",10,87.21,1.26,86.3,88.11,"[86.30, 88.11]",83.97,88.56,1.0,2559.57
+levbag,Leveraging Bagging (3 trees),10,89.06,0.43,88.76,89.37,"[88.76, 89.37]",88.53,89.98,1.0,3653.15
+a2_ucb,A2: Cost-aware UCB,10,86.45,0.24,86.28,86.63,"[86.28, 86.63]",86.03,86.82,0.4002,1321.67
+a4_fixed,A4: Learned Router (Calibrated),10,88.16,0.66,87.68,88.63,"[87.68, 88.63]",86.7,88.91,0.7891,3261.88
+oms_mab,"OMS-MAB (Wilson et al., 2024)",10,86.53,0.46,86.2,86.85,"[86.20, 86.85]",85.8,87.08,0.0,2352.0
+cgt_v3,CGT-v3 (Learned Meta-Gate),10,85.85,0.19,85.72,85.98,"[85.72, 85.98]",85.43,86.06,0.0713,1143.79

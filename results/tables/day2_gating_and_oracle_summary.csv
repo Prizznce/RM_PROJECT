@@ -1,0 +1,8 @@
+Policy / Bound,Accuracy (%),Active ARF Fraction (rho),Mean CPU (us/inst),CPU Saving vs ARF (%),Role in Literature
+Always-HT (Lower Bound),85.07,0.0,97.83,93.16,Cheapest Single-Tree Baseline
+"CGT (Proposed, S1)",85.13,0.0408,149.36,89.55,Drift-Gated Switch (ADWIN interrupt)
+CGT-Plus (Optimized Hybrid),85.21,0.1223,188.68,86.8,Calibrated ADWIN + Pruned ARF
+A4: Learned Router (Uncalibrated),85.07,0.0381,114.03,92.02,Linear Meta-Classifier (Collapsed: 0% ARF wins)
+A4: Learned Router (Calibrated),88.73,0.8614,1245.13,12.91,Calibrated Cost Penalty + Exploration
+Always-ARF (Full Ensemble),89.6,1.0,1429.76,0.0,Always-On 10-Tree Ensemble
+Oracle Switch (Upper Bound Ceiling),93.09,0.0802,204.7,85.68,Omniscient Gating Ceiling

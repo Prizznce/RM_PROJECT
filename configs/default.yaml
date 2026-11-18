@@ -1,0 +1,63 @@
+# Default experiment configuration for Meta-Controller benchmark
+project:
+  name: "Meta-Controller for Resource-Efficient Data Stream Mining"
+  seed: 42
+
+hypothesis:
+  delta: 1.0    # Accepted accuracy loss tolerance (percentage points)
+  kappa: 30.0   # Minimum required CPU savings vs Always-ARF (%)
+
+data:
+  raw_dir: "energy_dataset.csv"
+  processed_csv: "data/energy_dataset_clean.csv"
+  timestamp_format: "%Y-%m-%d %H:%M:%S"
+  target_column: "Demand (MW)"
+  task_type: "classification"   # Binary demand direction: 1 if Demand_t > Demand_{t-1} else 0
+  train_val_split_fraction: 0.3 # Past 30% for validation/warmup (10,512 instances), remaining 70% frozen test stream (24,528 instances)
+  total_instances: 35040
+  val_instances: 10512
+  test_instances: 24528
+
+models:
+  hoeffding_tree:
+    grace_period: 200
+    delta: 1e-07
+  arf:
+    n_models: 10
+    lambda_value: 6
+    grace_period: 50
+    delta: 0.01
+    seed: 42
+  arf_optimized:
+    n_models: 5
+    lambda_value: 6
+    grace_period: 50
+    delta: 0.01
+    seed: 42
+
+drift:
+  adwin:
+    delta: 0.002
+    clock: 32
+    min_window_length: 5
+    grace_period: 10
+
+controllers:
+  cgt:
+    stability_k: 500
+    buffer_b: 200
+    warm_start_strategy: "S1"   # S1: resume + replay buffer; S2: reset + train buffer; S3: resume no replay
+  a1_threshold:
+    theta_hi: 0.25
+    theta_lo: 0.15
+    window_size: 50
+  a2_ucb:
+    exploration_c: 0.5
+    lambda_acc: 0.3
+    lambda_instability: 0.2
+    lambda_drift: 0.3
+    lambda_cost: 0.2
+    discount_factor: 0.95
+  a4_router:
+    batch_size: 50
+    lambda_cost: 0.3

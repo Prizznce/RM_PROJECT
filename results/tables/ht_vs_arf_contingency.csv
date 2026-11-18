@@ -1,0 +1,5 @@
+State,Count,Percentage,Optimal Arm
+"Both Correct (HT=1, ARF=1)",20008,81.57,HT (Lowest Cost)
+"ARF-Only Correct (HT=0, ARF=1)",1968,8.02,ARF (Essential Win)
+"HT-Only Correct (HT=1, ARF=0)",857,3.49,HT (Accuracy + Cost)
+"Neither Correct (HT=0, ARF=0)",1695,6.91,HT (Avoid Wasted ARF Cost)

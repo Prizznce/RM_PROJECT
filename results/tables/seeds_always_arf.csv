@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+always_arf,"Always-ARF (Full, 10 trees)",42,89.5955642530985,2611.5318452380952,1.0,results/raw/seeds\always_arf_seed_42.csv
+always_arf,"Always-ARF (Full, 10 trees)",101,89.17155903457274,2703.7551125244618,1.0,results/raw/seeds\always_arf_seed_101.csv
+always_arf,"Always-ARF (Full, 10 trees)",7,89.73418134377039,2916.1998002283103,1.0,results/raw/seeds\always_arf_seed_7.csv
+always_arf,"Always-ARF (Full, 10 trees)",2024,90.08887801696021,2943.5545295172865,1.0,results/raw/seeds\always_arf_seed_2024.csv
+always_arf,"Always-ARF (Full, 10 trees)",999,90.14595564253098,2853.2237116764513,1.0,results/raw/seeds\always_arf_seed_999.csv
+always_arf,"Always-ARF (Full, 10 trees)",123,89.9706457925636,2476.449066373125,1.0,results/raw/seeds\always_arf_seed_123.csv
+always_arf,"Always-ARF (Full, 10 trees)",777,89.90949119373776,2580.720731409002,1.0,results/raw/seeds\always_arf_seed_777.csv
+always_arf,"Always-ARF (Full, 10 trees)",314,89.79125896934116,2421.787695694716,1.0,results/raw/seeds\always_arf_seed_314.csv
+always_arf,"Always-ARF (Full, 10 trees)",555,89.48956294846707,2222.2530618069145,1.0,results/raw/seeds\always_arf_seed_555.csv
+always_arf,"Always-ARF (Full, 10 trees)",888,89.89318330071755,1973.56007012394,1.0,results/raw/seeds\always_arf_seed_888.csv

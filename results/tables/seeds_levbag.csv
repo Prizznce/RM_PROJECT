@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+levbag,Leveraging Bagging (3 trees),42,89.32240704500978,5170.314974722765,1.0,results/raw/seeds\levbag_seed_42.csv
+levbag,Leveraging Bagging (3 trees),101,88.83317025440313,5500.304517286367,1.0,results/raw/seeds\levbag_seed_101.csv
+levbag,Leveraging Bagging (3 trees),7,89.11448140900195,3704.6563356164384,1.0,results/raw/seeds\levbag_seed_7.csv
+levbag,Leveraging Bagging (3 trees),2024,89.31017612524462,3328.751855022831,1.0,results/raw/seeds\levbag_seed_2024.csv
+levbag,Leveraging Bagging (3 trees),999,89.22863666014351,3458.0275684931507,1.0,results/raw/seeds\levbag_seed_999.csv
+levbag,Leveraging Bagging (3 trees),123,89.98287671232876,3427.1445898564907,1.0,results/raw/seeds\levbag_seed_123.csv
+levbag,Leveraging Bagging (3 trees),777,88.64562948467058,3158.295319634703,1.0,results/raw/seeds\levbag_seed_777.csv
+levbag,Leveraging Bagging (3 trees),314,88.52739726027397,2982.0931547619048,1.0,results/raw/seeds\levbag_seed_314.csv
+levbag,Leveraging Bagging (3 trees),555,88.73939986953687,3024.0868517612525,1.0,results/raw/seeds\levbag_seed_555.csv
+levbag,Leveraging Bagging (3 trees),888,88.9187866927593,2777.80279272668,1.0,results/raw/seeds\levbag_seed_888.csv

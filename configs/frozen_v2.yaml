@@ -1,0 +1,26 @@
+project:
+  title: Meta-Controller for Resource-Efficient Data Stream Mining (Config v2)
+  version: 2.0.0
+  seed: 42
+hypothesis:
+  delta: 1.0
+  kappa: 30.0
+data:
+  csv_path: data/energy_dataset_clean.csv
+  val_instances: 10512
+  test_instances: 24528
+cgt_v2_frozen:
+  theta_margin: 0.25
+  max_rho: 0.15
+  h_cooldown: 100
+  buffer_b: 200
+  adwin_delta: 0.005
+  adwin_clock: 32
+  use_pruned_arf: true
+oms_mab_frozen:
+  gamma: 0.98
+  c: 0.5
+validation_metrics:
+  accuracy_pct: 83.58
+  gate_rho: 0.0592
+  mean_cpu_us: 442.34

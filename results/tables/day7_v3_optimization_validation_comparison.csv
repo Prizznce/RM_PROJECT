@@ -1,0 +1,5 @@
+mode,label,validation_accuracy_pct,gate_rho,mean_cpu_us
+baseline,CGT-v3 Baseline (Frozen),83.81,0.0759,1010.73
+opt_a,CGT-v3 + HT-Error-Gated Shadow Query,83.7,0.0724,808.15
+opt_b,CGT-v3 + 20% Subsampled Shadow Query,83.06,0.0657,742.57
+opt_c,CGT-v3 + Error-Gated + Reuse Awake + 2% Probe,83.7,0.0724,804.6

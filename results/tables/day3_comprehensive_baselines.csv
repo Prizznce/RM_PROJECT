@@ -1,0 +1,17 @@
+model_family,model_name,accuracy_pct,mean_cpu_us_per_instance,cpu_saving_pct,total_cpu_sec,peak_memory_mb
+Naive / Autoregressive,Zero-Skill Majority (Always 0),55.48,2.84,99.93,0.07,221.24
+Naive / Autoregressive,Persistence (1-Hr Momentum),80.95,4.17,99.9,0.102,221.24
+Naive / Autoregressive,Persistence (24-Hr Diurnal),32.69,3.76,99.91,0.092,221.24
+Online Linear (SGD),Online SGD (Logistic Regression),84.91,89.7,97.78,2.2,221.33
+Instance-Based (kNN),"Streaming kNN (k=5, W=100)",78.04,192.72,95.23,4.727,221.46
+Single Streaming Tree,Always-HT,85.07,261.97,93.52,6.426,222.26
+Single Streaming Tree,Adaptive Hoeffding Tree (HAT),85.14,529.09,86.9,12.977,223.89
+Streaming Ensemble,Leveraging Bagging (3 trees),89.32,4615.44,-14.24,113.208,245.55
+Streaming Ensemble,"Streaming Random Patches (SRP, 3 trees)",88.56,3528.83,12.66,86.555,260.59
+Streaming Ensemble,A3: Optimized ARF,89.3,2049.52,49.27,50.271,294.89
+Streaming Ensemble,Always-ARF,89.6,4040.16,0.0,99.097,329.73
+Meta-Controller,A4: Learned Router,85.07,310.46,92.32,7.615,330.92
+Meta-Controller,A4: Learned Router (Calibrated),88.73,3915.0,3.1,96.027,376.35
+Meta-Controller,"CGT (Proposed), S1",85.13,560.46,86.13,13.747,382.06
+Meta-Controller,CGT-Plus (Optimized Hybrid),85.21,709.98,82.43,17.414,392.08
+Omniscient Ceiling,Oracle Switch (Upper Bound),93.09,4604.87,-13.98,112.948,433.84

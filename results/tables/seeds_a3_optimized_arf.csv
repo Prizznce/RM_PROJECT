@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+a3_optimized_arf,A3: Optimized ARF (5 trees),42,89.3020221787345,2313.883569797782,1.0,results/raw/seeds\a3_optimized_arf_seed_42.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),101,88.36431833007175,2238.570205479452,1.0,results/raw/seeds\a3_optimized_arf_seed_101.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),7,88.94732550554468,2218.6246249184605,1.0,results/raw/seeds\a3_optimized_arf_seed_7.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),2024,88.22162426614481,2331.3887067840833,1.0,results/raw/seeds\a3_optimized_arf_seed_2024.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),999,88.2501630789302,2263.2962695694714,1.0,results/raw/seeds\a3_optimized_arf_seed_999.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),123,87.89546640574038,1444.7099804305283,1.0,results/raw/seeds\a3_optimized_arf_seed_123.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),777,87.82615786040444,1118.3272790280496,1.0,results/raw/seeds\a3_optimized_arf_seed_777.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),314,88.60893672537509,1448.1406311154599,1.0,results/raw/seeds\a3_optimized_arf_seed_314.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),555,88.03408349641226,1321.6611627527725,1.0,results/raw/seeds\a3_optimized_arf_seed_555.csv
+a3_optimized_arf,A3: Optimized ARF (5 trees),888,87.56523157208089,1422.1794479778214,1.0,results/raw/seeds\a3_optimized_arf_seed_888.csv

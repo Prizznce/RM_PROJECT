@@ -1,0 +1,3 @@
+Controller,Dormant_Hours,Dormant_Pct,Awake_Hours,Awake_Pct,ADWIN_Alarms,Dormant_Acc_CGT,Dormant_Acc_HT,Dormant_Acc_ARF,Awake_Acc_CGT,Awake_Acc_HT,Awake_Acc_ARF,Overall_Acc_CGT
+"CGT (Proposed, S1)",23528,95.92,1000,4.08,2,84.92,84.92,89.51,90.2,88.6,91.6,85.13
+CGT-Plus (Optimized Hybrid),21528,87.77,3000,12.23,3,84.89,84.92,89.51,87.47,88.6,91.6,85.21

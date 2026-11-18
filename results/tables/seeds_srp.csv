@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+srp,"Streaming Random Patches (SRP, 3 trees)",42,88.56409001956948,2666.600737932159,1.0,results/raw/seeds\srp_seed_42.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",101,87.21868884540118,2541.5940761578604,1.0,results/raw/seeds\srp_seed_101.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",7,88.25831702544032,2931.914530332681,1.0,results/raw/seeds\srp_seed_7.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",2024,83.96934116112197,2989.8744822243966,1.0,results/raw/seeds\srp_seed_2024.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",999,87.05968688845401,2871.5833047945207,1.0,results/raw/seeds\srp_seed_999.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",123,87.52853881278538,2463.006506849315,1.0,results/raw/seeds\srp_seed_123.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",777,86.76614481409001,2342.2978106653622,1.0,results/raw/seeds\srp_seed_777.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",314,87.93623613829094,2587.6755830071756,1.0,results/raw/seeds\srp_seed_314.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",555,87.3165362035225,2193.83751223092,1.0,results/raw/seeds\srp_seed_555.csv
+srp,"Streaming Random Patches (SRP, 3 trees)",888,87.45515329419439,2007.2948385518591,1.0,results/raw/seeds\srp_seed_888.csv

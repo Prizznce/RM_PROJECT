@@ -1,0 +1,16 @@
+model,avg_rank,diff_vs_cgt_v3,critical_difference,statistically_significant
+LevBag (3 trees),2.375,5.75,4.378,True
+A4: Router (Fixed),2.75,5.375,4.378,True
+A3: Optimized ARF,3.25,4.875,4.378,True
+Always-ARF (10 trees),3.271,4.854,4.378,True
+SRP (3 trees),3.938,4.188,4.378,False
+A2: Cost UCB,7.333,0.792,4.378,False
+OMS-MAB,7.458,0.667,4.378,False
+CGT-v3 (Learned),8.125,0.0,4.378,False
+Adaptive HT (HAT),9.729,1.604,4.378,False
+CGT-v2,9.812,1.688,4.378,False
+CGT-v1 (S1),10.688,2.562,4.378,False
+Always-HT,11.021,2.896,4.378,False
+Online SGD,11.25,3.125,4.378,False
+Persistence (1-Hr),14.042,5.917,4.378,True
+Streaming kNN,14.958,6.833,4.378,True

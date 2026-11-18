@@ -1,0 +1,11 @@
+policy_key,policy_name,seed,accuracy_pct,mean_cpu_us,active_rho,raw_file
+a2_ucb,A2: Cost-aware UCB,42,86.43183300717547,1575.142857142857,0.39880952380952384,results/raw/seeds\a2_ucb_seed_42.csv
+a2_ucb,A2: Cost-aware UCB,101,86.17498369210698,1064.9932933789955,0.39713796477495106,results/raw/seeds\a2_ucb_seed_101.csv
+a2_ucb,A2: Cost-aware UCB,7,86.76614481409001,1291.8211594911936,0.4037426614481409,results/raw/seeds\a2_ucb_seed_7.csv
+a2_ucb,A2: Cost-aware UCB,2024,86.52152641878669,1245.9139147097196,0.39856490541422046,results/raw/seeds\a2_ucb_seed_2024.csv
+a2_ucb,A2: Cost-aware UCB,999,86.52152641878669,1296.2035551206784,0.40219341161121985,results/raw/seeds\a2_ucb_seed_999.csv
+a2_ucb,A2: Cost-aware UCB,123,86.44406392694064,1371.2691862361382,0.4012149380300065,results/raw/seeds\a2_ucb_seed_123.csv
+a2_ucb,A2: Cost-aware UCB,777,86.8232224396608,1386.369675472929,0.40537345075016307,results/raw/seeds\a2_ucb_seed_777.csv
+a2_ucb,A2: Cost-aware UCB,314,86.29729288975865,1311.5335453359426,0.39591487279843446,results/raw/seeds\a2_ucb_seed_314.csv
+a2_ucb,A2: Cost-aware UCB,555,86.50929549902152,1350.9390614807567,0.40198956294846705,results/raw/seeds\a2_ucb_seed_555.csv
+a2_ucb,A2: Cost-aware UCB,888,86.03228962818004,1322.4937377690803,0.39656718851924333,results/raw/seeds\a2_ucb_seed_888.csv

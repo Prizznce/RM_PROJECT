@@ -1,0 +1,5 @@
+season,n_instances,acc_ht,acc_arf,acc_cgt_v3,delta_cgt_minus_ht,delta_arf_minus_ht
+Autumn,6555,84.73,89.5,85.14,0.41,4.77
+Spring,6285,83.98,88.29,84.49,0.51,4.31
+Summer,6624,85.3,90.53,86.55,1.25,5.23
+Winter,5064,86.55,90.11,87.18,0.63,3.56

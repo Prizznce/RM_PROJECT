@@ -1,0 +1,32 @@
+\begin{table*}[t]
+\centering
+\caption{Comprehensive Benchmark across 18 Streaming Policies on the Frozen Test Stream (24,528 instances). Accuracy reflects multi-seed evaluation (mean $\pm$ std over 10 seeds) for stochastic models and deterministic evaluation for single-run models. Non-dominated Pareto optimal policies in the (Accuracy vs.\ Latency) objective space are highlighted in \textbf{bold}. Holm-adjusted McNemar significance against Always-HT is denoted by *** ($p < 0.001$), ** ($p < 0.01$), * ($p < 0.05$), and ns (not significant).}
+\label{tab:final_results}
+\small
+\begin{tabular}{llcccccccr}
+\toprule
+\textbf{Policy} & \textbf{Family} & \textbf{Acc (\%)} & \textbf{Bal Acc} & \textbf{$\rho_{\text{ARF}}$ (\%)} & \textbf{Latency ($\mu$s)} & \textbf{CPU Sav} & \textbf{RAM} & \textbf{Gap Cl} & \textbf{Adj $p$ vs HT} \\
+\midrule
+Zero-Skill Majority (Always 0) & Naive Baseline & 55.48 $\pm$ 0.00 & 50.00 & 0.0000 & 2.3 $\pm$ 0.7 & 99.9\% & 0.00M & -368.7\% & 0.00e+00$^{***}$ \\
+\textbf{Persistence (1-Hr Momentum)} & Naive Baseline & 80.95 $\pm$ 0.00 & 80.72 & 0.0000 & 2.6 $\pm$ 0.4 & 99.9\% & 0.00M & -51.3\% & 2.02e-56$^{***}$ \\
+\textbf{Online SGD (Logistic Regression)} & Online Linear & 84.91 $\pm$ 0.00 & 84.50 & 0.0000 & 84.0 $\pm$ 5.0 & 97.2\% & 0.00M & -1.9\% & 0.9996 (ns) \\
+Streaming kNN (k=5, W=100) & Instance-Based & 78.04 $\pm$ 0.00 & 77.45 & 0.0000 & 194.3 $\pm$ 13.8 & 93.6\% & 0.05M & -87.5\% & 8.72e-136$^{***}$ \\
+\textbf{Always-HT} & Single Tree & 85.07 $\pm$ 0.00 & 84.77 & 0.0000 & 301.6 $\pm$ 30.5 & 90.1\% & 0.02M & +0.0\% & ref \\
+Adaptive Hoeffding Tree (HAT) & Single Tree & 85.14 $\pm$ 0.00 & 84.75 & 0.0000 & 504.0 $\pm$ 40.4 & 83.4\% & 0.02M & +1.0\% & 0.9996 (ns) \\
+\textbf{CGT (Proposed, S1)} & CGT Baseline (v1) & 85.13 $\pm$ 0.00 & 84.84 & 0.0408 & 315.7 $\pm$ 57.3 & 89.6\% & 0.02M & +0.8\% & 0.4682 (ns) \\
+\textbf{CGT-v2 (Adaptive Dual-Gate)} & CGT Dual-Gate (v2) & 85.49 $\pm$ 0.00 & 85.23 & 0.0509 & 416.1 $\pm$ 20.9 & 86.3\% & 0.02M & +5.2\% & 2.95e-05$^{***}$ \\
+\textbf{CGT-v3 (Learned Meta-Gate)} & CGT Learned-Gate (v3) & 85.85 $\pm$ 0.19 & 85.53 & 0.0702 & 876.9 $\pm$ 85.8 & 71.1\% & 0.22M & +9.8\% & 1.19e-09$^{***}$ \\
+A1: Threshold Switch & Switching Policy & 85.55 $\pm$ 0.00 & 85.27 & 0.0740 & 1550.6 $\pm$ 57.9 & 48.9\% & 1.37M & +6.0\% & 1.85e-09$^{***}$ \\
+A2: Cost-aware UCB & Switching Policy & 86.45 $\pm$ 0.24 & 86.09 & 0.4265 & 1432.7 $\pm$ 35.8 & 52.8\% & 3.10M & +17.2\% & 1.82e-22$^{***}$ \\
+OMS-MAB (Wilson et al., 2024) & Bandit Baseline & 86.53 $\pm$ 0.46 & 86.74 & 0.6187 & 1934.2 $\pm$ 72.4 & 36.3\% & 4.18M & +18.2\% & 5.40e-17$^{***}$ \\
+\textbf{A4: Learned Router (Calibrated)} & Learned Router & 88.16 $\pm$ 0.66 & 88.36 & 0.8614 & 947.2 $\pm$ 44.1 & 68.8\% & 0.66M & +38.6\% & 4.56e-76$^{***}$ \\
+Streaming Random Patches (SRP, 3 trees) & Ensemble & 87.21 $\pm$ 1.26 & 88.26 & n/a (1.0)* & 2971.2 $\pm$ 140.5 & 2.2\% & 0.98M & +26.7\% & 7.83e-59$^{***}$ \\
+Leveraging Bagging (3 trees) & Ensemble & 89.06 $\pm$ 0.43 & 88.95 & n/a (1.0)* & 17467.9 $\pm$ 21626.7 & -475.2\% & 3.23M & +49.8\% & 3.19e-86$^{***}$ \\
+\textbf{A3: Optimized ARF (5 trees)} & Ensemble & 88.30 $\pm$ 0.53 & 89.02 & n/a (1.0)* & 1348.6 $\pm$ 43.4 & 55.6\% & 3.87M & +40.3\% & 4.31e-75$^{***}$ \\
+\textbf{Always-ARF (Full, 10 trees)} & Ensemble Reference & 89.78 $\pm$ 0.30 & 89.30 & n/a (1.0)* & 3036.6 $\pm$ 83.8 & 0.0\% & 5.26M & +58.8\% & 2.63e-98$^{***}$ \\
+Oracle Switch (Upper Bound)** & Omniscient Ceiling & 93.09 $\pm$ 0.00 & 92.84 & 0.0802 & 3004.0 $\pm$ 84.9 & 1.1\% & 5.26M & +100.0\% & 0.00e+00$^{***}$ \\
+\bottomrule
+\multicolumn{10}{l}{\footnotesize $^*$Continuous ensembles (A3, SRP, LevBag, Always-ARF) evaluate all ensemble trees per instance; not a dynamic switcher.} \\
+\multicolumn{10}{l}{\footnotesize $^{**}$Oracle Gated Switch utilizes counterfactual ground truth; non-deployable theoretical ceiling.}
+\end{tabular}
+\end{table*}

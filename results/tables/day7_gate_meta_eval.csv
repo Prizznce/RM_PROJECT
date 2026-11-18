@@ -1,0 +1,25 @@
+metric,value
+Base Rate of z_t,6.28%
+Gate Duty Cycle (rho),6.05%
+Gate True Positives (TP),380
+Gate False Positives (FP),1103
+Gate False Negatives (FN),1161
+Gate True Negatives (TN),21884
+Gate Precision,25.62%
+Gate Recall,24.66%
+Gate Specificity,95.20%
+Gate F1 Score,0.2513
+Meta-Score ROC-AUC,0.7558
+Meta-Score PR-AUC,0.1877
+Margin Gate Precision,27.11%
+Margin Gate Recall,26.09%
+Margin Gate ROC-AUC,0.7092
+Margin Gate PR-AUC,0.1804
+Random Gate Precision,5.38%
+Random Gate Recall,5.13%
+Gate ARF-right / HT-wrong (Gain),380
+Gate ARF-wrong / HT-right (Loss),248
+Gate Both-Right (Neutral),651
+Gate Both-Wrong (Neutral),204
+Net Correct Predictions Gained,132
+Net Stream Accuracy Delta,+0.54%

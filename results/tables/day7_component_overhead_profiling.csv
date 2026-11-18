@@ -1,0 +1,4 @@
+controller,ht_predict_and_learn_us,feature_extraction_us,meta_model_predict_update_us,adwin_update_us,arf_predict_us,arf_learn_and_replay_us,bookkeeping_us,total_profiled_us
+CGT-v1,242.45,0.0,0.0,2.6,0.0,0.82,1.72,247.58
+CGT-v2,251.77,3.91,0.0,2.18,4.67,27.35,1.91,291.8
+CGT-v3,274.54,4.86,65.21,2.44,229.33,101.61,2.3,680.3

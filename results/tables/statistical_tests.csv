@@ -1,0 +1,8 @@
+Comparison,Mean_Diff_Acc_pct,Wilcoxon_W,Wilcoxon_p_value,Paired_t_stat,Paired_t_p_value,Significant_at_0.05
+CGT (S1) vs Always-ARF,-4.46,3.0,9.1134e-42,-30.17,1.7527e-84,True
+CGT (S1) vs Always-HT,0.07,21.5,3.0595e-03,2.99,3.0541e-03,True
+CGT (S1) vs Fixed Ablation,-0.56,1517.5,1.4929e-13,-8.07,3.1724e-14,True
+CGT (S1) vs A2 Cost-UCB,-1.27,1963.5,1.4566e-31,-17.2,5.0012e-44,True
+CGT-Plus vs Always-ARF,-4.38,5.0,4.3980e-42,-29.96,6.7531e-84,True
+CGT-Plus vs Always-HT,0.14,203.0,1.1060e-03,3.02,2.7564e-03,True
+CGT-Plus vs CGT (S1),0.08,468.0,6.7431e-02,1.6,1.1196e-01,False

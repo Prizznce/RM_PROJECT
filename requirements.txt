@@ -1,0 +1,13 @@
+# Versions verified with scripts/run_ee_arf_experiment.py and tests/ (Python 3.13.6, Windows 11).
+river==0.27.0
+numpy==2.5.5
+pandas==3.1.1
+scipy==1.18.1
+scikit-learn==1.9.1
+matplotlib==3.11.2
+pyyaml
+psutil
+pytest
+# Only needed for legacy scripts:
+# streamlit   (app/dashboard.py)
+# openpyxl    (scripts/compile_real_posoco_scada.py)

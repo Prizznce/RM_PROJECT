@@ -1,0 +1,29 @@
+{
+  "args": {
+    "datasets": [
+      "spain",
+      "india"
+    ],
+    "seeds": [
+      42,
+      7,
+      123
+    ],
+    "retune": false,
+    "max_val_duty": 35.0,
+    "no_sweep": false,
+    "quick": false,
+    "out": "results/ee_arf"
+  },
+  "versions": {
+    "python": "3.13.6",
+    "river": "0.27.0",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2"
+  },
+  "elapsed_s": 116.5,
+  "frozen_config": "configs/ee_arf_frozen_config.json"
+}

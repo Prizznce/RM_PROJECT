@@ -1,0 +1,108 @@
+{
+  "created_utc": "2026-11-19T18:27:33Z",
+  "data_sha256": {
+    "india": "8113417071b7e1dd30e5058f1687230560f16d67e8ce1394f7a9e6c3895ee509",
+    "spain": "49f6fde8c51cee45edb9586d583c7adccffe10d7a6a7cd59b293c8b495b6bb80"
+  },
+  "fixed": {
+    "adwin_delta": 0.002,
+    "arf_params": {
+      "delta": 0.001,
+      "grace_period": 200,
+      "lambda_value": 6,
+      "split_criterion": "info_gain"
+    },
+    "drift_hold": 50,
+    "ht_params": {
+      "delta": 1e-07,
+      "grace_period": 200
+    },
+    "loss_mode": "exit_error",
+    "n_core": 3,
+    "n_trees": 10,
+    "replay_buffer_ablation": 200,
+    "tau_init": 0.3,
+    "tuning_seed": 42,
+    "w_fn_a_priori": {
+      "elec2": 1,
+      "india": 5,
+      "spain": 1
+    }
+  },
+  "grids": {
+    "alpha": [
+      0.02,
+      0.05,
+      0.1,
+      0.15
+    ],
+    "gamma": [
+      0.005,
+      0.01,
+      0.05
+    ],
+    "p_bg": [
+      0.0,
+      0.1,
+      0.2
+    ],
+    "tau_static": [
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6
+    ]
+  },
+  "label": "EE-ARF-10 conformal gate; selected on validation splits only",
+  "library_versions": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "python": "3.13.6",
+    "river": "0.27.0",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "quick": false,
+  "selected": {
+    "india": {
+      "alpha": 0.02,
+      "gamma": 0.005,
+      "p_bg": 0.0,
+      "tau_static": 0.6,
+      "val_accuracy_pct": 92.54966887417218,
+      "val_avg_trees_eval": 4.475717439293598,
+      "val_duty_rho_pct": 21.08167770419426,
+      "val_kappa_temporal": 0.5529801324503311,
+      "w_fn": 5
+    },
+    "spain": {
+      "alpha": 0.05,
+      "gamma": 0.01,
+      "p_bg": 0.2,
+      "tau_static": 0.4,
+      "val_accuracy_pct": 87.48097412480973,
+      "val_avg_trees_eval": 5.199486301369863,
+      "val_duty_rho_pct": 31.42123287671233,
+      "val_kappa_temporal": 0.3830285982184716,
+      "w_fn": 1
+    }
+  },
+  "selection_rule": "max validation kappa_temporal s.t. duty rho <= 35.0% (ties -> fewer trees evaluated)",
+  "sha256": "053e5700259c8aeca58d95b217ef626e4ecea2e2fd1c64a41cdb740cd93a43d0",
+  "splits": {
+    "india": {
+      "block": 168,
+      "test_len": 16800,
+      "val_len": 3624
+    },
+    "spain": {
+      "block": 168,
+      "test_len": 24528,
+      "val_len": 10512
+    }
+  }
+}

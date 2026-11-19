@@ -1,0 +1,207 @@
+========================================================================================
+EE-ARF-10 + DRIFT-ADAPTIVE CONFORMAL GATE - prequential experiment
+versions: {'python': '3.13.6', 'river': '0.27.0', 'numpy': '2.5.5', 'pandas': '3.1.1', 'scipy': '1.18.1', 'scikit-learn': '1.9.1', 'matplotlib': '3.11.2'}
+========================================================================================
+STAGE 0 - datasets, splits, targets, class balance
+
+  Spain (ENTSO-E)
+    target : y_t = int(Demand_t > Demand_{t-1})   [src/data/stream_loader.py: hourly load-direction, 1 = demand rises]
+    val    : 10,512 samples, positives 4,761 (45.29%), from 2015-01-02 00:00:00
+    test   : 24,528 samples, positives 10,919 (44.52%), 2016-03-15 00:00:00 (Tuesday) -> 2018-12-31 23:00:00, 146 weekly blocks
+    note   : Lags are positional; 4 duplicated DST fall-back hours exist in the CSV.
+
+  India (POSOCO/NLDC)
+    target : y_t = int( pct_change(Demand)_t > 0.035  OR  Demand_t >= Q85(Demand)  OR  pct_change(Net_Demand)_t > 0.05 )   [scripts/compile_real_posoco_scada.py: grid-stress event, 1 = stress]. NOTE: Q85 is computed over the FULL 2021-2023 series (non-causal label threshold).
+    val    : 3,624 samples, positives 745 (20.56%), from 2021-09-02 00:00:00
+    test   : 16,800 samples, positives 5,078 (30.23%), 2022-01-31 00:00:00 (Monday) -> 2023-12-31 23:00:00, 100 weekly blocks
+    note   : Label threshold Q85 uses the full series (look-ahead in label, not features).
+Loaded frozen config configs/ee_arf_frozen_config.json (SHA-256 053e5700259c8aec... verified)
+
+STAGE 2 - frozen models on the test split
+  [Spain (ENTSO-E) | seed 42] Always-HT                                    acc= 85.06  kT=0.2155  F1=0.8484  FNR=0.1801  rho=  0.0%  trees= 1.00  lat=    4.5us  p99=0.011ms
+  [Spain (ENTSO-E) | seed 42] Always-HAT                                   acc= 85.14  kT=0.2200  F1=0.8489  FNR=0.1888  rho=  0.0%  trees= 1.00  lat=   85.3us  p99=0.218ms
+  [Spain (ENTSO-E) | seed 42] Always-ARF-2                                 acc= 85.44  kT=0.2354  F1=0.8523  FNR=0.1728  rho=  0.0%  trees= 2.00  lat=   20.8us  p99=0.041ms
+  [Spain (ENTSO-E) | seed 42] Always-ARF-3                                 acc= 86.96  kT=0.3153  F1=0.8671  FNR=0.1754  rho=  0.0%  trees= 3.00  lat=   24.0us  p99=0.043ms
+  [Spain (ENTSO-E) | seed 42] Always-ARF-10                                acc= 88.72  kT=0.4077  F1=0.8855  FNR=0.1411  rho=100.0%  trees=10.00  lat=   62.8us  p99=0.122ms
+  [Spain (ENTSO-E) | seed 42] EE-ARF-10 (Margin-Only Static Gate)          acc= 88.10  kT=0.3752  F1=0.8788  FNR=0.1601  rho= 28.8%  trees= 5.02  lat=   41.1us  p99=0.098ms
+  [Spain (ENTSO-E) | seed 42] EE-ARF-10 (Dormant Replay B=200)             acc= 88.12  kT=0.3763  F1=0.8790  FNR=0.1628  rho= 26.6%  trees= 4.86  lat=   35.0us  p99=0.087ms
+  [Spain (ENTSO-E) | seed 42] EE-ARF-10 (Conformal, final-error loss)      acc= 89.17  kT=0.4313  F1=0.8899  FNR=0.1392  rho= 97.7%  trees= 9.84  lat=   64.1us  p99=0.125ms
+  [Spain (ENTSO-E) | seed 42] EE-ARF-10 (Conformal Gate + Subsampled BG)   acc= 88.47  kT=0.3947  F1=0.8828  FNR=0.1499  rho= 26.3%  trees= 4.84  lat=   38.0us  p99=0.089ms
+  [Spain (ENTSO-E) | seed 7] Always-HT                                    acc= 85.06  kT=0.2155  F1=0.8484  FNR=0.1801  rho=  0.0%  trees= 1.00  lat=    4.5us  p99=0.011ms
+  [Spain (ENTSO-E) | seed 7] Always-HAT                                   acc= 84.36  kT=0.1792  F1=0.8414  FNR=0.1861  rho=  0.0%  trees= 1.00  lat=   84.9us  p99=0.211ms
+  [Spain (ENTSO-E) | seed 7] Always-ARF-2                                 acc= 81.67  kT=0.0375  F1=0.8135  FNR=0.2280  rho=  0.0%  trees= 2.00  lat=   21.4us  p99=0.041ms
+  [Spain (ENTSO-E) | seed 7] Always-ARF-3                                 acc= 85.16  kT=0.2207  F1=0.8491  FNR=0.1858  rho=  0.0%  trees= 3.00  lat=   23.8us  p99=0.043ms
+  [Spain (ENTSO-E) | seed 7] Always-ARF-10                                acc= 89.76  kT=0.4625  F1=0.8958  FNR=0.1420  rho=100.0%  trees=10.00  lat=   65.8us  p99=0.125ms
+  [Spain (ENTSO-E) | seed 7] EE-ARF-10 (Margin-Only Static Gate)          acc= 88.30  kT=0.3859  F1=0.8811  FNR=0.1502  rho= 29.9%  trees= 5.09  lat=   41.1us  p99=0.093ms
+  [Spain (ENTSO-E) | seed 7] EE-ARF-10 (Dormant Replay B=200)             acc= 88.12  kT=0.3765  F1=0.8794  FNR=0.1501  rho= 27.1%  trees= 4.90  lat=   35.8us  p99=0.090ms
+  [Spain (ENTSO-E) | seed 7] EE-ARF-10 (Conformal, final-error loss)      acc= 89.32  kT=0.4394  F1=0.8915  FNR=0.1389  rho= 99.2%  trees= 9.95  lat=   65.2us  p99=0.126ms
+  [Spain (ENTSO-E) | seed 7] EE-ARF-10 (Conformal Gate + Subsampled BG)   acc= 88.62  kT=0.4026  F1=0.8844  FNR=0.1437  rho= 25.7%  trees= 4.80  lat=   38.2us  p99=0.092ms
+  [Spain (ENTSO-E) | seed 123] Always-HT                                    acc= 85.06  kT=0.2155  F1=0.8484  FNR=0.1801  rho=  0.0%  trees= 1.00  lat=    4.5us  p99=0.011ms
+  [Spain (ENTSO-E) | seed 123] Always-HAT                                   acc= 84.63  kT=0.1929  F1=0.8442  FNR=0.1795  rho=  0.0%  trees= 1.00  lat=   82.5us  p99=0.204ms
+  [Spain (ENTSO-E) | seed 123] Always-ARF-2                                 acc= 83.99  kT=0.1597  F1=0.8373  FNR=0.2007  rho=  0.0%  trees= 2.00  lat=   20.8us  p99=0.036ms
+  [Spain (ENTSO-E) | seed 123] Always-ARF-3                                 acc= 85.80  kT=0.2547  F1=0.8553  FNR=0.1914  rho=  0.0%  trees= 3.00  lat=   24.0us  p99=0.040ms
+  [Spain (ENTSO-E) | seed 123] Always-ARF-10                                acc= 89.12  kT=0.4289  F1=0.8891  FNR=0.1534  rho=100.0%  trees=10.00  lat=   63.5us  p99=0.105ms
+  [Spain (ENTSO-E) | seed 123] EE-ARF-10 (Margin-Only Static Gate)          acc= 88.99  kT=0.4221  F1=0.8881  FNR=0.1440  rho= 24.2%  trees= 4.70  lat=   39.3us  p99=0.086ms
+  [Spain (ENTSO-E) | seed 123] EE-ARF-10 (Dormant Replay B=200)             acc= 88.17  kT=0.3791  F1=0.8798  FNR=0.1520  rho= 27.5%  trees= 4.93  lat=   35.6us  p99=0.084ms
+  [Spain (ENTSO-E) | seed 123] EE-ARF-10 (Conformal, final-error loss)      acc= 89.20  kT=0.4330  F1=0.8900  FNR=0.1485  rho= 98.2%  trees= 9.87  lat=   64.3us  p99=0.105ms
+  [Spain (ENTSO-E) | seed 123] EE-ARF-10 (Conformal Gate + Subsampled BG)   acc= 88.76  kT=0.4097  F1=0.8856  FNR=0.1488  rho= 26.1%  trees= 4.83  lat=   37.4us  p99=0.082ms
+  [India (POSOCO/NLDC) | seed 42] Always-HT                                    acc= 81.32  kT=-0.2032  F1=0.7598  FNR=0.4346  rho=  0.0%  trees= 1.00  lat=    4.2us  p99=0.009ms
+  [India (POSOCO/NLDC) | seed 42] Always-HAT                                   acc= 83.45  kT=-0.0663  F1=0.7978  FNR=0.3237  rho=  0.0%  trees= 1.00  lat=   88.1us  p99=0.282ms
+  [India (POSOCO/NLDC) | seed 42] Always-ARF-2                                 acc= 86.31  kT=0.1181  F1=0.8318  FNR=0.2857  rho=  0.0%  trees= 2.00  lat=   20.8us  p99=0.036ms
+  [India (POSOCO/NLDC) | seed 42] Always-ARF-3                                 acc= 87.39  kT=0.1875  F1=0.8411  FNR=0.3056  rho=  0.0%  trees= 3.00  lat=   23.5us  p99=0.038ms
+  [India (POSOCO/NLDC) | seed 42] Always-ARF-10                                acc= 88.51  kT=0.2600  F1=0.8547  FNR=0.2930  rho=100.0%  trees=10.00  lat=   63.5us  p99=0.116ms
+  [India (POSOCO/NLDC) | seed 42] EE-ARF-10 (Margin-Only Static Gate)          acc= 88.93  kT=0.2868  F1=0.8619  FNR=0.2655  rho= 33.0%  trees= 5.31  lat=   38.2us  p99=0.089ms
+  [India (POSOCO/NLDC) | seed 42] EE-ARF-10 (Dormant Replay B=200)             acc= 88.44  kT=0.2554  F1=0.8536  FNR=0.2954  rho= 42.6%  trees= 5.98  lat=   42.1us  p99=0.090ms
+  [India (POSOCO/NLDC) | seed 42] EE-ARF-10 (Conformal, final-error loss)      acc= 89.08  kT=0.2964  F1=0.8627  FNR=0.2741  rho= 90.2%  trees= 9.32  lat=   60.2us  p99=0.107ms
+  [India (POSOCO/NLDC) | seed 42] EE-ARF-10 (Conformal Gate + Subsampled BG)   acc= 88.92  kT=0.2860  F1=0.8605  FNR=0.2794  rho= 38.8%  trees= 5.71  lat=   38.1us  p99=0.086ms
+  [India (POSOCO/NLDC) | seed 7] Always-HT                                    acc= 81.32  kT=-0.2032  F1=0.7598  FNR=0.4346  rho=  0.0%  trees= 1.00  lat=    4.3us  p99=0.011ms
+  [India (POSOCO/NLDC) | seed 7] Always-HAT                                   acc= 83.82  kT=-0.0422  F1=0.8062  FNR=0.2861  rho=  0.0%  trees= 1.00  lat=   85.4us  p99=0.237ms
+  [India (POSOCO/NLDC) | seed 7] Always-ARF-2                                 acc= 85.00  kT=0.0337  F1=0.8153  FNR=0.3111  rho=  0.0%  trees= 2.00  lat=   21.4us  p99=0.044ms
+  [India (POSOCO/NLDC) | seed 7] Always-ARF-3                                 acc= 86.51  kT=0.1308  F1=0.8292  FNR=0.3273  rho=  0.0%  trees= 3.00  lat=   23.6us  p99=0.045ms
+  [India (POSOCO/NLDC) | seed 7] Always-ARF-10                                acc= 88.77  kT=0.2765  F1=0.8575  FNR=0.2924  rho=100.0%  trees=10.00  lat=   64.8us  p99=0.140ms
+  [India (POSOCO/NLDC) | seed 7] EE-ARF-10 (Margin-Only Static Gate)          acc= 88.96  kT=0.2891  F1=0.8630  FNR=0.2580  rho= 32.6%  trees= 5.28  lat=   38.8us  p99=0.106ms
+  [India (POSOCO/NLDC) | seed 7] EE-ARF-10 (Dormant Replay B=200)             acc= 88.57  kT=0.2634  F1=0.8575  FNR=0.2698  rho= 37.5%  trees= 5.62  lat=   40.6us  p99=0.108ms
+  [India (POSOCO/NLDC) | seed 7] EE-ARF-10 (Conformal, final-error loss)      acc= 88.73  kT=0.2742  F1=0.8593  FNR=0.2702  rho= 91.2%  trees= 9.38  lat=   60.4us  p99=0.133ms
+  [India (POSOCO/NLDC) | seed 7] EE-ARF-10 (Conformal Gate + Subsampled BG)   acc= 88.97  kT=0.2895  F1=0.8619  FNR=0.2710  rho= 38.3%  trees= 5.68  lat=   39.2us  p99=0.111ms
+  [India (POSOCO/NLDC) | seed 123] Always-HT                                    acc= 81.32  kT=-0.2032  F1=0.7598  FNR=0.4346  rho=  0.0%  trees= 1.00  lat=    4.2us  p99=0.010ms
+  [India (POSOCO/NLDC) | seed 123] Always-HAT                                   acc= 85.46  kT=0.0633  F1=0.8167  FNR=0.3383  rho=  0.0%  trees= 1.00  lat=   84.8us  p99=0.287ms
+  [India (POSOCO/NLDC) | seed 123] Always-ARF-2                                 acc= 85.60  kT=0.0721  F1=0.8226  FNR=0.3017  rho=  0.0%  trees= 2.00  lat=   21.1us  p99=0.041ms
+  [India (POSOCO/NLDC) | seed 123] Always-ARF-3                                 acc= 87.16  kT=0.1729  F1=0.8393  FNR=0.2997  rho=  0.0%  trees= 3.00  lat=   23.3us  p99=0.043ms
+  [India (POSOCO/NLDC) | seed 123] Always-ARF-10                                acc= 88.07  kT=0.2316  F1=0.8487  FNR=0.3043  rho=100.0%  trees=10.00  lat=   63.7us  p99=0.131ms
+  [India (POSOCO/NLDC) | seed 123] EE-ARF-10 (Margin-Only Static Gate)          acc= 88.79  kT=0.2776  F1=0.8598  FNR=0.2718  rho= 29.3%  trees= 5.05  lat=   37.0us  p99=0.092ms
+  [India (POSOCO/NLDC) | seed 123] EE-ARF-10 (Dormant Replay B=200)             acc= 88.63  kT=0.2676  F1=0.8570  FNR=0.2824  rho= 38.8%  trees= 5.72  lat=   41.2us  p99=0.099ms
+  [India (POSOCO/NLDC) | seed 123] EE-ARF-10 (Conformal, final-error loss)      acc= 88.69  kT=0.2715  F1=0.8572  FNR=0.2875  rho= 90.9%  trees= 9.37  lat=   59.9us  p99=0.127ms
+  [India (POSOCO/NLDC) | seed 123] EE-ARF-10 (Conformal Gate + Subsampled BG)   acc= 89.17  kT=0.3021  F1=0.8645  FNR=0.2659  rho= 38.7%  trees= 5.71  lat=   39.0us  p99=0.094ms
+
+STAGE 3 - sensitivity sweeps on test (seed 42; NOT used for selection)
+  [Spain (ENTSO-E)] conformal a=0.02 p_bg=0.0    kT=0.3868 FNR=0.1500 rho= 47.9% trees=6.35 lat=45.2us
+  [Spain (ENTSO-E)] conformal a=0.02 p_bg=0.1    kT=0.4253 FNR=0.1402 rho= 45.2% trees=6.16 lat=45.5us
+  [Spain (ENTSO-E)] conformal a=0.02 p_bg=0.2    kT=0.4133 FNR=0.1487 rho= 45.8% trees=6.21 lat=47.1us
+  [Spain (ENTSO-E)] conformal a=0.05 p_bg=0.0    kT=0.3921 FNR=0.1519 rho= 24.4% trees=4.71 lat=33.5us
+  [Spain (ENTSO-E)] conformal a=0.05 p_bg=0.1    kT=0.3748 FNR=0.1553 rho= 25.5% trees=4.78 lat=36.5us
+  [Spain (ENTSO-E)] conformal a=0.05 p_bg=0.2    kT=0.3947 FNR=0.1499 rho= 26.3% trees=4.84 lat=38.5us
+  [Spain (ENTSO-E)] conformal a=0.1 p_bg=0.0     kT=0.3688 FNR=0.1529 rho=  8.3% trees=3.58 lat=26.9us
+  [Spain (ENTSO-E)] conformal a=0.1 p_bg=0.1     kT=0.3296 FNR=0.1523 rho=  9.5% trees=3.67 lat=30.2us
+  [Spain (ENTSO-E)] conformal a=0.1 p_bg=0.2     kT=0.3724 FNR=0.1542 rho=  7.0% trees=3.49 lat=32.0us
+  [Spain (ENTSO-E)] conformal a=0.15 p_bg=0.0    kT=0.2787 FNR=0.1706 rho=  2.6% trees=3.18 lat=23.3us
+  [Spain (ENTSO-E)] conformal a=0.15 p_bg=0.1    kT=0.2312 FNR=0.1707 rho=  4.2% trees=3.30 lat=27.5us
+  [Spain (ENTSO-E)] conformal a=0.15 p_bg=0.2    kT=0.3172 FNR=0.1767 rho=  3.3% trees=3.23 lat=29.6us
+  [Spain (ENTSO-E)] static tau=0.05              kT=0.2847 FNR=0.1744 rho=  3.6% trees=3.25 lat=30.3us
+  [Spain (ENTSO-E)] static tau=0.1               kT=0.3397 FNR=0.1717 rho=  5.9% trees=3.41 lat=30.9us
+  [Spain (ENTSO-E)] static tau=0.2               kT=0.3301 FNR=0.1621 rho= 12.2% trees=3.86 lat=33.7us
+  [Spain (ENTSO-E)] static tau=0.3               kT=0.3896 FNR=0.1601 rho= 18.9% trees=4.33 lat=37.5us
+  [Spain (ENTSO-E)] static tau=0.4               kT=0.3752 FNR=0.1601 rho= 28.8% trees=5.02 lat=40.0us
+  [Spain (ENTSO-E)] static tau=0.5               kT=0.3789 FNR=0.1558 rho= 37.5% trees=5.63 lat=43.5us
+  [Spain (ENTSO-E)] static tau=0.6               kT=0.3885 FNR=0.1554 rho= 41.6% trees=5.91 lat=45.6us
+  [Spain (ENTSO-E)] conformal w_fn=1             kT=0.3947 FNR=0.1499 rho= 26.3% trees=4.84 lat=39.0us
+  [Spain (ENTSO-E)] conformal w_fn=5             kT=0.3714 FNR=0.1539 rho= 16.3% trees=4.14 lat=35.0us
+  [Spain (ENTSO-E)] conformal w_fn=10            kT=0.3418 FNR=0.1610 rho= 19.0% trees=4.33 lat=36.4us
+  [India (POSOCO/NLDC)] conformal a=0.02 p_bg=0.0    kT=0.2860 FNR=0.2794 rho= 38.8% trees=5.71 lat=38.6us
+  [India (POSOCO/NLDC)] conformal a=0.02 p_bg=0.1    kT=0.2868 FNR=0.2743 rho= 38.4% trees=5.68 lat=40.9us
+  [India (POSOCO/NLDC)] conformal a=0.02 p_bg=0.2    kT=0.2653 FNR=0.2771 rho= 37.3% trees=5.61 lat=42.6us
+  [India (POSOCO/NLDC)] conformal a=0.05 p_bg=0.0    kT=0.2508 FNR=0.2659 rho= 21.0% trees=4.47 lat=32.8us
+  [India (POSOCO/NLDC)] conformal a=0.05 p_bg=0.1    kT=0.2830 FNR=0.2664 rho= 21.8% trees=4.53 lat=35.1us
+  [India (POSOCO/NLDC)] conformal a=0.05 p_bg=0.2    kT=0.2558 FNR=0.2930 rho= 18.7% trees=4.31 lat=35.4us
+  [India (POSOCO/NLDC)] conformal a=0.1 p_bg=0.0     kT=0.1350 FNR=0.3269 rho=  6.4% trees=3.45 lat=25.3us
+  [India (POSOCO/NLDC)] conformal a=0.1 p_bg=0.1     kT=0.1656 FNR=0.3318 rho=  5.1% trees=3.36 lat=28.3us
+  [India (POSOCO/NLDC)] conformal a=0.1 p_bg=0.2     kT=0.1848 FNR=0.3046 rho=  5.1% trees=3.35 lat=30.7us
+  [India (POSOCO/NLDC)] conformal a=0.15 p_bg=0.0    kT=0.1672 FNR=0.3202 rho=  2.2% trees=3.15 lat=22.7us
+  [India (POSOCO/NLDC)] conformal a=0.15 p_bg=0.1    kT=0.1814 FNR=0.3119 rho=  2.9% trees=3.21 lat=27.3us
+  [India (POSOCO/NLDC)] conformal a=0.15 p_bg=0.2    kT=0.1829 FNR=0.2826 rho=  2.1% trees=3.15 lat=29.8us
+  [India (POSOCO/NLDC)] static tau=0.05              kT=0.1369 FNR=0.3155 rho=  3.2% trees=3.22 lat=23.7us
+  [India (POSOCO/NLDC)] static tau=0.1               kT=0.1783 FNR=0.3007 rho=  5.1% trees=3.36 lat=23.7us
+  [India (POSOCO/NLDC)] static tau=0.2               kT=0.2036 FNR=0.2968 rho=  9.4% trees=3.65 lat=26.1us
+  [India (POSOCO/NLDC)] static tau=0.3               kT=0.2412 FNR=0.2785 rho= 15.2% trees=4.06 lat=28.9us
+  [India (POSOCO/NLDC)] static tau=0.4               kT=0.2512 FNR=0.2700 rho= 21.2% trees=4.48 lat=31.7us
+  [India (POSOCO/NLDC)] static tau=0.5               kT=0.2975 FNR=0.2546 rho= 23.6% trees=4.65 lat=31.9us
+  [India (POSOCO/NLDC)] static tau=0.6               kT=0.2868 FNR=0.2655 rho= 33.0% trees=5.31 lat=37.2us
+  [India (POSOCO/NLDC)] conformal w_fn=1             kT=0.2929 FNR=0.2710 rho= 40.4% trees=5.83 lat=40.4us
+  [India (POSOCO/NLDC)] conformal w_fn=5             kT=0.2860 FNR=0.2794 rho= 38.8% trees=5.71 lat=39.2us
+  [India (POSOCO/NLDC)] conformal w_fn=10            kT=0.2554 FNR=0.2850 rho= 42.7% trees=5.99 lat=40.8us
+
+STAGE 4 - weekly-block significance tests (seed 42 predictions)
+  [Spain (ENTSO-E) | accuracy] Friedman chi2=415.83 p=7.686e-85
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HT                                Δ=+3.4124  W/T/L=128/5/13  p_holm=8.935e-21 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HAT                               Δ=+3.3268  W/T/L=128/6/12  p_holm=8.463e-21 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-2                             Δ=+3.0333  W/T/L=106/5/35  p_holm=4.218e-11 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-3                             Δ=+1.5126  W/T/L=100/16/30 p_holm=2.129e-09 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-10                            Δ=-0.2487  W/T/L=51/24/71  p_holm=3.000e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Margin-Only Static Gate)      Δ=+0.3710  W/T/L=73/15/58  p_holm=3.000e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Dormant Replay B=200)         Δ=+0.3506  W/T/L=74/18/54  p_holm=2.904e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Conformal, final-error loss)  Δ=-0.6972  W/T/L=46/15/85  p_holm=6.386e-04 *
+  [Spain (ENTSO-E) | kappa_temporal] Friedman chi2=415.83 p=7.686e-85
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HT                                Δ=+0.1776  W/T/L=128/5/13  p_holm=1.176e-20 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HAT                               Δ=+0.1756  W/T/L=128/6/12  p_holm=1.030e-20 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-2                             Δ=+0.1560  W/T/L=106/5/35  p_holm=4.122e-11 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-3                             Δ=+0.0795  W/T/L=100/16/30 p_holm=2.196e-09 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-10                            Δ=-0.0145  W/T/L=51/24/71  p_holm=3.881e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Margin-Only Static Gate)      Δ=+0.0178  W/T/L=73/15/58  p_holm=3.881e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Dormant Replay B=200)         Δ=+0.0155  W/T/L=74/18/54  p_holm=3.881e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Conformal, final-error loss)  Δ=-0.0369  W/T/L=46/15/85  p_holm=5.993e-04 *
+  [India (POSOCO/NLDC) | accuracy] Friedman chi2=230.09 p=2.831e-45
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HT                                Δ=+7.5952  W/T/L=81/6/13   p_holm=1.396e-12 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HAT                               Δ=+5.4702  W/T/L=79/8/13   p_holm=3.813e-13 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-2                             Δ=+2.6071  W/T/L=72/13/15  p_holm=9.548e-10 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-3                             Δ=+1.5298  W/T/L=61/10/29  p_holm=2.705e-04 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-10                            Δ=+0.4048  W/T/L=51/11/38  p_holm=5.515e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Margin-Only Static Gate)      Δ=-0.0119  W/T/L=42/9/49   p_holm=9.133e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Dormant Replay B=200)         Δ=+0.4762  W/T/L=37/34/29  p_holm=5.891e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Conformal, final-error loss)  Δ=-0.1607  W/T/L=40/14/46  p_holm=9.133e-01 
+  [India (POSOCO/NLDC) | kappa_temporal] Friedman chi2=230.09 p=2.831e-45
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HT                                Δ=+0.8528  W/T/L=81/6/13   p_holm=2.794e-12 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-HAT                               Δ=+0.3496  W/T/L=79/8/13   p_holm=9.215e-13 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-2                             Δ=+0.1787  W/T/L=72/13/15  p_holm=2.437e-09 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-3                             Δ=+0.0895  W/T/L=61/10/29  p_holm=7.976e-04 *
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs Always-ARF-10                            Δ=+0.0211  W/T/L=51/11/38  p_holm=6.663e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Margin-Only Static Gate)      Δ=-0.0191  W/T/L=42/9/49   p_holm=8.810e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Dormant Replay B=200)         Δ=+0.0254  W/T/L=37/34/29  p_holm=6.663e-01 
+     EE-ARF-10 (Conformal Gate + Subsampled BG) vs EE-ARF-10 (Conformal, final-error loss)  Δ=-0.0258  W/T/L=40/14/46  p_holm=8.810e-01 
+
+# EE-ARF-10 test-split summary
+
+Seeds: [42, 7, 123] (metrics are seed means). Config SHA-256: `053e5700259c8aeca58d95b217ef626e4ecea2e2fd1c64a41cdb740cd93a43d0`
+
+## Spain (ENTSO-E)
+
+| Model | Acc % | κ_temporal (±sd) | κ_Cohen | Macro-F1 | PR-AUC | FNR | ρ % | Trees eval | Trees trained | Mean µs | P99 ms | Max ms |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Always-HT | 85.06 | 0.2155 (±0.0000) | 0.6968 | 0.8484 | 0.8311 | 0.1801 | 0.0 | 1.00 | 1.00 | 4.5 | 0.011 | 0.089 |
+| Always-HAT | 84.71 | 0.1973 (±0.0208) | 0.6897 | 0.8448 | 0.8526 | 0.1848 | 0.0 | 1.00 | 1.00 | 84.2 | 0.211 | 1.635 |
+| Always-ARF-2 | 83.70 | 0.1442 (±0.0999) | 0.6688 | 0.8344 | 0.8958 | 0.2005 | 0.0 | 2.00 | 2.00 | 21.0 | 0.039 | 0.242 |
+| Always-ARF-3 | 85.97 | 0.2636 (±0.0479) | 0.7145 | 0.8572 | 0.9200 | 0.1842 | 0.0 | 3.00 | 3.00 | 23.9 | 0.042 | 1.086 |
+| Always-ARF-10 | 89.20 | 0.4331 (±0.0276) | 0.7804 | 0.8901 | 0.9501 | 0.1455 | 100.0 | 10.00 | 10.00 | 64.1 | 0.118 | 0.557 |
+| EE-ARF-10 (Margin-Only Static Gate) | 88.46 | 0.3944 (±0.0246) | 0.7655 | 0.8827 | 0.9333 | 0.1514 | 27.6 | 4.93 | 5.95 | 40.5 | 0.092 | 0.973 |
+| EE-ARF-10 (Dormant Replay B=200) | 88.14 | 0.3773 (±0.0015) | 0.7588 | 0.8794 | 0.9312 | 0.1550 | 27.1 | 4.90 | 5.01 | 35.4 | 0.087 | 5.969 |
+| EE-ARF-10 (Conformal, final-error loss) | 89.23 | 0.4346 (±0.0043) | 0.7811 | 0.8905 | 0.9491 | 0.1422 | 98.4 | 9.89 | 9.91 | 64.6 | 0.119 | 0.604 |
+| **EE-ARF-10 (Conformal Gate + Subsampled BG)** | 88.62 | 0.4023 (±0.0075) | 0.7686 | 0.8843 | 0.9348 | 0.1475 | 26.1 | 4.82 | 5.87 | 37.9 | 0.088 | 2.212 |
+
+Dominance (proposed vs. baseline):
+
+- vs Always-ARF-3: Δκ_T = +0.1388; latency ×1.58; trees ×1.61 → (κ_T, latency): **trade-off**, (κ_T, trees): **trade-off**
+- vs Always-ARF-10: Δκ_T = -0.0308; latency ×0.59; trees ×0.48 → (κ_T, latency): **trade-off**, (κ_T, trees): **trade-off**
+- Gap closed from ARF-3 to ARF-10 (κ_T): 81.9%
+
+## India (POSOCO/NLDC)
+
+| Model | Acc % | κ_temporal (±sd) | κ_Cohen | Macro-F1 | PR-AUC | FNR | ρ % | Trees eval | Trees trained | Mean µs | P99 ms | Max ms |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Always-HT | 81.32 | -0.2032 (±0.0000) | 0.5232 | 0.7598 | 0.7240 | 0.4346 | 0.0 | 1.00 | 1.00 | 4.3 | 0.010 | 0.070 |
+| Always-HAT | 84.24 | -0.0151 (±0.0689) | 0.6145 | 0.8069 | 0.7615 | 0.3161 | 0.0 | 1.00 | 1.00 | 86.1 | 0.269 | 3.202 |
+| Always-ARF-2 | 85.63 | 0.0746 (±0.0422) | 0.6470 | 0.8232 | 0.8360 | 0.2995 | 0.0 | 2.00 | 2.00 | 21.1 | 0.041 | 0.805 |
+| Always-ARF-3 | 87.02 | 0.1637 (±0.0295) | 0.6745 | 0.8365 | 0.8626 | 0.3109 | 0.0 | 3.00 | 3.00 | 23.5 | 0.042 | 0.273 |
+| Always-ARF-10 | 88.45 | 0.2560 (±0.0227) | 0.7088 | 0.8536 | 0.9034 | 0.2966 | 100.0 | 10.00 | 10.00 | 64.0 | 0.129 | 1.994 |
+| EE-ARF-10 (Margin-Only Static Gate) | 88.89 | 0.2845 (±0.0061) | 0.7239 | 0.8616 | 0.8814 | 0.2651 | 31.6 | 5.21 | 5.21 | 38.0 | 0.096 | 0.432 |
+| EE-ARF-10 (Dormant Replay B=200) | 88.55 | 0.2621 (±0.0062) | 0.7133 | 0.8561 | 0.8844 | 0.2825 | 39.6 | 5.78 | 6.14 | 41.3 | 0.099 | 6.116 |
+| EE-ARF-10 (Conformal, final-error loss) | 88.83 | 0.2807 (±0.0137) | 0.7206 | 0.8597 | 0.9026 | 0.2773 | 90.8 | 9.35 | 9.35 | 60.1 | 0.122 | 0.407 |
+| **EE-ARF-10 (Conformal Gate + Subsampled BG)** | 89.02 | 0.2926 (±0.0085) | 0.7256 | 0.8623 | 0.8899 | 0.2721 | 38.6 | 5.70 | 5.70 | 38.8 | 0.097 | 0.318 |
+
+Dominance (proposed vs. baseline):
+
+- vs Always-ARF-3: Δκ_T = +0.1288; latency ×1.65; trees ×1.90 → (κ_T, latency): **trade-off**, (κ_T, trees): **trade-off**
+- vs Always-ARF-10: Δκ_T = +0.0366; latency ×0.61; trees ×0.57 → (κ_T, latency): **dominates**, (κ_T, trees): **dominates**
+- Gap closed from ARF-3 to ARF-10 (κ_T): 139.6%
+
+Notes: latency = one predict+learn step on this host (Python/river), not an embedded target. Avg trees evaluated ≥ 3 for EE-ARF-10 by construction (always-on core).
+
+
+Done in 116s. Outputs in results/ee_arf/

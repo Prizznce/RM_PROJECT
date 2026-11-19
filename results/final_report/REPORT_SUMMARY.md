@@ -1,0 +1,182 @@
+# Final Report Summary — EE-ARF-10 with Drift-Adaptive Conformal Gate
+
+Spain (ENTSO-E) and India (NLDC/POSOCO) are evaluated **strictly separately**: separate streams, separate validation-selected configs, separate statistics. Protocol: strict prequential test-then-train, cold start at the first test hour, day-aligned splits, seeds 42 / 7 / 123 (tables = seed means), all models stepped in lockstep so they share host timing conditions.
+
+## Reproducibility
+
+- EE-ARF-10 frozen config `configs/ee_arf_frozen_config.json` — SHA-256 `053e5700259c8aeca58d95b217ef626e4ecea2e2fd1c64a41cdb740cd93a43d0` (verified; canonical-JSON hash, line-ending independent)
+- CGT-v3 / ARF-3 config `configs/fair_comparison_frozen_configs.json` — SHA-256 `433f0e3d8b6a51d6bbe39100fa16b2ba4a75f4d44184fbb95f57d5edd6dfee1c` (verified)
+- CGT-v4 config `configs/cgt_v4_frozen_config.json` — SHA-256 `6fa438b27732b499a3f2abf6ef3afa2f6c2e5fd503c1d9aeefacb3246d027d6b` (verified)
+- Data files SHA-256 match the values recorded at freezing time. Library versions: python 3.13.6, river 0.27.0, numpy 2.5.5, pandas 3.1.1, scipy 1.18.1, scikit-learn 1.9.1, matplotlib 3.11.2
+
+## 1. Dataset & target audit
+
+| | Spain (ENTSO-E) | India (POSOCO/NLDC) |
+|---|---|---|
+| Total hours in CSV | 35,064 | 20,448 |
+| Stream instances (after 24 h lag warm-up) | 35,040 | 20,424 |
+| Validation hours | 10,512 | 3,624 |
+| Validation range | 2015-01-02 → 2016-03-14 23:00 | 2021-09-02 → 2022-01-30 23:00 |
+| Frozen test hours | 24,528 | 16,800 |
+| Test range | 2016-03-15 → 2018-12-31 23:00 | 2022-01-31 → 2023-12-31 23:00 |
+| Test weeks (168 h blocks) | 146 | 100 |
+| Validation class 0 / 1 (%) | 54.71 / 45.29 | 79.44 / 20.56 |
+| Test class 0 / 1 (%) | 55.48 / 44.52 | 69.77 / 30.23 |
+| Majority class (from validation) | 0 | 0 |
+| Majority-class baseline test accuracy (%) | 55.48 | 69.77 |
+| Persistence (ŷ_t = y_{t−1}) test accuracy (%) | 80.95 | 84.48 |
+
+**Binary targets (exact):**
+
+- **Spain (ENTSO-E)**: `y_t = int(Demand_t > Demand_{t-1})   [src/data/stream_loader.py: hourly load-direction, 1 = demand rises]`
+- **India (POSOCO/NLDC)**: `y_t = int( pct_change(Demand)_t > 0.035  OR  Demand_t >= Q85(Demand)  OR  pct_change(Net_Demand)_t > 0.05 )   [scripts/compile_real_posoco_scada.py: grid-stress event, 1 = stress]. NOTE: Q85 is computed over the FULL 2021-2023 series (non-causal label threshold).`
+
+> India: the 85th-percentile demand threshold in the label is computed over the full 2021–2023 series (look-ahead in the *label definition*, not in the features). Class-1 share rises from 20.6% (validation) to 30.2% (test).
+
+## 2. Spain (ENTSO-E) — benchmark (test split, 146 weeks)
+
+| Model | Acc % | κ_temporal | κ_Cohen | Macro-F1 | PR-AUC | FNR % | Prec₁ % | Rec₁ % | Trees/sample | ρ % | Mean µs | P95 µs | P99 ms | Max ms | Speed-up vs ARF-10 (latency / trees) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Always-HT | 85.06 ± 0.00 | 0.2155 ± 0.0000 | 0.6968 | 0.8484 | 0.8311 | 18.01 | 84.05 | 81.99 | 1.00 | 0.0 | 4.3 | 4.9 | 0.010 | 0.608 | 14.91× / 10.00× |
+| Always-HAT | 84.71 ± 0.40 | 0.1973 ± 0.0208 | 0.6897 | 0.8448 | 0.8526 | 18.48 | 83.72 | 81.52 | 1.00 | 0.0 | 86.2 | 127.5 | 0.199 | 1.497 | 0.74× / 10.00× |
+| Always-ARF-2 | 83.70 ± 1.90 | 0.1442 ± 0.0999 | 0.6688 | 0.8344 | 0.8958 | 20.05 | 82.82 | 79.95 | 2.00 | 0.0 | 21.8 | 28.3 | 0.038 | 1.244 | 2.93× / 5.00× |
+| Always-ARF-3 | 85.97 ± 0.91 | 0.2636 ± 0.0479 | 0.7145 | 0.8572 | 0.9200 | 18.42 | 86.18 | 81.58 | 3.00 | 0.0 | 24.1 | 31.1 | 0.040 | 0.218 | 2.66× / 3.33× |
+| Always-ARF-10 | 89.20 ± 0.53 | 0.4331 ± 0.0276 | 0.7804 | 0.8901 | 0.9501 | 14.55 | 89.81 | 85.45 | 10.00 | 100.0 | 64.0 | 76.0 | 0.111 | 0.348 | 1.00× / 1.00× |
+| OMS-MAB (Wilson et al. 2024) | 86.49 ± 0.18 | 0.2905 ± 0.0093 | 0.7261 | 0.8630 | 0.8639 | 15.87 | 85.31 | 84.13 | 6.73 | 63.7 | 73.2 | 123.7 | 0.155 | 1.655 | 0.87× / 1.49× |
+| CGT-v3 (learned gate, replay B=200) | 85.28 ± 0.02 | 0.2270 ± 0.0010 | 0.7013 | 0.8507 | 0.8320 | 17.54 | 84.14 | 82.46 | 1.13 | 4.5 | 43.0 | 62.4 | 0.078 | 3.078 | 1.49× / 8.82× |
+| CGT-v4 (amortized replay) | 85.43 ± 0.17 | 0.2351 ± 0.0089 | 0.7047 | 0.8524 | 0.8314 | 16.95 | 84.03 | 83.05 | 1.16 | 5.3 | 26.8 | 50.3 | 0.067 | 0.336 | 2.39× / 8.63× |
+| EE-ARF-10 · static margin gate | 88.46 ± 0.47 | 0.3944 ± 0.0246 | 0.7655 | 0.8827 | 0.9333 | 15.14 | 88.74 | 84.86 | 4.93 | 27.6 | 44.2 | 77.3 | 0.097 | 0.424 | 1.45× / 2.03× |
+| EE-ARF-10 · dormant replay B=200 | 88.14 ± 0.03 | 0.3773 ± 0.0015 | 0.7588 | 0.8794 | 0.9312 | 15.50 | 88.35 | 84.50 | 4.90 | 27.1 | 36.6 | 74.0 | 0.087 | 5.792 | 1.75× / 2.04× |
+| EE-ARF-10 · conformal, final-error loss | 89.23 ± 0.08 | 0.4346 ± 0.0043 | 0.7811 | 0.8905 | 0.9491 | 14.22 | 89.59 | 85.78 | 9.89 | 98.4 | 65.3 | 78.7 | 0.109 | 0.455 | 0.98× / 1.01× |
+| **EE-ARF-10 · conformal + subsampled BG (proposed)** | 88.62 ± 0.14 | 0.4023 ± 0.0075 | 0.7686 | 0.8843 | 0.9348 | 14.75 | 88.73 | 85.25 | 4.82 | 26.1 | 37.9 | 70.0 | 0.083 | 0.323 | 1.69× / 2.07× |
+
+## 3. India (POSOCO/NLDC) — benchmark (test split, 100 weeks)
+
+| Model | Acc % | κ_temporal | κ_Cohen | Macro-F1 | PR-AUC | FNR % | Prec₁ % | Rec₁ % | Trees/sample | ρ % | Mean µs | P95 µs | P99 ms | Max ms | Speed-up vs ARF-10 (latency / trees) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Always-HT | 81.32 ± 0.00 | -0.2032 ± 0.0000 | 0.5232 | 0.7598 | 0.7240 | 43.46 | 75.51 | 56.54 | 1.00 | 0.0 | 4.1 | 4.9 | 0.009 | 0.054 | 15.72× / 10.00× |
+| Always-HAT | 84.24 ± 1.07 | -0.0151 ± 0.0689 | 0.6145 | 0.8069 | 0.7615 | 31.61 | 77.17 | 68.39 | 1.00 | 0.0 | 88.7 | 148.2 | 0.299 | 1.271 | 0.73× / 10.00× |
+| Always-ARF-2 | 85.63 ± 0.66 | 0.0746 ± 0.0422 | 0.6470 | 0.8232 | 0.8360 | 29.95 | 79.94 | 70.05 | 2.00 | 0.0 | 22.1 | 28.4 | 0.039 | 0.216 | 2.95× / 5.00× |
+| Always-ARF-3 | 87.02 ± 0.46 | 0.1637 ± 0.0295 | 0.6745 | 0.8365 | 0.8626 | 31.09 | 85.32 | 68.91 | 3.00 | 0.0 | 23.9 | 30.5 | 0.040 | 0.908 | 2.72× / 3.33× |
+| Always-ARF-10 | 88.45 ± 0.35 | 0.2560 ± 0.0227 | 0.7088 | 0.8536 | 0.9034 | 29.66 | 89.16 | 70.34 | 10.00 | 100.0 | 65.0 | 76.7 | 0.127 | 0.345 | 1.00× / 1.00× |
+| OMS-MAB (Wilson et al. 2024) | 86.22 ± 0.10 | 0.1123 ± 0.0065 | 0.6559 | 0.8273 | 0.7955 | 31.70 | 83.11 | 68.30 | 6.17 | 57.4 | 69.7 | 121.2 | 0.160 | 0.406 | 0.93× / 1.62× |
+| CGT-v3 (learned gate, replay B=200) | 84.09 ± 0.17 | -0.0247 ± 0.0108 | 0.6004 | 0.7993 | 0.7581 | 36.23 | 79.55 | 63.77 | 1.33 | 11.1 | 45.6 | 65.1 | 0.082 | 2.955 | 1.43× / 7.50× |
+| CGT-v4 (amortized replay) | 83.44 ± 0.88 | -0.0670 ± 0.0570 | 0.5819 | 0.7898 | 0.7498 | 38.08 | 78.72 | 61.92 | 1.33 | 10.9 | 29.1 | 58.3 | 0.083 | 0.550 | 2.23× / 7.54× |
+| EE-ARF-10 · static margin gate | 88.89 ± 0.09 | 0.2845 ± 0.0061 | 0.7239 | 0.8616 | 0.8814 | 26.51 | 87.77 | 73.49 | 5.21 | 31.6 | 42.3 | 81.1 | 0.103 | 0.389 | 1.54× / 1.92× |
+| EE-ARF-10 · dormant replay B=200 | 88.55 ± 0.10 | 0.2621 ± 0.0062 | 0.7133 | 0.8561 | 0.8844 | 28.25 | 88.17 | 71.75 | 5.78 | 39.6 | 43.3 | 76.6 | 0.098 | 6.146 | 1.50× / 1.73× |
+| EE-ARF-10 · conformal, final-error loss | 88.83 ± 0.21 | 0.2807 ± 0.0137 | 0.7206 | 0.8597 | 0.9026 | 27.73 | 88.70 | 72.27 | 9.35 | 90.8 | 62.1 | 77.9 | 0.119 | 1.072 | 1.05× / 1.07× |
+| **EE-ARF-10 · conformal + subsampled BG (proposed)** | 89.02 ± 0.13 | 0.2926 ± 0.0085 | 0.7256 | 0.8623 | 0.8899 | 27.21 | 88.86 | 72.79 | 5.70 | 38.6 | 39.6 | 73.9 | 0.090 | 0.610 | 1.64× / 1.75× |
+
+## 4. Ablation study (both streams)
+
+| Stream | Variant | What changes vs. proposed | κ_temporal | Acc % | FNR % | Trees/sample | ρ % | Mean µs | Max ms |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| Spain (ENTSO-E) | **EE-ARF-10 · conformal + subsampled BG (proposed)** | — | 0.4023 | 88.62 | 14.75 | 4.82 | 26.1 | 37.9 | 0.323 |
+| Spain (ENTSO-E) | EE-ARF-10 · static margin gate | fixed τ (validation-tuned), no adaptation | 0.3944 | 88.46 | 15.14 | 4.93 | 27.6 | 44.2 | 0.424 |
+| Spain (ENTSO-E) | EE-ARF-10 · dormant replay B=200 | no background updates; trees 4–10 learn only when gated + B=200 replay on ADWIN alarm | 0.3773 | 88.14 | 15.50 | 4.90 | 27.1 | 36.6 | 5.792 |
+| Spain (ENTSO-E) | EE-ARF-10 · conformal, final-error loss | conformal loss = final 0-1 error instead of exit error | 0.4346 | 89.23 | 14.22 | 9.89 | 98.4 | 65.3 | 0.455 |
+| Spain (ENTSO-E) | CGT-v4 (amortized replay) | previous architecture (v4) | 0.2351 | 85.43 | 16.95 | 1.16 | 5.3 | 26.8 | 0.336 |
+| Spain (ENTSO-E) | CGT-v3 (learned gate, replay B=200) | previous architecture (v3) | 0.2270 | 85.28 | 17.54 | 1.13 | 4.5 | 43.0 | 3.078 |
+| Spain (ENTSO-E) | Always-ARF-10 | no early exit (all 10 trees always) | 0.4331 | 89.20 | 14.55 | 10.00 | 100.0 | 64.0 | 0.348 |
+| India (POSOCO/NLDC) | **EE-ARF-10 · conformal + subsampled BG (proposed)** | — | 0.2926 | 89.02 | 27.21 | 5.70 | 38.6 | 39.6 | 0.610 |
+| India (POSOCO/NLDC) | EE-ARF-10 · static margin gate | fixed τ (validation-tuned), no adaptation | 0.2845 | 88.89 | 26.51 | 5.21 | 31.6 | 42.3 | 0.389 |
+| India (POSOCO/NLDC) | EE-ARF-10 · dormant replay B=200 | no background updates; trees 4–10 learn only when gated + B=200 replay on ADWIN alarm | 0.2621 | 88.55 | 28.25 | 5.78 | 39.6 | 43.3 | 6.146 |
+| India (POSOCO/NLDC) | EE-ARF-10 · conformal, final-error loss | conformal loss = final 0-1 error instead of exit error | 0.2807 | 88.83 | 27.73 | 9.35 | 90.8 | 62.1 | 1.072 |
+| India (POSOCO/NLDC) | CGT-v4 (amortized replay) | previous architecture (v4) | -0.0670 | 83.44 | 38.08 | 1.33 | 10.9 | 29.1 | 0.550 |
+| India (POSOCO/NLDC) | CGT-v3 (learned gate, replay B=200) | previous architecture (v3) | -0.0247 | 84.09 | 36.23 | 1.33 | 11.1 | 45.6 | 2.955 |
+| India (POSOCO/NLDC) | Always-ARF-10 | no early exit (all 10 trees always) | 0.2560 | 88.45 | 29.66 | 10.00 | 100.0 | 65.0 | 0.345 |
+
+## 5. Conformal risk verification (target α vs. empirical risk ℓ̂)
+
+ℓ̂ = mean exit-error loss (w_FN-weighted, normalised). Online conformal control guarantees the **long-run average** ℓ̂ → α; it does not guarantee ℓ̂ ≤ α in every window. Both are reported.
+
+| Stream | α | p_bg | ℓ̂ (overall) | ℓ̂ − α | % of 30-day windows with ℓ̂ ≤ α | max 30-day ℓ̂ | ρ % | κ_temporal |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Spain (ENTSO-E) | 0.02 | 0.0 | 0.0212 | +0.0012 | 53.4 | 0.0528 | 47.9 | 0.3868 |
+| Spain (ENTSO-E) | 0.02 | 0.1 | 0.0216 | +0.0016 | 46.8 | 0.0583 | 45.2 | 0.4253 |
+| Spain (ENTSO-E) | 0.02 | 0.2 | 0.0212 | +0.0012 | 50.9 | 0.0625 | 45.8 | 0.4133 |
+| Spain (ENTSO-E) | 0.05 | 0.0 | 0.0506 | +0.0006 | 52.3 | 0.0736 | 24.4 | 0.3921 |
+| Spain (ENTSO-E) | 0.05 | 0.1 | 0.0500 | +0.0000 | 56.7 | 0.0708 | 25.5 | 0.3748 |
+| Spain (ENTSO-E) | 0.05 ◀ frozen | 0.2 | 0.0505 | +0.0005 | 53.1 | 0.0778 | 26.3 | 0.3947 |
+| Spain (ENTSO-E) | 0.1 | 0.0 | 0.0957 | -0.0043 | 62.9 | 0.1250 | 8.3 | 0.3688 |
+| Spain (ENTSO-E) | 0.1 | 0.1 | 0.0985 | -0.0015 | 61.0 | 0.1347 | 9.5 | 0.3296 |
+| Spain (ENTSO-E) | 0.1 | 0.2 | 0.0973 | -0.0027 | 65.1 | 0.1222 | 7.0 | 0.3724 |
+| Spain (ENTSO-E) | 0.15 | 0.0 | 0.1278 | -0.0222 | 96.0 | 0.1653 | 2.6 | 0.2787 |
+| Spain (ENTSO-E) | 0.15 | 0.1 | 0.1339 | -0.0161 | 89.9 | 0.1639 | 4.2 | 0.2312 |
+| Spain (ENTSO-E) | 0.15 | 0.2 | 0.1208 | -0.0292 | 93.6 | 0.1611 | 3.3 | 0.3172 |
+| India (POSOCO/NLDC) | 0.02 ◀ frozen | 0.0 | 0.0236 | +0.0036 | 52.9 | 0.0819 | 38.8 | 0.2860 |
+| India (POSOCO/NLDC) | 0.02 | 0.1 | 0.0235 | +0.0035 | 51.3 | 0.0583 | 38.4 | 0.2868 |
+| India (POSOCO/NLDC) | 0.02 | 0.2 | 0.0236 | +0.0036 | 47.6 | 0.0792 | 37.3 | 0.2653 |
+| India (POSOCO/NLDC) | 0.05 | 0.0 | 0.0496 | -0.0004 | 57.6 | 0.0978 | 21.0 | 0.2508 |
+| India (POSOCO/NLDC) | 0.05 | 0.1 | 0.0503 | +0.0003 | 51.7 | 0.1000 | 21.8 | 0.2830 |
+| India (POSOCO/NLDC) | 0.05 | 0.2 | 0.0490 | -0.0010 | 53.6 | 0.1097 | 18.7 | 0.2558 |
+| India (POSOCO/NLDC) | 0.1 | 0.0 | 0.0926 | -0.0074 | 58.0 | 0.1603 | 6.4 | 0.1350 |
+| India (POSOCO/NLDC) | 0.1 | 0.1 | 0.0927 | -0.0073 | 56.7 | 0.1406 | 5.1 | 0.1656 |
+| India (POSOCO/NLDC) | 0.1 | 0.2 | 0.0882 | -0.0118 | 61.7 | 0.1408 | 5.1 | 0.1848 |
+| India (POSOCO/NLDC) | 0.15 | 0.0 | 0.0994 | -0.0506 | 94.1 | 0.1692 | 2.2 | 0.1672 |
+| India (POSOCO/NLDC) | 0.15 | 0.1 | 0.0951 | -0.0549 | 94.2 | 0.1714 | 2.9 | 0.1814 |
+| India (POSOCO/NLDC) | 0.15 | 0.2 | 0.0900 | -0.0600 | 98.7 | 0.1561 | 2.1 | 0.1829 |
+
+- Spain (ENTSO-E), final-error-loss ablation (α=0.05): ℓ̂ = 0.1077 ⇒ target unreachable, τ saturates (ρ = 98.4%).
+- India (POSOCO/NLDC), final-error-loss ablation (α=0.02): ℓ̂ = 0.0894 ⇒ target unreachable, τ saturates (ρ = 90.8%).
+
+## 6. Statistical significance (weekly blocks, seed-mean scores, two-sided Wilcoxon signed-rank, Holm-Bonferroni)
+
+Primary family = the four pre-specified comparisons (Holm m=4 per stream × metric). Secondary family = all remaining models (separate Holm correction, exploratory).
+
+| Stream | Metric | Family | Proposed vs. | Mean Δ | W / T / L (weeks) | W | p (raw) | p (Holm) | Cohen d_z | rank-biserial r | Sig. |
+|---|---|---|---|---:|---|---:|---:|---:|---:|---:|:---:|
+| Spain (ENTSO-E) | accuracy | primary | Always-ARF-3 | +2.6432 | 132 / 2 / 12 | 255.0 | 1.835e-23 | 5.506e-23 | +1.320 | +0.956 | ✔ |
+| Spain (ENTSO-E) | accuracy | primary | Always-HAT | +3.9044 | 138 / 2 / 6 | 167.5 | 3.176e-24 | 1.270e-23 | +1.645 | +0.969 | ✔ |
+| Spain (ENTSO-E) | accuracy | primary | EE-ARF-10 · static margin gate | +0.1508 | 71 / 12 / 63 | 4760.0 | 2.509e-01 | 2.509e-01 | +0.112 | +0.116 | ✘ |
+| Spain (ENTSO-E) | accuracy | primary | EE-ARF-10 · dormant replay B=200 | +0.4770 | 84 / 7 / 55 | 3618.5 | 6.765e-04 | 1.353e-03 | +0.309 | +0.332 | ✔ |
+| Spain (ENTSO-E) | accuracy | secondary | Always-HT | +3.5578 | 133 / 0 / 13 | 352.0 | 1.186e-22 | 3.557e-22 | +1.320 | +0.934 | ✔ |
+| Spain (ENTSO-E) | accuracy | secondary | Always-ARF-2 | +4.9168 | 144 / 0 / 2 | 9.0 | 1.252e-25 | 8.764e-25 | +1.977 | +0.998 | ✔ |
+| Spain (ENTSO-E) | accuracy | secondary | Always-ARF-10 | -0.5857 | 50 / 5 / 91 | 3109.5 | 1.071e-05 | 1.071e-05 | -0.408 | -0.426 | ✔ |
+| Spain (ENTSO-E) | accuracy | secondary | OMS-MAB (Wilson et al. 2024) | +2.1295 | 130 / 5 / 11 | 228.0 | 1.152e-23 | 6.911e-23 | +1.398 | +0.965 | ✔ |
+| Spain (ENTSO-E) | accuracy | secondary | CGT-v3 (learned gate, replay B=200) | +3.3404 | 134 / 1 / 11 | 311.5 | 5.455e-23 | 2.355e-22 | +1.328 | +0.943 | ✔ |
+| Spain (ENTSO-E) | accuracy | secondary | CGT-v4 (amortized replay) | +3.1855 | 132 / 1 / 13 | 304.0 | 4.711e-23 | 2.355e-22 | +1.317 | +0.945 | ✔ |
+| Spain (ENTSO-E) | accuracy | secondary | EE-ARF-10 · conformal, final-error loss | -0.6143 | 40 / 8 / 98 | 2726.0 | 2.791e-07 | 5.582e-07 | -0.463 | -0.497 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | primary | Always-ARF-3 | +0.1399 | 132 / 2 / 12 | 241.0 | 1.401e-23 | 4.202e-23 | +1.324 | +0.958 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | primary | Always-HAT | +0.2057 | 138 / 2 / 6 | 157.0 | 2.580e-24 | 1.032e-23 | +1.673 | +0.971 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | primary | EE-ARF-10 · static margin gate | +0.0065 | 71 / 12 / 63 | 4890.5 | 3.611e-01 | 3.611e-01 | +0.094 | +0.089 | ✘ |
+| Spain (ENTSO-E) | kappa_temporal | primary | EE-ARF-10 · dormant replay B=200 | +0.0233 | 84 / 7 / 55 | 3684.0 | 1.041e-03 | 2.082e-03 | +0.292 | +0.318 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | secondary | Always-HT | +0.1858 | 133 / 0 / 13 | 349.5 | 1.134e-22 | 3.401e-22 | +1.355 | +0.935 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | secondary | Always-ARF-2 | +0.2601 | 144 / 0 / 2 | 8.0 | 1.232e-25 | 8.622e-25 | +1.973 | +0.999 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | secondary | Always-ARF-10 | -0.0312 | 50 / 5 / 91 | 3033.5 | 5.291e-06 | 5.291e-06 | -0.423 | -0.438 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | secondary | OMS-MAB (Wilson et al. 2024) | +0.1125 | 130 / 5 / 11 | 227.0 | 1.093e-23 | 6.560e-23 | +1.404 | +0.963 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | secondary | CGT-v3 (learned gate, replay B=200) | +0.1735 | 134 / 1 / 11 | 312.5 | 5.583e-23 | 2.792e-22 | +1.348 | +0.943 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | secondary | CGT-v4 (amortized replay) | +0.1656 | 132 / 1 / 13 | 327.0 | 7.331e-23 | 2.932e-22 | +1.318 | +0.939 | ✔ |
+| Spain (ENTSO-E) | kappa_temporal | secondary | EE-ARF-10 · conformal, final-error loss | -0.0327 | 40 / 8 / 98 | 2684.0 | 1.626e-07 | 3.253e-07 | -0.472 | -0.501 | ✔ |
+| India (POSOCO/NLDC) | accuracy | primary | Always-ARF-3 | +2.0000 | 73 / 3 / 24 | 605.0 | 4.193e-11 | 1.258e-10 | +0.813 | +0.770 | ✔ |
+| India (POSOCO/NLDC) | accuracy | primary | Always-HAT | +4.7758 | 82 / 7 / 11 | 229.5 | 3.610e-15 | 1.444e-14 | +0.964 | +0.926 | ✔ |
+| India (POSOCO/NLDC) | accuracy | primary | EE-ARF-10 · static margin gate | +0.1250 | 49 / 9 / 42 | 2313.5 | 5.056e-01 | 5.056e-01 | +0.080 | +0.076 | ✘ |
+| India (POSOCO/NLDC) | accuracy | primary | EE-ARF-10 · dormant replay B=200 | +0.4722 | 46 / 30 / 24 | 1419.0 | 2.316e-03 | 4.631e-03 | +0.357 | +0.437 | ✔ |
+| India (POSOCO/NLDC) | accuracy | secondary | Always-HT | +7.6964 | 83 / 1 / 16 | 334.5 | 5.068e-14 | 2.534e-13 | +0.890 | +0.871 | ✔ |
+| India (POSOCO/NLDC) | accuracy | secondary | Always-ARF-2 | +3.3829 | 91 / 4 / 5 | 69.5 | 3.370e-17 | 2.359e-16 | +1.216 | +0.977 | ✔ |
+| India (POSOCO/NLDC) | accuracy | secondary | Always-ARF-10 | +0.5675 | 54 / 10 / 36 | 1646.5 | 2.944e-03 | 5.888e-03 | +0.365 | +0.365 | ✔ |
+| India (POSOCO/NLDC) | accuracy | secondary | OMS-MAB (Wilson et al. 2024) | +2.7976 | 89 / 2 / 9 | 224.0 | 2.568e-15 | 1.541e-14 | +1.147 | +0.913 | ✔ |
+| India (POSOCO/NLDC) | accuracy | secondary | CGT-v3 (learned gate, replay B=200) | +4.9246 | 82 / 1 / 17 | 383.5 | 1.794e-13 | 5.381e-13 | +0.961 | +0.848 | ✔ |
+| India (POSOCO/NLDC) | accuracy | secondary | CGT-v4 (amortized replay) | +5.5813 | 86 / 0 / 14 | 356.0 | 8.791e-14 | 3.516e-13 | +0.949 | +0.859 | ✔ |
+| India (POSOCO/NLDC) | accuracy | secondary | EE-ARF-10 · conformal, final-error loss | +0.1845 | 46 / 9 / 45 | 2346.0 | 5.622e-01 | 5.622e-01 | +0.112 | +0.075 | ✘ |
+| India (POSOCO/NLDC) | kappa_temporal | primary | Always-ARF-3 | +0.1283 | 73 / 3 / 24 | 621.5 | 6.162e-11 | 1.848e-10 | +0.793 | +0.764 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | primary | Always-HAT | +0.3171 | 82 / 7 / 11 | 233.5 | 3.581e-15 | 1.433e-14 | +0.892 | +0.919 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | primary | EE-ARF-10 · static margin gate | +0.0018 | 49 / 9 / 42 | 2480.5 | 8.988e-01 | 8.988e-01 | +0.018 | +0.009 | ✘ |
+| India (POSOCO/NLDC) | kappa_temporal | primary | EE-ARF-10 · dormant replay B=200 | +0.0293 | 46 / 30 / 24 | 1385.5 | 1.125e-03 | 2.249e-03 | +0.366 | +0.457 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | secondary | Always-HT | +0.8657 | 83 / 1 / 16 | 369.5 | 1.267e-13 | 6.333e-13 | +0.257 | +0.857 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | secondary | Always-ARF-2 | +0.2326 | 91 / 4 / 5 | 86.5 | 5.100e-17 | 3.570e-16 | +1.125 | +0.966 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | secondary | Always-ARF-10 | +0.0362 | 54 / 10 / 36 | 1718.5 | 6.689e-03 | 1.338e-02 | +0.313 | +0.339 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | secondary | OMS-MAB (Wilson et al. 2024) | +0.2138 | 89 / 2 / 9 | 208.5 | 1.676e-15 | 1.006e-14 | +0.670 | +0.919 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | secondary | CGT-v3 (learned gate, replay B=200) | +0.4045 | 82 / 1 / 17 | 432.5 | 6.338e-13 | 1.901e-12 | +0.456 | +0.832 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | secondary | CGT-v4 (amortized replay) | +0.4138 | 86 / 0 / 14 | 403.0 | 2.961e-13 | 1.185e-12 | +0.755 | +0.840 | ✔ |
+| India (POSOCO/NLDC) | kappa_temporal | secondary | EE-ARF-10 · conformal, final-error loss | +0.0084 | 46 / 9 / 45 | 2325.5 | 5.036e-01 | 5.036e-01 | +0.075 | +0.080 | ✘ |
+
+## Notes
+
+- **κ_temporal** (Žliobaitė et al., 2015) compares against the persistence classifier ŷ_t = y_{t−1}; **κ_Cohen** compares against chance. They are different metrics and are reported separately.
+- **Trees/sample** counts trees evaluated on the deployed decision path. CGT-v3 additionally shadow-evaluates its ARF-3 on every step to train its gate (CGT-v4: only when HT is wrong); these shadow evaluations are not included in the column but are included in measured latency.
+- **ρ** = % of samples invoking the heavy tier (trees 4–10 for EE-ARF-10 / ARF-10; the ARF arm for OMS-MAB and CGT).
+- OMS-MAB uses the repository implementation (D-UCB, HDDM_A, HT vs ARF-10 with the repo's ARFFullWrapper settings: grace_period=50, δ=0.01). All other ARF variants share grace_period=200, δ=0.001.
+- Latency is measured on the host (Python 3.13 + river 0.27, one predict+learn step); no embedded or battery extrapolation is made.
+- Verification: PASSED — no NaN/inf in mandatory fields, splits day/week-aligned, W/T/L consistent.
+- Wall-clock for the full suite: 2.2 min.

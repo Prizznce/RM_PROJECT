@@ -1,0 +1,10 @@
+Component,Mean_us,p50_us,p95_us,p99_us,Max_us,Share_of_Total_Pct
+HT Predict,75.1,81.2,160.51,220.0,695.3,9.9
+HT Learn,389.19,149.9,1471.17,3597.28,7614.1,51.3
+Gate Feature Extraction,4.4,3.7,7.2,11.4,94.7,0.6
+Gate Scoring (River Logistic),15.71,12.6,27.5,42.2,1371.9,2.1
+SGD Update (River Meta-Gate),179.39,156.35,322.91,452.72,1259.2,23.6
+ADWIN Drift Detector,2.28,1.9,3.9,6.3,99.7,0.3
+ARF Wakeup / Scoring,26.19,0.3,143.3,230.84,2095.0,3.4
+Replay Buffer (Blocking on Drift),60.55,0.2,0.3,0.4,170605.7,8.0
+TOTAL STEP,759.23,419.4,1921.2,4015.46,171061.9,100.0

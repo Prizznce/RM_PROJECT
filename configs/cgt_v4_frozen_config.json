@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "label": "post-hoc: developed after viewing test results",
+    "date": "2026-11-19",
+    "selection_criterion": "Pareto optimal selection across Amortized Replay (Trial 6: min latency at matched duty) and Warm Standby (Trial 11: max validation accuracy)",
+    "validation_instances": 10512,
+    "k_trials": 16,
+    "sha256": "6fa438b27732b499a3f2abf6ef3afa2f6c2e5fd503c1d9aeefacb3246d027d6b"
+  },
+  "cgt_v4_amortized_arf3": {
+    "trial_id": 6,
+    "replay_mode": "amortized",
+    "tau_gate": 0.25,
+    "max_rho": 0.12,
+    "h_cooldown": 50,
+    "buffer_b": 50,
+    "k_replay_per_step": 5,
+    "batch_size": 16,
+    "n_heavy_trees": 3,
+    "seed": 42
+  },
+  "cgt_v4_standby_arf3": {
+    "trial_id": 11,
+    "replay_mode": "warm_standby",
+    "tau_gate": 0.2,
+    "max_rho": 0.08,
+    "h_cooldown": 50,
+    "buffer_b": 0,
+    "k_replay_per_step": 0,
+    "batch_size": 16,
+    "n_heavy_trees": 3,
+    "seed": 42
+  },
+  "cgt_v4_standby_arf10": {
+    "trial_id": 11,
+    "replay_mode": "warm_standby",
+    "tau_gate": 0.2,
+    "max_rho": 0.08,
+    "h_cooldown": 50,
+    "buffer_b": 0,
+    "k_replay_per_step": 0,
+    "batch_size": 16,
+    "n_heavy_trees": 10,
+    "seed": 42
+  },
+  "validation_performance": {
+    "cgt_v4_amortized_arf3": {
+      "val_accuracy_pct": 83.134,
+      "val_mean_cpu_us": 353.42,
+      "val_p50_us": 267.8,
+      "val_p95_us": 718.34,
+      "val_p99_us": 1981.82,
+      "val_max_us": 5741.0,
+      "val_duty_cycle": 0.0434
+    },
+    "cgt_v4_standby_arf3": {
+      "val_accuracy_pct": 83.333,
+      "val_mean_cpu_us": 534.09,
+      "val_p50_us": 337.5,
+      "val_p95_us": 1468.35,
+      "val_p99_us": 2388.84,
+      "val_max_us": 6873.5,
+      "val_duty_cycle": 0.0615
+    },
+    "cgt_v4_standby_arf10": {
+      "val_accuracy_pct": 83.581,
+      "val_mean_cpu_us": 1198.68,
+      "val_p50_us": 450.2,
+      "val_p95_us": 2890.1,
+      "val_p99_us": 5951.0,
+      "val_max_us": 89951.8,
+      "val_duty_cycle": 0.0587
+    }
+  }
+}

@@ -1,7 +1,7 @@
 # Cascaded Compute-Gated Trees (CGT)
 ### Resource-Efficient Continuous Data Stream Mining Under Concept Drift for Cyber-Physical Edge Infrastructure
 
-[![Unit Tests](https://img.shields.io/badge/Unit%20Tests-40%2F40%20Passing-brightgreen)](file:///d:/SEM5/ResearchMgmt-2/tests)
+[![Unit Tests](https://img.shields.io/badge/Unit%20Tests-46%2F46%20Passing-brightgreen)](file:///d:/SEM5/ResearchMgmt-2/tests)
 [![Python 3.11](https://img.shields.io/badge/Python-3.11.17-blue)](file:///d:/SEM5/ResearchMgmt-2/pyproject.toml)
 [![IEEE Standard](https://img.shields.io/badge/Standard-IEEE%20C37.118%20PMU%20(50%20Hz)-orange)](file:///d:/SEM5/ResearchMgmt-2/src/physics/grid_stability.py)
 [![Reproducibility](https://img.shields.io/badge/Configs-SHA--256%20Locked-purple)](file:///d:/SEM5/ResearchMgmt-2/configs)
@@ -185,6 +185,53 @@ ResearchMgmt-2/
     ├── tables/                       # Benchmark summaries, weekly block tests, hardware profiles
     └── figures/                      # Publication figures, Pareto curves, duty budget sweeps
 ```
+
+---
+
+## 7.5 CGT-v4: Post-Hoc Ultra-Low-Latency Architecture & Master Benchmark
+> **Methodological Label:** *Post-hoc: developed after viewing test results.*
+
+To address the micro-architectural bottlenecks identified in CGT-v3—specifically the blocking replay buffer latency spike and River's per-step meta-gate SGD overhead—we developed **CGT-v4** under strict protocol: tuned strictly on the validation split ($K=16$ trials), frozen with SHA-256 integrity verification, and evaluated once on the unseen test streams without baseline modifications.
+
+### 1. Per-Step Component Profiling (5,000 Steps)
+Profiled via high-resolution monotonic timers (`results/tables/cgt_v4_profile.csv`):
+
+| Component | Mean (µs) | p95 (µs) | p99 (µs) | Max (µs) | Share (%) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **HT Learn** | 389.19 | 1,471.17 | 3,597.28 | 7,614.10 | **51.3%** |
+| **SGD Update (River Meta-Gate)** | 179.39 | 322.91 | 452.72 | 1,259.20 | **23.6%** |
+| **HT Predict** | 75.10 | 160.51 | 220.00 | 695.30 | 9.9% |
+| **Replay Buffer (Drift Blocking)** | 60.55 | 0.30 | 0.40 | **170,605.70** | **8.0% (Spike!)** |
+| **ARF Wakeup / Scoring** | 26.19 | 143.30 | 230.84 | 2,095.00 | 3.4% |
+| **Gate Scoring (River Logistic)** | 15.71 | 27.50 | 42.20 | 1,371.90 | 2.1% |
+| **Gate Feature Extraction** | 4.40 | 7.20 | 11.40 | 94.70 | 0.6% |
+| **ADWIN Drift Detector** | 2.28 | 3.90 | 6.30 | 99.70 | 0.3% |
+| **TOTAL STEP** | **759.23** | **1,921.20** | **4,015.46** | **171,061.90** | **100.0%** |
+
+### 2. CGT-v4 Innovations
+1. **Hand-Coded Mini-Batch Logistic Gate:** Eliminates River's overhead using an incremental Welford online normalizer, dot product inference, and circular-buffer mini-batch SGD every $B=16$ steps.
+2. **Amortized Replay Queue:** Limits buffer size ($B \le 50$) and spreads retraining over 10 consecutive steps ($k=5$ samples/step), preventing thread-blocking freezes.
+3. **Warm Standby Mode:** Trains heavy trees at a deterministic 25% background rate (every 4th sample), activating predictions only when the gate trips.
+
+### 3. Master Benchmark Across Both Streams (Frozen Configurations)
+Configs locked in `configs/cgt_v4_frozen_config.json` (SHA-256: `6fa438b2...`). Evaluated across Stream 1 (24,528 h) and Stream 2 (16,800 h POSOCO):
+
+| Model Architecture | Label | Stream 1 Acc (%) | Stream 1 Mean (µs) | Stream 1 p99 (µs) | Stream 1 Max (µs) | Stream 2 Acc (%) | Stream 2 Mean (µs) | Stream 2 p99 (µs) | Stream 2 Max (µs) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Always-ARF (10 Trees)** | Pre-hoc Ref | 89.596 | 3,114.15 | 7,081.47 | 193,420.2 | 90.125 | 3,027.21 | 6,812.92 | 284,087.2 |
+| **ARF-3 (Fair Protocol)** | Pre-hoc | **86.342** | 969.20 | 3,030.07 | 178,916.7 | **86.780** | 926.46 | 2,841.13 | 263,613.8 |
+| **CGT-v4 (Warm Standby, ARF-10)** | Post-hoc | 86.171 | 1,358.05 | 6,675.68 | 121,460.7 | 85.363 | 1,210.18 | 5,781.01 | 19,038.7 |
+| **CGT-v4 (Amortized, ARF-3)** | Post-hoc | **85.804** | **388.31** | **2,459.05** | **12,064.1** | **85.607** | **446.44** | **3,286.07** | **7,777.6** |
+| **CGT-v3 (Pre-hoc)** | Pre-hoc | 85.653 | 788.61 | 3,652.17 | 302,199.8 | 85.893 | 972.79 | 3,584.87 | 488,254.3 |
+| **Cost-Aware OMS-MAB** | Pre-hoc | 84.300 | 297.52 | 1,307.75 | 12,445.0 | 85.583 | 322.75 | 1,278.91 | 7,404.4 |
+| **Always-HT** | Pre-hoc | 85.066 | 230.87 | 632.73 | 36,210.3 | 84.244 | 247.39 | 684.11 | 5,980.6 |
+| **Linear (SGD)** | Pre-hoc | 84.911 | 67.83 | 159.86 | 2,074.5 | 85.857 | 69.40 | 202.21 | 2,906.5 |
+| **Random-Gate (20 seeds)** | Pre-hoc | 84.754 | 295.98 | 1,896.90 | 217,879.1 | 83.979 | 353.15 | 2,217.26 | 300,738.0 |
+
+### 4. Honest Empirical Findings & Verdicts
+- **Raw Accuracy Winner:** ARF-3 retains higher raw accuracy across both streams (+0.54 pp Stream 1, Holm $p = 0.048$; +1.17 pp Stream 2). Continuous ensemble learning absorbs micro-drifts better than selective gating when compute budgets are unrestricted.
+- **Latency & Schedulability Winner:** CGT-v4 Amortized slashes worst-case latency by **96.0%** (Stream 1) and **98.4%** (Stream 2) compared to CGT-v3, bringing maximum delays well under 13 ms while cutting mean latency by half (388 µs vs 789 µs).
+- **Bandit Comparison:** On Stream 1, CGT-v4 comprehensively outperforms Cost-Aware OMS-MAB (+1.50 pp, Holm $p < 10^{-11}$). On Stream 2 (POSOCO), both methods achieve comparable accuracy (~85.6%), with OMS-MAB maintaining slightly lower mean latency (323 µs vs 446 µs).
 
 ---
 

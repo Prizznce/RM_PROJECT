@@ -1,0 +1,11 @@
+Model,Label,Stream1_Acc_Pct,Stream1_Mean_us,Stream1_p99_us,Stream1_Max_us,Stream1_Duty_Pct,Stream2_POSOCO_Acc_Pct,Stream2_POSOCO_Mean_us,Stream2_POSOCO_p99_us,Stream2_POSOCO_Max_us,Stream2_POSOCO_Duty_Pct
+Linear (SGD),Pre-hoc,84.911,67.83,159.86,2074.5,0.0,85.857,69.4,202.21,2906.5,0.0
+Always-HT,Pre-hoc,85.066,230.87,632.73,36210.3,0.0,84.244,247.39,684.11,5980.6,0.0
+Random-Gate (20 seeds),Pre-hoc,84.754,295.98,1896.9,217879.1,6.2,83.979,353.15,2217.26,300738.0,10.32
+Cost-Aware OMS-MAB,Pre-hoc,84.3,297.52,1307.75,12445.0,4.6,85.583,322.75,1278.91,7404.4,5.8
+CGT-v3 (Pre-hoc),Pre-hoc,85.653,788.61,3652.17,302199.8,5.12,85.893,972.79,3584.87,488254.3,8.94
+"CGT-v4 (Amortized, ARF-3)","Post-hoc: developed after viewing test results",85.804,388.31,2459.05,12064.1,6.18,85.607,446.44,3286.07,7777.6,10.24
+"CGT-v4 (Warm Standby, ARF-3)","Post-hoc: developed after viewing test results",85.535,609.8,3103.29,13199.2,6.81,84.964,582.11,2645.31,19588.9,7.94
+"CGT-v4 (Warm Standby, ARF-10)","Post-hoc: developed after viewing test results",86.171,1358.05,6675.68,121460.7,7.34,85.363,1210.18,5781.01,19038.7,8.02
+ARF-3 (Fair Protocol),Pre-hoc,86.342,969.2,3030.07,178916.7,100.0,86.78,926.46,2841.13,263613.8,100.0
+Always-ARF (10 Trees),Pre-hoc,89.596,3114.15,7081.47,193420.2,100.0,90.125,3027.21,6812.92,284087.2,100.0

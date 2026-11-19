@@ -1,0 +1,19 @@
+Stream,Reference,Comparison,Mean_Weekly_Delta_Pct,Wilcoxon_W,Raw_p_value,Cohen_d,Holm_adj_p_value,Significant_at_05
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",Linear (SGD),0.893,3328.0,0.007955548201414442,0.255,0.03182219280565777,True
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",Always-HT,0.738,1263.0,5.3695936845319015e-08,0.486,3.758715579172331e-07,True
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",Cost-Aware OMS-MAB,1.504,1114.5,7.441908497776118e-13,0.689,5.953526798220894e-12,True
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",CGT-v3 (Pre-hoc),0.151,2422.5,0.19189537394411071,0.117,0.19189537394411071,False
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)","CGT-v4 (Warm Standby, ARF-3)",0.269,2482.5,0.008272668267194869,0.19,0.03182219280565777,True
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)","CGT-v4 (Warm Standby, ARF-10)",-0.367,1636.0,0.0005854439522181529,-0.273,0.0029272197610907646,True
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",ARF-3 (Fair Protocol),-0.538,3620.5,0.024148925587836573,-0.175,0.048297851175673145,True
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",Always-ARF (10 Trees),-3.792,410.0,1.2934665571697936e-21,-1.205,1.1641199014528142e-20,True
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",Random-Gate (20 seeds),0.738,1263.0,5.3695936845319015e-08,0.486,3.758715579172331e-07,True
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",Linear (SGD),-0.25,2028.5,0.6669142318621968,-0.048,1.0,False
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",Always-HT,1.363,325.0,2.313961722971044e-05,0.391,0.00018511693783768352,True
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",Cost-Aware OMS-MAB,0.024,1592.5,0.4942983052693575,0.005,1.0,False
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",CGT-v3 (Pre-hoc),-0.286,863.0,0.5526343653429944,-0.149,1.0,False
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)","CGT-v4 (Warm Standby, ARF-3)",0.643,953.5,0.43629186269212206,0.194,1.0,False
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)","CGT-v4 (Warm Standby, ARF-10)",0.244,908.0,0.7873659033186962,0.073,1.0,False
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",ARF-3 (Fair Protocol),-1.173,1895.5,0.11389067866747576,-0.229,0.6833440720048546,False
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",Always-ARF (10 Trees),-4.518,280.5,1.7983422536510252e-13,-0.851,1.6185080282859227e-12,True
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",Random-Gate (20 seeds),1.363,325.0,2.313961722971044e-05,0.391,0.00018511693783768352,True

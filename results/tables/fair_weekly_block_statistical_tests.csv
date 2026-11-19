@@ -1,0 +1,4 @@
+Comparison,Mean_Weekly_Delta_pct,Overall_Stream_Delta_pct,Paired_Cohen_d,Wilcoxon_W,Raw_Wilcoxon_p,Paired_t_stat,Paired_t_p,Holm_Adjusted_Wilcoxon_p,Raw_Wilcoxon_p_str,Significant_at_0.05
+CGT vs Always-HT,0.265,0.265,0.22,1645.0,0.005527311630635496,2.66,0.008640221038851497,5.5273e-03,5.5273e-03,True
+CGT vs Random-Gate (20 seeds),0.575,0.575,0.488,2376.5,5.239572433465329e-09,5.89,2.529922254356872e-08,1.5719e-08,5.2396e-09,True
+ARF-3 vs CGT,0.86,0.86,0.264,3192.5,0.0014466586141186177,3.18,0.001775093073384813,2.8933e-03,1.4467e-03,True

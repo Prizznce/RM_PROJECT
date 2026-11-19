@@ -1,2 +1,2 @@
 operating_tau,operating_k,d_acc_d_tau,d_acc_d_k,basin_width_tau_plus_minus,basin_width_k_plus_minus,curvature_status
-0.5,100,0.19,0.000133,0.15,120,CONVEX_STABLE_BASIN
+0.5,100,0.19,0.000133,0.15,120,CONCAVE_STABLE_PEAK

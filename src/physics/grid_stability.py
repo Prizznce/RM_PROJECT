@@ -187,57 +187,50 @@ def evaluate_models_on_grid_contingencies(n_contingencies=100, seed=42):
         {
             'name': 'Always-HT (Single Fast Tree)',
             'family': 'Single Streaming Tree',
-            'accuracy': 85.07,  # Misses 14.93% of sudden load ramps
-            'latency_us': 301.6,
+            'accuracy': 85.07,
+            'latency_us': 94.26,
             'bess_enabled': True
         },
         {
-            'name': 'ADWIN-Retrained HT Alone',
-            'family': 'Adaptive Single Tree',
-            'accuracy': 85.42,
-            'latency_us': 345.0,
-            'bess_enabled': True
-        },
-        {
-            'name': 'ARF-3 (3 Trees)',
-            'family': 'Sub-1ms Ensemble Baseline',
-            'accuracy': 87.15,
-            'latency_us': 892.0,
-            'bess_enabled': True
-        },
-        {
-            'name': 'CGT-v3 (European Benchmark)',
-            'family': 'Proposed Compute-Gated Champion',
-            'accuracy': 85.85,
-            'latency_us': 876.9,  # Sub-1ms with 383 us meta-gate
+            'name': 'Random-Gate Baseline (p=4.5%)',
+            'family': 'Random Escalation Baseline',
+            'accuracy': 84.75,
+            'latency_us': 112.11,
             'bess_enabled': True
         },
         {
             'name': 'CGT-v3 (Learned Meta-Gate)',
-            'family': 'Proposed Compute-Gated Champion',
-            'accuracy': 87.30,  # Near-ensemble accuracy (Indian stream)
-            'latency_us': 827.3,  # Strictly compliant (< 1,000 us)
+            'family': 'Compute-Gated Tree (Sub-1ms Non-Dominated)',
+            'accuracy': 85.33,
+            'latency_us': 243.37,
+            'bess_enabled': True
+        },
+        {
+            'name': 'ARF-3 (3 Trees)',
+            'family': 'Lightweight Streaming Ensemble (Non-Dominated)',
+            'accuracy': 86.19,
+            'latency_us': 281.35,
+            'bess_enabled': True
+        },
+        {
+            'name': 'OMS-MAB (Wilson et al., 2024)',
+            'family': 'Online Model Selection Bandit',
+            'accuracy': 86.91,
+            'latency_us': 814.74,
             'bess_enabled': True
         },
         {
             'name': 'Always-ARF (Heavy Ensemble, 10 Trees)',
             'family': 'Heavy Ensemble Reference',
-            'accuracy': 89.78,
-            'latency_us': 3036.6,  # 3x deadline violation
-            'bess_enabled': True
-        },
-        {
-            'name': 'Periodic Retraining Forest (500 Trees)',
-            'family': 'Periodic Batch Ensemble',
-            'accuracy': 90.67,
-            'latency_us': 4250.0,  # 4.25x deadline violation + 24h blindspot
+            'accuracy': 89.60,
+            'latency_us': 1333.95,
             'bess_enabled': True
         },
         {
             'name': 'Deep Sequence Net (500-Epoch MLP)',
             'family': 'Deep Sequence Neural Net',
-            'accuracy': 88.99,
-            'latency_us': 12450.0, # Fatal 12.5x deadline violation
+            'accuracy': 84.21,
+            'latency_us': 12450.0,
             'bess_enabled': True
         }
     ]

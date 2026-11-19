@@ -1,0 +1,5 @@
+Comparison,Mean_Weekly_Delta_pct,Paired_Cohen_d,Wilcoxon_W,Raw_p_value,t_stat,Holm_adj_p,Significant_0.05
+CGT vs Random-Gate (20 seeds),0.679,0.321,213.0,0.0016631829995397457,3.21,6.6527e-03,True
+CGT vs Always-HT,0.679,0.321,213.0,0.0016631829995397457,3.21,4.9895e-03,True
+ARF-3 vs CGT,2.095,0.337,1395.5,0.003782289077003388,3.37,7.5646e-03,True
+CGT vs Cost-Aware OMS-MAB,-0.363,-0.058,1713.5,0.7497185383304327,-0.58,7.4972e-01,False

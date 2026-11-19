@@ -1,0 +1,7 @@
+Model,Ensemble Size,Achieved Heavy Duty (%),Test Accuracy (%),Mean Latency (us),Worst-Case Latency (us),Modeled MCU Battery (100 Wh),50 Hz Schedulability
+Always-HT (Baseline),1,0.0,84.244,30.37,52991.1,"11,610.7 h (1.33 yr)",OVERRUN (Replay Spike)
+Random-Gate Baseline (20 seeds),1 / 3,5.85,83.904,30.66,4200.0,"11,605.4 h (1.32 yr)",GUARANTEED
+Cost-Aware OMS-MAB (Wilson et al.),1 / 3,5.83,85.286,31.42,865.8,"11,591.5 h (1.32 yr)",GUARANTEED
+CGT (Learned Meta-Gate),1 / 3,5.83,84.923,64.26,554.1,"11,021.4 h (1.26 yr)",GUARANTEED
+ARF-3 (3 Trees),3,100.0,87.018,45.83,163.5,"11,334.2 h (1.29 yr)",GUARANTEED
+Always-ARF (10 Trees Ref),10,100.0,90.125,159.0,512.0,"9,651.8 h (1.10 yr)",GUARANTEED

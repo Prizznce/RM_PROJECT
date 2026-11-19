@@ -1,0 +1,19 @@
+Sampling_Rate,Frequency_Hz,Sample_Period_us,Model_Name,Mean_Latency_us (host-measured),Worst_Case_Latency_us (host-measured),Modeled_CPU_Duty_pct,RealTime_Schedulability (modeled),STM32H743_Power_mW (modeled),STM32H743_100Wh_Autonomy_hrs (modeled),CM4_Power_mW (modeled),CM4_100Wh_Autonomy_hrs (modeled)
+50 Hz (Standard PMU),50.0,20000.0,Always-HT,94.26,2404.0,0.471,GUARANTEED,9.48,10547.4,860.1,116.3
+50 Hz (Standard PMU),50.0,20000.0,Random-Gate (rho_CGT),112.11,4309.3,0.561,GUARANTEED,9.72,10284.3,862.1,116.0
+50 Hz (Standard PMU),50.0,20000.0,CGT (Learned Gate),243.37,38002.8,1.217,OVERRUN (Replay Spike),11.51,8690.1,876.2,114.1
+50 Hz (Standard PMU),50.0,20000.0,ARF-3 (3 Trees),281.35,2231.1,1.407,GUARANTEED,12.02,8317.0,880.2,113.6
+50 Hz (Standard PMU),50.0,20000.0,OMS-MAB (Wilson et al.),814.74,67087.5,4.074,OVERRUN (Replay Spike),19.27,5188.8,937.6,106.7
+50 Hz (Standard PMU),50.0,20000.0,Always-ARF (10 Trees),1333.95,101442.2,6.67,OVERRUN (Replay Spike),26.33,3798.2,993.4,100.7
+200 Hz (High-Speed PMU / DFR),200.0,5000.0,Always-HT,94.26,2404.0,1.885,GUARANTEED,13.32,7505.3,890.5,112.3
+200 Hz (High-Speed PMU / DFR),200.0,5000.0,Random-Gate (rho_CGT),112.11,4309.3,2.242,GUARANTEED,14.29,6995.8,898.2,111.3
+200 Hz (High-Speed PMU / DFR),200.0,5000.0,CGT (Learned Gate),243.37,38002.8,4.867,OVERRUN (Replay Spike),21.43,4666.4,954.6,104.8
+200 Hz (High-Speed PMU / DFR),200.0,5000.0,ARF-3 (3 Trees),281.35,2231.1,5.627,GUARANTEED,23.49,4256.4,971.0,103.0
+200 Hz (High-Speed PMU / DFR),200.0,5000.0,OMS-MAB (Wilson et al.),814.74,67087.5,16.295,OVERRUN (Replay Spike),52.49,1905.2,1200.3,83.3
+200 Hz (High-Speed PMU / DFR),200.0,5000.0,Always-ARF (10 Trees),1333.95,101442.2,26.679,OVERRUN (Replay Spike),80.71,1238.9,1423.6,70.2
+1 kHz (Substation RTU Deadline),1000.0,1000.0,Always-HT,94.26,2404.0,9.426,OVERRUN (Replay Spike),33.82,2956.8,1052.7,95.0
+1 kHz (Substation RTU Deadline),1000.0,1000.0,Random-Gate (rho_CGT),112.11,4309.3,11.211,OVERRUN (Replay Spike),38.67,2585.9,1091.0,91.7
+1 kHz (Substation RTU Deadline),1000.0,1000.0,CGT (Learned Gate),243.37,38002.8,24.337,OVERRUN (Replay Spike),74.35,1345.0,1373.2,72.8
+1 kHz (Substation RTU Deadline),1000.0,1000.0,ARF-3 (3 Trees),281.35,2231.1,28.135,OVERRUN (Replay Spike),84.67,1181.0,1454.9,68.7
+1 kHz (Substation RTU Deadline),1000.0,1000.0,OMS-MAB (Wilson et al.),814.74,67087.5,81.474,OVERRUN (Replay Spike),229.65,435.5,2601.7,38.4
+1 kHz (Substation RTU Deadline),1000.0,1000.0,Always-ARF (10 Trees),1333.95,101442.2,133.395,OVERRUN (Mean Overload),280.0,357.1,3000.0,33.3

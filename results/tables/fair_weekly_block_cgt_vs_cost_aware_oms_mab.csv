@@ -1,0 +1,2 @@
+Comparison,CGT_Accuracy_pct,OMS_MAB_Accuracy_pct,Mean_Weekly_Delta_pct,Overall_Stream_Delta_pct,Paired_Cohen_d,Wilcoxon_W,Wilcoxon_p_value,Paired_t_stat,Paired_t_p_value,Significant_at_0.05
+CGT vs Cost-Aware OMS-MAB (matched duty),85.3310502283105,84.3,1.031,1.031,0.503,2007.5,3.7509e-08,6.08,1.0208e-08,True

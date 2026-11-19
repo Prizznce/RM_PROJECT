@@ -1,0 +1,13 @@
+Policy,Budget_Cap_pct,Empirical_Duty_pct,Test_Accuracy_pct,Mean_Latency_us
+CGT (Selective Learned Gate),5,4.95,85.804,236.54
+Random-Gate Baseline,5,4.88,84.744,106.79
+CGT (Selective Learned Gate),10,4.64,85.433,237.37
+Random-Gate Baseline,10,10.09,84.654,119.8
+CGT (Selective Learned Gate),15,5.17,85.445,240.2
+Random-Gate Baseline,15,14.89,85.001,135.5
+CGT (Selective Learned Gate),25,5.43,85.229,248.44
+Random-Gate Baseline,25,24.84,85.062,160.8
+CGT (Selective Learned Gate),40,4.61,85.319,243.55
+Random-Gate Baseline,40,39.64,84.976,192.71
+CGT (Selective Learned Gate),100,6.35,85.543,241.43
+Random-Gate Baseline,100,100.0,86.191,381.79

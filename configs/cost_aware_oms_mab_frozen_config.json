@@ -1,0 +1,13 @@
+{
+  "timestamp_utc": "2026-11-18T22:26:26Z",
+  "search_budget_K": 16,
+  "validation_instances": 10512,
+  "test_instances": 24528,
+  "best_config_matched": {
+    "lambda_cost": 0.01,
+    "max_rho": 0.046,
+    "c": 0.5
+  },
+  "best_val_acc_matched": 82.068,
+  "sha256_hash": "75053204c559497fda7900ed53b33c51f8705f8a0c7dab8828785ae6293d8e21"
+}

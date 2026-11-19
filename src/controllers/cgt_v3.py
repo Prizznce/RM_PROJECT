@@ -37,6 +37,7 @@ class CGTv3LearnedGateController:
         adwin_delta=0.005,
         adwin_clock=32,
         use_pruned_arf=True,
+        arf_model=None,
         seed=42
     ):
         self.name = "CGT-v3 (Learned Meta-Gate)"
@@ -51,7 +52,10 @@ class CGTv3LearnedGateController:
         
         # Base learners
         self.ht = HoeffdingTreeWrapper()
-        self.arf = ARFOptimizedWrapper(seed=seed) if use_pruned_arf else ARFFullWrapper(seed=seed)
+        if arf_model is not None:
+            self.arf = arf_model
+        else:
+            self.arf = ARFOptimizedWrapper(seed=seed) if use_pruned_arf else ARFFullWrapper(seed=seed)
         self.detector = ADWIN(delta=adwin_delta, clock=adwin_clock)
         
         # Online meta-classifier: standardized logistic regression

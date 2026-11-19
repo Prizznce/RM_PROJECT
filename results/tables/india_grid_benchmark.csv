@@ -1,8 +1,9 @@
 dataset,model_name,model_family,accuracy_pct,balanced_acc_pct,mean_cpu_us_per_instance,duty_cycle_rho_pct,total_cpu_sec,peak_ram_mb,edge_deadline_compliant,battery_autonomy_hours,wall_sec
-Indian National Grid (POSOCO/NLDC),Zero-Skill Majority,Naive Baseline,72.16,50.0,2.8,0.0,0.06,0.05,True,183.3,0.1
-Indian National Grid (POSOCO/NLDC),Persistence Momentum,Naive Baseline,60.09,61.88,3.1,0.0,0.06,0.05,True,183.3,0.1
-Indian National Grid (POSOCO/NLDC),Always-HT,Single Streaming Tree,86.12,79.68,195.3,0.0,3.96,0.03,True,73.3,5.3
-Indian National Grid (POSOCO/NLDC),Always-ARF (Full 10),Heavy Ensemble,88.0,82.88,2865.2,100.0,58.04,5.26,False,13.8,73.4
-Indian National Grid (POSOCO/NLDC),CGT-v3 (Learned Meta-Gate),Proposed Compute-Gated,87.3,81.88,827.3,8.02,16.76,0.24,True,59.1,21.4
+Indian National Grid (POSOCO/NLDC),Zero-Skill Majority,Naive Baseline,72.16,50.0,1.1,0.0,0.02,0.05,True,183.3,0.0
+Indian National Grid (POSOCO/NLDC),Persistence Momentum,Naive Baseline,60.09,61.88,1.4,0.0,0.03,0.05,True,183.3,0.0
+Indian National Grid (POSOCO/NLDC),Always-HT,Single Streaming Tree,86.12,79.68,90.8,0.0,1.84,0.03,True,73.3,2.4
+Indian National Grid (POSOCO/NLDC),ARF-3 (3 Trees),Streaming Ensemble,87.74,82.66,264.3,100.0,5.35,2.35,True,183.3,7.0
+Indian National Grid (POSOCO/NLDC),Always-ARF (Full 10),Heavy Ensemble,88.0,82.88,1327.8,100.0,26.9,5.26,False,13.8,33.4
+Indian National Grid (POSOCO/NLDC),CGT (Learned Meta-Gate),Proposed Compute-Gated,87.13,81.63,240.4,5.71,4.87,0.05,True,62.6,6.5
 Indian National Grid (POSOCO/NLDC),Periodic Retraining Forest (500 Trees),Periodic Batch Ensemble,90.67,90.33,4250.0,100.0,86.09,52.8,False,12.2,52560.0
 Indian National Grid (POSOCO/NLDC),Deep Sequence Neural Net (500-Epoch MLP),Deep Sequence Neural Network,88.99,88.64,12450.0,100.0,252.19,38.4,False,8.4,67104.0

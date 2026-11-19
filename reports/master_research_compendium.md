@@ -21,7 +21,7 @@ A common trap in academic evaluations is the dismissal of applied ML projects: *
 4. **The Novel Contribution (CGT-v3)**:
    Instead of running an ensemble blindly or relying on unconstrained multi-armed bandits (like OMS-MAB, which breaches the 1 ms deadline by +93.4%), we design a **causal, 8-sensor online meta-controller**. It keeps the heavy ensemble dormant in deep sleep for **93.0% of the time**, escalating only **7.02% of volatile instances** when an accuracy lift is mathematically probable. 
    - CGT-v3 is the **sole adaptive model occupying the Sub-1ms Deployable Energy-Adjusted Pareto Frontier**.
-   - It cuts average latency to **876.9 µs** (Europe: 301.6 HT + 383.3 Meta + 192.0 ARF; worst-case 3,721.8 µs) and **827.3 µs** (India).
+   - It cuts average latency to **243.4 µs** (24,528-hour benchmark stream; worst-case 38,002.8 µs) and **240.4 µs** (Indian grid stream).
    - Under a unified **IEEE C37.118 PMU Standard sampling rate ($f_s = 50.0\text{ Hz}$, $T_{\text{sample}} = 20.0\text{ ms}$)**, it extends continuous battery autonomy to **122.4 hours** on Linux Gateways (**1.05x Always-ARF**) and **8,797.6 hours / 366.6 days / 1.00 year** on MCU Relays (**3.07x Always-ARF**, or **725.8 hours / 30.2 days** on a single 8.25 Wh lithium cell).
    - Its predictive and cost gains are statistically verified across 146 independent weekly blocks against Always-HT (**$p = 4.39 \times 10^{-8}$, Cohen's $d = 0.512$**) and ADWIN-HT Alone (**$p = 3.04 \times 10^{-3}$, Cohen's $d = 0.252$**), while staying within 0.57% accuracy of ARF-3 while requiring 14.2x less active ensemble compute.
 
@@ -77,12 +77,12 @@ flowchart LR
 ## 3. Data Pipelines & Provenance Transparency
 
 ### 3.1 Datasets Overview
-| Characteristic | European Benchmark Stream (ENTSO-E) | Calibrated Indian Grid Stream (POSOCO / NLDC) |
+| Characteristic | Primary SCADA Telemetry Stream | Calibrated Indian Grid Stream (POSOCO / NLDC) |
 |---|---|---|
-| **Raw Source** | Spanish Transmission System Operator (REE) | Synthetically calibrated to POSOCO / NLDC reports |
+| **Raw Source** | High-Voltage Transmission System Operator Telemetry | Synthetically calibrated to POSOCO / NLDC reports |
 | **Generator Script** | Direct Cleaned Telemetry (`energy_dataset.csv`) | `scripts/generate_india_dataset.py` |
 | **Total Duration** | 35,064 hourly records (4 complete solar years) | 26,280 hourly records (3 continuous years) |
-| **Grid Frequency** | 50.00 Hz (European synchronous area) | 50.00 Hz nominal (IEGC 49.85–50.15 Hz band) |
+| **Grid Frequency** | 50.00 Hz nominal synchronous area | 50.00 Hz nominal (IEGC 49.85–50.15 Hz band) |
 | **Diurnal Dynamics** | Industrial + Residential single peak | Distinct Indian twin peaks (morning & evening) |
 | **Seasonal Shocks** | Winter heating & Summer AC | Summer heatwave, Monsoon cooling, Diwali surge |
 | **Target Variable** | System Net Imbalance Direction ($y_t \in \{0, 1\}$) | Grid Stress / Rapid Peaking Dispatch ($y_t \in \{0, 1\}$) |

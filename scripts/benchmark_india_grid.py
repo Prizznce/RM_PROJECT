@@ -18,6 +18,28 @@ sys.path.insert(0, os.path.abspath("."))
 from src.models.base_models import HoeffdingTreeWrapper, ARFFullWrapper
 from src.controllers.cgt_v3 import CGTv3LearnedGateController
 from src.models.stronger_baselines import ZeroSkillMajorityClass, NaivePersistenceHourly
+from river.forest import ARFClassifier
+
+
+class ARF3Wrapper:
+    """Standardized ARF with 3 trees matching frozen validation config."""
+    def __init__(self, grace_period=200, lambda_value=6, delta=0.001, seed=42):
+        self.name = "ARF-3 (3 Trees)"
+        self.model = ARFClassifier(
+            n_models=3,
+            grace_period=grace_period,
+            lambda_value=lambda_value,
+            delta=delta,
+            split_criterion='info_gain',
+            seed=seed
+        )
+
+    def predict_one(self, x):
+        pred = self.model.predict_one(x)
+        return 0 if pred is None else int(pred)
+
+    def learn_one(self, x, y, y_pred=None):
+        self.model.learn_one(x, y)
 
 def stream_india_grid(csv_path="data/india_electricity_hourly.csv", warmup_rows=24):
     df = pd.read_csv(csv_path)
@@ -83,9 +105,12 @@ def run_benchmark():
         ("Zero-Skill Majority", ZeroSkillMajorityClass(), "Naive Baseline"),
         ("Persistence Momentum", NaivePersistenceHourly(), "Naive Baseline"),
         ("Always-HT", HoeffdingTreeWrapper(grace_period=200), "Single Streaming Tree"),
+        ("ARF-3 (3 Trees)", ARF3Wrapper(grace_period=200, lambda_value=6, delta=0.001, seed=42), "Streaming Ensemble"),
         ("Always-ARF (Full 10)", ARFFullWrapper(n_models=10, seed=42), "Heavy Ensemble"),
-        ("CGT-v3 (Learned Meta-Gate)", CGTv3LearnedGateController(
-            tau_gate=0.20, max_rho=0.10, h_cooldown=50, buffer_b=200, use_pruned_arf=True, seed=42
+        ("CGT (Learned Meta-Gate)", CGTv3LearnedGateController(
+            tau_gate=0.25, max_rho=0.12, h_cooldown=50, buffer_b=200, adwin_delta=0.005,
+            arf_model=ARF3Wrapper(grace_period=200, lambda_value=6, delta=0.001, seed=42),
+            seed=42
         ), "Proposed Compute-Gated"),
     ]
 
@@ -125,7 +150,7 @@ def run_benchmark():
                 model.learn_one(x_t, y_t)
             elapsed_ns = time.perf_counter_ns() - t0
 
-            gate_open = 1 if getattr(model, 'gate_open', False) else (1 if family == "Heavy Ensemble" else 0)
+            gate_open = 1 if getattr(model, 'gate_open', False) else (1 if family in ["Heavy Ensemble", "Streaming Ensemble"] else 0)
 
             cpu_ns_arr[i] = elapsed_ns
             y_preds[i] = y_pred

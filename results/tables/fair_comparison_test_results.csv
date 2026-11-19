@@ -1,0 +1,6 @@
+Model,Ensemble Size,Duty Cycle (%),Test Accuracy (%),Mean Latency (us),p95 Latency (us),Worst-case Latency (us),Gating Nature
+Always-HT (Baseline),1,0.0,85.066,94.26,132.96,2404.0,Always Closed (0% Heavy)
+Random-Gate (p=4.6%),1 / 3,4.52,84.752,112.11,237.8,4309.3,Pure Bernoulli Random Escalation
+CGT (Proposed Meta-Gate),1 / 3,4.59,85.331,243.37,447.8,38002.8,Selective Learned Margin + ADWIN Cooldown
+ARF-3 (3 Trees),3,100.0,86.191,281.35,568.76,2231.1,Always Open (100% Heavy)
+Always-ARF (10 Trees Reference),10,100.0,89.596,1333.95,2223.29,101442.2,Always Open (100% Full Ensemble)

@@ -1,0 +1,33 @@
+model_family,trial_id,params,val_accuracy_pct,val_cpu_us,val_duty_cycle
+ARF-3,1,"{'grace_period': 25, 'lambda_value': 4, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",83.647,360.85,1.0
+ARF-3,2,"{'grace_period': 25, 'lambda_value': 4, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",83.457,382.69,1.0
+ARF-3,3,"{'grace_period': 25, 'lambda_value': 6, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",84.085,429.94,1.0
+ARF-3,4,"{'grace_period': 25, 'lambda_value': 6, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",85.588,544.45,1.0
+ARF-3,5,"{'grace_period': 50, 'lambda_value': 4, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",82.401,312.31,1.0
+ARF-3,6,"{'grace_period': 50, 'lambda_value': 4, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",83.476,324.52,1.0
+ARF-3,7,"{'grace_period': 50, 'lambda_value': 6, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",84.38,342.51,1.0
+ARF-3,8,"{'grace_period': 50, 'lambda_value': 6, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",83.153,361.2,1.0
+ARF-3,9,"{'grace_period': 100, 'lambda_value': 4, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",84.256,264.16,1.0
+ARF-3,10,"{'grace_period': 100, 'lambda_value': 4, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",83.895,245.3,1.0
+ARF-3,11,"{'grace_period': 100, 'lambda_value': 6, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",85.426,307.93,1.0
+ARF-3,12,"{'grace_period': 100, 'lambda_value': 6, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",84.028,273.61,1.0
+ARF-3,13,"{'grace_period': 200, 'lambda_value': 4, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",82.192,240.1,1.0
+ARF-3,14,"{'grace_period': 200, 'lambda_value': 4, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",83.305,218.44,1.0
+ARF-3,15,"{'grace_period': 200, 'lambda_value': 6, 'delta': 0.01, 'split_criterion': 'info_gain', 'seed': 42}",84.484,269.9,1.0
+ARF-3,16,"{'grace_period': 200, 'lambda_value': 6, 'delta': 0.001, 'split_criterion': 'info_gain', 'seed': 42}",85.712,242.59,1.0
+CGT,1,"{'tau_gate': 0.15, 'max_rho': 0.08, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.134,267.67,0.0752
+CGT,2,"{'tau_gate': 0.15, 'max_rho': 0.08, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.086,269.01,0.0747
+CGT,3,"{'tau_gate': 0.15, 'max_rho': 0.12, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",82.839,258.22,0.0725
+CGT,4,"{'tau_gate': 0.15, 'max_rho': 0.12, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.038,270.7,0.082
+CGT,5,"{'tau_gate': 0.2, 'max_rho': 0.08, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.019,254.88,0.044
+CGT,6,"{'tau_gate': 0.2, 'max_rho': 0.08, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.086,252.6,0.0673
+CGT,7,"{'tau_gate': 0.2, 'max_rho': 0.12, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.029,265.64,0.052
+CGT,8,"{'tau_gate': 0.2, 'max_rho': 0.12, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",82.896,254.4,0.0586
+CGT,9,"{'tau_gate': 0.25, 'max_rho': 0.08, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.124,260.36,0.0386
+CGT,10,"{'tau_gate': 0.25, 'max_rho': 0.08, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.057,263.0,0.0546
+CGT,11,"{'tau_gate': 0.25, 'max_rho': 0.12, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.333,268.63,0.0548
+CGT,12,"{'tau_gate': 0.25, 'max_rho': 0.12, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.324,273.69,0.0645
+CGT,13,"{'tau_gate': 0.3, 'max_rho': 0.08, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.115,266.33,0.0357
+CGT,14,"{'tau_gate': 0.3, 'max_rho': 0.08, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",83.143,259.81,0.0425
+CGT,15,"{'tau_gate': 0.3, 'max_rho': 0.12, 'h_cooldown': 50, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",82.905,250.24,0.0271
+CGT,16,"{'tau_gate': 0.3, 'max_rho': 0.12, 'h_cooldown': 100, 'buffer_b': 200, 'adwin_delta': 0.005, 'seed': 42}",82.896,265.31,0.0394

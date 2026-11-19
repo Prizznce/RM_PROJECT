@@ -1,0 +1,19 @@
+Sampling_Rate,Model_Name,Mean_Latency_us,Worst_Case_Latency_us,Modeled_CPU_Duty_pct,RealTime_Schedulability (modeled),STM32H743_Power_mW (modeled),STM32H743_100Wh_Autonomy_hrs (modeled),CM4_100Wh_Autonomy_hrs (modeled)
+50 Hz (Standard PMU),Always-HT,137.98,3809.6,0.69,GUARANTEED,10.08,9925.4,115.6
+50 Hz (Standard PMU),Random-Gate (rho_CGT),163.47,3991.7,0.817,GUARANTEED,10.42,9595.5,115.3
+50 Hz (Standard PMU),CGT (Learned Gate),339.11,63890.1,1.696,OVERRUN (Replay Spike),12.81,7807.3,112.8
+50 Hz (Standard PMU),ARF-3 (3 Trees),387.32,3991.7,1.937,GUARANTEED,13.46,7427.4,112.2
+50 Hz (Standard PMU),OMS-MAB (Wilson et al.),1114.52,105175.3,5.573,OVERRUN (Replay Spike),23.35,4283.3,103.1
+50 Hz (Standard PMU),Always-ARF (Full 10),1727.33,107106.7,8.637,OVERRUN (Replay Spike),31.67,3157.1,96.6
+200 Hz (High-Speed PMU / DFR),Always-HT,137.98,3809.6,2.76,GUARANTEED,15.7,6369.2,110.0
+200 Hz (High-Speed PMU / DFR),Random-Gate (rho_CGT),163.47,3991.7,3.269,GUARANTEED,17.09,5852.7,108.7
+200 Hz (High-Speed PMU / DFR),CGT (Learned Gate),339.11,63890.1,6.782,OVERRUN (Replay Spike),26.63,3754.6,100.4
+200 Hz (High-Speed PMU / DFR),ARF-3 (3 Trees),387.32,3991.7,7.746,GUARANTEED,29.25,3418.3,98.4
+200 Hz (High-Speed PMU / DFR),OMS-MAB (Wilson et al.),1114.52,105175.3,22.29,OVERRUN (Replay Spike),68.79,1453.8,75.2
+200 Hz (High-Speed PMU / DFR),Always-ARF (Full 10),1727.33,107106.7,34.547,OVERRUN (Replay Spike),102.1,979.5,62.8
+1 kHz (Substation RTU Deadline),Always-HT,137.98,3809.6,13.798,OVERRUN (Replay Spike),45.7,2188.0,87.2
+1 kHz (Substation RTU Deadline),Random-Gate (rho_CGT),163.47,3991.7,16.347,OVERRUN (Replay Spike),52.63,1900.0,83.2
+1 kHz (Substation RTU Deadline),CGT (Learned Gate),339.11,63890.1,33.911,OVERRUN (Replay Spike),100.37,996.3,63.3
+1 kHz (Substation RTU Deadline),ARF-3 (3 Trees),387.32,3991.7,38.732,OVERRUN (Replay Spike),113.47,881.3,59.4
+1 kHz (Substation RTU Deadline),OMS-MAB (Wilson et al.),1114.52,105175.3,111.452,OVERRUN (Mean Overload),280.0,357.1,33.3
+1 kHz (Substation RTU Deadline),Always-ARF (Full 10),1727.33,107106.7,172.733,OVERRUN (Mean Overload),280.0,357.1,33.3

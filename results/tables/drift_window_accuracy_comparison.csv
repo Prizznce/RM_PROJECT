@@ -1,0 +1,6 @@
+Model_Name,Overall_Accuracy_pct,Inside_Drift_Accuracy_pct,Outside_Drift_Accuracy_pct,Accuracy_Delta_pct (Inside - Outside),Duty_Cycle_Inside_Drift_pct,Duty_Cycle_Outside_Drift_pct
+Always-HT,85.07,92.33,84.07,8.26,0.0,0.0
+Random-Gate,84.75,92.26,83.72,8.54,4.19,4.57
+CGT (Learned Gate),85.33,92.53,84.34,8.18,2.16,4.92
+ARF-3 (3 Trees),86.19,93.61,85.17,8.44,100.0,100.0
+Always-ARF (10 Trees),89.6,94.56,88.92,5.64,100.0,100.0

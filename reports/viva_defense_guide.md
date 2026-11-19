@@ -69,13 +69,13 @@
 
 ---
 
-### Q9: "The accuracy gain is small (+0.78% on Europe, closing only 17.2% of gap) and OMS-MAB has higher accuracy (86.53%). Why lead with CGT-v3?"
+### Q9: "The accuracy gain is small (+0.26% to +1.01%, closing 23% to 62% of gap) and unconstrained OMS-MAB has higher accuracy (86.91%). Why lead with CGT?"
 * **Answer**:  
   *"We lead with the **3D Energy-Adjusted Pareto Frontier**, not raw unconstrained accuracy:
-  - OMS-MAB achieves 86.53%, but requires **1,934.2 µs latency** (+93.4% breach of the 1 ms deadline) and **61.9% duty cycle**, draining edge batteries in 28 hours. It cannot be deployed on an RTU.
-  - On the European stream, CGT-v3 achieves 85.85% (+0.78% over HT) while meeting all hardware constraints and saving 71% CPU compute.
-  - On the Indian grid stream, CGT-v3 achieves **86.88% accuracy (+3.20% over HT)**, closing **62.8% of the gap to Always-ARF**.
-  - CGT-v3 is the **sole adaptive model occupying the Sub-1ms Deployable Energy-Adjusted Pareto Frontier**."*
+  - Unconstrained OMS-MAB achieves 86.91%, but requires **814.7 µs mean latency** (+67 ms worst-case spike) and **63.3% duty cycle**, draining edge batteries quickly and violating interrupt deadlines. When constrained to match CGT's ~4.6% duty, Cost-Aware OMS-MAB collapses to **84.30% accuracy** (-1.03 pp behind CGT, $p = 3.75 \times 10^{-8}$).
+  - On the 24,528-hour benchmark stream, CGT achieves 85.33% (+0.58 pp over Random-Gate at matched duty) while meeting all hardware constraints and saving ~95.4% heavy ensemble compute.
+  - On the Indian grid stream, CGT achieves **87.13% accuracy (+1.01 pp over HT)**, closing **62.4% of the gap to ARF-3**.
+  - CGT is one of three non-dominated options on the Sub-1ms Deployable Energy-Adjusted Pareto Frontier."*
 
 ---
 

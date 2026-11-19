@@ -140,6 +140,6 @@ def compute_parameter_sensitivity_indices(df_grid):
         "d_acc_d_k": round(float(d_acc_d_k), 6),
         "basin_width_tau_plus_minus": 0.15,  # tau in [0.35, 0.65] keeps acc within 0.15%
         "basin_width_k_plus_minus": 120,     # K in [50, 220] keeps latency < 1,000 us
-        "curvature_status": "CONVEX_STABLE_BASIN",
+        "curvature_status": "CONCAVE_STABLE_PEAK",
     }
     return summary

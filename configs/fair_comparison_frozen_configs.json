@@ -1,0 +1,24 @@
+{
+  "timestamp_utc": "2026-11-18T21:47:31Z",
+  "validation_instances": 10512,
+  "test_instances": 24528,
+  "search_budget_K": 16,
+  "best_arf3_frozen_config": {
+    "grace_period": 200,
+    "lambda_value": 6,
+    "delta": 0.001,
+    "split_criterion": "info_gain",
+    "seed": 42
+  },
+  "best_arf3_val_accuracy_pct": 85.712,
+  "best_cgt_frozen_config": {
+    "tau_gate": 0.25,
+    "max_rho": 0.12,
+    "h_cooldown": 50,
+    "buffer_b": 200,
+    "adwin_delta": 0.005,
+    "seed": 42
+  },
+  "best_cgt_val_accuracy_pct": 83.333,
+  "sha256_hash": "433f0e3d8b6a51d6bbe39100fa16b2ba4a75f4d44184fbb95f57d5edd6dfee1c"
+}

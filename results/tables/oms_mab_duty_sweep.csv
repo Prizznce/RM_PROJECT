@@ -1,0 +1,19 @@
+Policy,Budget_Cap_pct,Achieved_Duty_pct,Test_Accuracy_pct,Mean_Latency_us
+Cost-Aware OMS-MAB,2,2.0,84.618,169.65
+Cost-Aware OMS-MAB,5,5.0,85.258,215.75
+Cost-Aware OMS-MAB,10,10.0,85.368,208.95
+Cost-Aware OMS-MAB,15,15.0,84.989,223.57
+Cost-Aware OMS-MAB,20,20.0,84.715,281.96
+Cost-Aware OMS-MAB,30,30.0,84.813,387.69
+CGT (Learned Meta-Gate),2,2.01,85.233,414.71
+CGT (Learned Meta-Gate),5,4.95,85.804,415.22
+CGT (Learned Meta-Gate),10,4.64,85.433,407.21
+CGT (Learned Meta-Gate),15,5.17,85.445,268.96
+CGT (Learned Meta-Gate),20,5.13,85.616,270.49
+CGT (Learned Meta-Gate),30,5.17,85.437,270.12
+Random-Gate Baseline,2,1.96,84.826,106.85
+Random-Gate Baseline,5,4.88,84.744,122.92
+Random-Gate Baseline,10,10.09,84.654,142.39
+Random-Gate Baseline,15,14.89,85.001,159.49
+Random-Gate Baseline,20,19.81,84.805,165.75
+Random-Gate Baseline,30,29.68,84.695,181.5

@@ -1,0 +1,7 @@
+Model,Ensemble Size,Duty Cycle (%),Test Accuracy (%),Mean Latency (us),Worst-case Latency (us),Gating Nature
+Always-HT (Baseline),1,0.0,85.807,137.98,3809.6,Always Closed (0% Heavy)
+"Random-Gate (p=6.6%, 20 seeds)",1 / 3,6.58,85.786,163.47,3991.7,Pure Bernoulli Random Escalation
+CGT (Learned Meta-Gate),1 / 3,6.58,86.868,339.11,63890.1,Selective Margin + ADWIN Cooldown
+ARF-3 (3 Trees),3,100.0,87.495,387.32,3991.7,Always Open (100% 3-Tree Ensemble)
+"OMS-MAB (Wilson et al., 2024)",1 / 10,60.39,85.96,1114.52,105175.3,Unconstrained Multi-Armed Bandit
+Always-ARF (Full 10 Trees),10,100.0,87.92,1727.33,107106.7,Always Open (100% Heavy Ensemble)

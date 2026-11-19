@@ -1,0 +1,9 @@
+Stream,Comparison,Mean_Weekly_Diff_Pct,Wilcoxon_W,Raw_p_value,Holm_Bonferroni_p,Significant_0.05
+Stream 1,"CGT-v5 (Anti-Staleness Bg=4, ARF-10) vs ARF-3 (Fair Protocol)",1.231,3363.0,1.1324e-04,1.1324e-04,YES
+Stream 1,"CGT-v5 (Anti-Staleness Bg=4, ARF-10) vs Linear (SGD)",2.662,390.5,2.9455e-22,1.1782e-21,YES
+Stream 1,"CGT-v5 (Anti-Staleness Bg=4, ARF-10) vs CGT-v4 (Amortized, ARF-3)",1.769,2176.5,7.3595e-10,2.2078e-09,YES
+Stream 1,"CGT-v5 (Gated-Only, ARF-10) vs ARF-3 (Fair Protocol)",1.162,3209.5,3.0373e-05,6.0746e-05,YES
+Stream 2 (POSOCO),"CGT-v5 (Anti-Staleness Bg=4, ARF-10) vs ARF-3 (Fair Protocol)",1.548,1007.5,2.4832e-07,7.4495e-07,YES
+Stream 2 (POSOCO),"CGT-v5 (Anti-Staleness Bg=4, ARF-10) vs Linear (SGD)",2.47,115.0,2.3967e-16,9.5870e-16,YES
+Stream 2 (POSOCO),"CGT-v5 (Anti-Staleness Bg=4, ARF-10) vs CGT-v4 (Amortized, ARF-3)",2.72,1099.5,1.1325e-06,2.2649e-06,YES
+Stream 2 (POSOCO),"CGT-v5 (Gated-Only, ARF-10) vs ARF-3 (Fair Protocol)",1.137,1422.0,2.0093e-04,2.0093e-04,YES

@@ -1,0 +1,8 @@
+Model,Label,Stream1_Acc_Pct,Stream1_Mean_us,Stream1_p99_us,Stream1_Max_us,Stream1_Duty_Pct,Stream2_POSOCO_Acc_Pct,Stream2_POSOCO_Mean_us,Stream2_POSOCO_p99_us,Stream2_POSOCO_Max_us,Stream2_POSOCO_Duty_Pct
+Linear (SGD),Pre-hoc,84.911,27.75,42.1,337.4,0.0,85.857,29.62,39.9,170.4,0.0
+Always-HT,Pre-hoc,85.066,93.06,180.6,1827.7,0.0,84.244,101.11,179.31,2689.3,0.0
+Always-ARF (10 Trees),Pre-hoc Ref,89.596,1348.44,3062.3,89548.0,100.0,90.125,1234.81,2539.5,167661.1,100.0
+ARF-3 (Fair Protocol),Pre-hoc,86.342,402.06,1162.65,119143.3,100.0,86.78,351.13,990.62,3573.7,100.0
+"CGT-v4 (Amortized, ARF-3)",Post-hoc v4,85.804,156.93,953.46,4108.2,6.18,85.607,173.94,1300.48,2979.6,10.24
+"CGT-v5 (Gated-Only, ARF-10)",Post-hoc v5 (Gated),87.504,257.64,2100.39,128850.6,16.24,87.917,182.66,1732.05,2835.1,13.1
+"CGT-v5 (Anti-Staleness Bg=4, ARF-10)",Post-hoc v5 (Anti-Staleness),87.573,495.27,2249.92,138627.9,16.24,88.327,444.28,2125.21,192430.7,13.1

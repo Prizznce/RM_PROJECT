@@ -1,0 +1,5 @@
+Stream,Model,Overall_Accuracy_Pct,Min_Week_Accuracy_Pct,Worst_10Pct_Weeks_Mean_Pct,Weekly_Std_Pct,Max_Consecutive_Error_Streak
+Stream 1 (Benchmark 24k),Linear (SGD),84.911,76.79,78.97,3.67,5
+Stream 1 (Benchmark 24k),"CGT-v4 (Amortized, ARF-3)",85.804,74.4,78.02,4.22,5
+Stream 2 (POSOCO 16.8k),Linear (SGD),85.857,68.45,75.3,5.51,8
+Stream 2 (POSOCO 16.8k),"CGT-v4 (Amortized, ARF-3)",85.607,67.26,72.38,6.65,10
